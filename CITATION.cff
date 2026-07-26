@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: If you use this resource hub in academic work, please cite it as below.
+type: software
+title: 'Agent KG Hub: Agent × Knowledge Graph 技术资源导航'
+version: 0.1.0
+date-released: 2026-07-26
+license: MIT
+authors:
+  - family-names: Lyu
+    given-names: Bailin
+    alias: LyuBailin
+    affiliation: 个人项目
+    orcid: ''
+keywords:
+  - llm-agent
+  - knowledge-graph
+  - graphrag
+  - graph-augmented-agent
+  - resource-hub
+  - documentation
+url: 'https://github.com/LyuBailin/agent-kg-hub'
+repository-code: 'https://github.com/LyuBailin/agent-kg-hub'
+abstract: |
+  Agent KG Hub 是一个面向 LLM Agent 与知识图谱(KG)交叉领域的技术资源导航站,
+  配套关键概念的深度解读文章。仓库采用"轻量资源聚合 + 概念级深度内容"的混合定位,
+  覆盖三大融合范式(KG 增强 LLM / LLM 增强 KG / LLM 与 KG 协同)与代表项目。
+preferred-citation:
+  type: article
+  title: 'Agent 与知识图谱技术仓库建设方案:项目定位、技术架构与部署指南'
+  authors:
+    - family-names: Lyu
+      given-names: Bailin
+  year: 2026
+  url: 'https://github.com/LyuBailin/agent-kg-hub'

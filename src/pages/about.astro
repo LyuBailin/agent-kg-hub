@@ -1,0 +1,123 @@
+---
+import Hero from '~/components/widgets/Hero.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import Note from '~/components/widgets/Note.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: '关于本站',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero tagline="关于本站">
+    <Fragment slot="title">
+      为什么做 <span class="text-accent dark:text-white">Agent KG Hub</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      LLM Agent 与知识图谱的交叉领域是 2024-2026 年最值得关注的方向之一,
+      但目前中文社区缺乏一个系统的、入门友好且持续更新的资源导航与解读站点。
+      本站试图填补这个空白。
+    </Fragment>
+  </Hero>
+
+  <Note title="定位" description="不是 awesome list,也不是学术综述 — 是经过筛选的、能直接上手的实战参考。" />
+
+  <Features3
+    title="差异化策略"
+    subtitle="为什么和已有的 awesome list / 学术综述不一样?"
+    columns={3}
+    items={[
+      {
+        title: '聚焦交叉领域',
+        description:
+          '只收录与"Agent 与 KG 结合"这一交叉领域强相关的资源,不追求"全面"。',
+        icon: 'tabler:target',
+      },
+      {
+        title: '原创点评',
+        description:
+          '每条资源附原创点评,说明"为什么它对 Agent + KG 主题特别重要",而不是简单堆链接。',
+        icon: 'tabler:message-dots',
+      },
+      {
+        title: '深度解读',
+        description:
+          '对 GraphRAG、ReAct、图智能体等核心概念做 1-2 篇文章级别的深度解读,带图解和代码片段。',
+        icon: 'tabler:book',
+      },
+      {
+        title: '中文为主',
+        description:
+          '以中文内容为主,关键论文和项目保留英文原文链接,服务中文开发者。',
+        icon: 'tabler:language',
+      },
+      {
+        title: '持续更新',
+        description:
+          '每周审核,每月 1 篇概念解读长文,每季度大更。保持与前沿同步。',
+        icon: 'tabler:refresh',
+      },
+      {
+        title: '开放贡献',
+        description:
+          '欢迎推荐资源、投稿解读文章、反馈问题。共建 Agent × KG 中文社区。',
+        icon: 'tabler:users',
+      },
+    ]}
+  />
+
+  <Steps2
+    title="维护节奏"
+    subtitle="长期主义,不追求一夜爆红"
+    items={[
+      {
+        title: '每周',
+        description: '核心资源审核 + 1-2 条新资源录入 + Issue 响应',
+        icon: 'tabler:calendar-week',
+      },
+      {
+        title: '每月',
+        description: '1 篇概念解读长文 + 主题/UI 优化',
+        icon: 'tabler:calendar-month',
+      },
+      {
+        title: '每季度',
+        description: '生态全景盘点 + 大版本更新 + Roadmap 调整',
+        icon: 'tabler:calendar-stats',
+      },
+    ]}
+  />
+
+  <Steps2
+    isReversed
+    title="参考来源"
+    subtitle="本站的体系结构、核心项目坐标、关键概念参考以下来源(完整列表见 README)"
+    items={[
+      {
+        title: 'IEEE 综述《Graph-Augmented LLM Agents》',
+        description: '图作为 LLM Agent 系统的统一抽象语言',
+        icon: 'tabler:book-2',
+      },
+      {
+        title: 'Microsoft GraphRAG 官方文档',
+        description: '工业级 KG 增强 RAG 方案',
+        icon: 'tabler:brand-github',
+      },
+      {
+        title: 'HuggingFace smolagents 博客',
+        description: '极简 Code Agent 实现参考',
+        icon: 'tabler:flame',
+      },
+      {
+        title: 'Datawhale Hello-Agents 教程',
+        description: '中文 Agent 入门教程',
+        icon: 'tabler:language',
+      },
+    ]}
+  />
+
+  <Note title="许可" description="代码 MIT,内容(文章/资源点评) CC BY 4.0 — 署名即可转载。" />
+</Layout>

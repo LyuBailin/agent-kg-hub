@@ -1,0 +1,72 @@
+site:
+  name: Agent KG Hub
+  site: 'https://LyuBailin.github.io'
+  base: '/agent-kg-hub'
+  trailingSlash: false
+
+  googleSiteVerificationId: null
+
+# Default SEO metadata
+metadata:
+  title:
+    default: 'Agent KG Hub — Agent × 知识图谱技术资源导航'
+    template: '%s · Agent KG Hub'
+  description: '聚焦 LLM Agent 与知识图谱交叉领域的技术资源导航 + 关键概念深度解读。覆盖 GraphRAG、图智能体、KG 增强 LLM 等前沿方向。'
+  robots:
+    index: true
+    follow: true
+  openGraph:
+    site_name: 'Agent KG Hub'
+    images:
+      - url: '~/assets/images/default.png'
+        width: 1200
+        height: 628
+    type: website
+  twitter:
+    handle: '@LyuBailin'
+    site: '@LyuBailin'
+    cardType: summary_large_image
+
+i18n:
+  language: zh-CN
+  textDirection: ltr
+
+apps:
+  blog:
+    isEnabled: true
+    postsPerPage: 8
+
+    post:
+      isEnabled: true
+      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'articles' # 文章列表主路径
+      robots:
+        index: true
+
+    category:
+      isEnabled: true
+      pathname: 'category'
+      robots:
+        index: true
+
+    tag:
+      isEnabled: true
+      pathname: 'tag'
+      robots:
+        index: true
+
+    isRelatedPostsEnabled: true
+    relatedPostsCount: 4
+
+analytics:
+  vendors:
+  # googleAnalytics:
+  #   id: null
+
+ui:
+  theme: 'system' # "system" | "light" | "dark" | "light:only" | "dark:only"
