@@ -24,13 +24,14 @@ const currentPage = page.currentPage ?? 1;
 // const allTags = await findTags();
 
 const metadata = {
-  title: `Blog${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
+  title: `全部文章${currentPage > 1 ? ` — 第 ${currentPage} 页` : ''}`,
+  description: '围绕 Agent × 知识图谱的概念解读、资源聚合与实战案例。',
   robots: {
     index: blogListRobots?.index && currentPage === 1,
     follow: blogListRobots?.follow,
   },
   openGraph: {
-    type: 'blog',
+    type: 'article',
   },
 };
 ---

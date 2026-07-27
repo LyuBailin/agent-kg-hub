@@ -1,0 +1,110 @@
+name: Weekly Update Check
+
+on:
+  # 每周一 UTC 00:00 跑(北京时间 8:00)
+  schedule:
+    - cron: '0 0 * * 1'
+  # 允许手动触发
+  workflow_dispatch:
+  # 每次 push 到 main 也跑(轻量校验)
+  push:
+    branches: [main]
+    paths:
+      - '.github/dependabot.yml'
+      - 'package.json'
+      - 'package-lock.json'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-deps:
+    name: Check Deps & Sync Stars
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Fetch latest releases of tracked projects
+        shell: pwsh
+        run: |
+          $projects = @(
+            'microsoft/graphrag',
+            'langchain-ai/langgraph',
+            'huggingface/smolagents',
+            'datawhalechina/hello-agents',
+            'bytedance/deerflow',
+            'arthelokyo/astrowind'
+          )
+          $summary = @()
+          foreach ($p in $projects) {
+            try {
+              $r = gh api "repos/$p" --jq '{stars: .stargazers_count, pushed: .pushed_at, name: .full_name}'
+              $summary += "[$($r.name)] ★$($r.stars)  last push: $($r.pushed)"
+            } catch {
+              $summary += "[$p] FETCH FAILED: $_"
+            }
+          }
+          $summary | Out-File -FilePath weekly-stars.txt -Encoding utf8
+          Get-Content weekly-stars.txt
+
+      - name: Create/Update tracking issue
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $today = Get-Date -Format "yyyy-MM-dd"
+          $body = "## Weekly Ecosystem Snapshot - $today`n`n$((Get-Content weekly-stars.txt) -join "`n")`n`n---> 自动生成于每周一 UTC 00:00。维护者请 review 这些项目的活跃度,如发现重大变化请补充资源导航。"
+          $existing = gh issue list --label "weekly-snapshot" --state open --json number --jq '.[0].number'
+          if ($existing) {
+            gh issue edit $existing --body $body
+            Write-Output "Updated issue #$existing"
+          } else {
+            gh issue create --title "[Weekly Snapshot] $today" --body $body --label "weekly-snapshot"
+            Write-Output "Created new snapshot issue"
+          }
+
+  auto-rebuild:
+    name: Auto Rebuild Site
+    runs-on: ubuntu-latest
+    # 依赖 Deps 检查通过后跑
+    needs: check-deps
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with Astro
+        env:
+          ASTRO_TELEMETRY_DISABLED: '1'
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

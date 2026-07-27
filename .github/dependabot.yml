@@ -1,0 +1,49 @@
+# Dependabot 配置:自动检测依赖更新 + 周期同步
+# 文档:https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+updates:
+  # npm 依赖
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Shanghai'
+    open-pull-requests-limit: 5
+    reviewers:
+      - 'LyuBailin'
+    labels:
+      - 'dependencies'
+      - 'npm'
+    groups:
+      # 跨多个 patch/minor 更新合并到一个 PR
+      minor-and-patch:
+        applies-to: version-updates
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+    commit-message:
+      prefix: 'chore(deps)'
+    # 允许 Astro 主版本升级单独提 PR(谨慎)
+    ignore:
+      - dependency-name: 'astro'
+        update-types: ['version-update:semver-major']
+
+  # GitHub Actions 依赖
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Shanghai'
+    open-pull-requests-limit: 3
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    commit-message:
+      prefix: 'ci(actions)'
