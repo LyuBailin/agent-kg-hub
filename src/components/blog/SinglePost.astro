@@ -16,7 +16,44 @@ export interface Props {
 }
 
 const { post, url } = Astro.props;
+const canonicalURL = typeof url === 'string' ? url : url.toString();
+
+// JSON-LD 结构化数据(SEO)
+const jsonLD = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: post.title,
+  description: post.excerpt || '',
+  image: post.image || '',
+  datePublished: post.publishDate?.toISOString?.() || post.publishDate,
+  dateModified: post.updateDate?.toISOString?.() || post.publishDate?.toISOString?.() || post.publishDate,
+  author: {
+    '@type': 'Person',
+    name: post.author || 'LyuBailin',
+    url: 'https://github.com/LyuBailin',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Agent KG Hub',
+    url: 'https://lyubailin.github.io/agent-kg-hub/',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalURL,
+  },
+  keywords: (post.tags || []).join(', '),
+  articleSection: post.category?.title || 'Agent × Knowledge Graph',
+  inLanguage: 'zh-CN',
+};
 ---
+
+<!-- 阅读进度条 -->
+<div
+  id="reading-progress"
+  class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-600 via-sky-500 to-purple-600 z-50 transition-[width] duration-150"
+  style="width: 0%"
+>
+</div>
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto">
   <article>
@@ -91,14 +128,175 @@ const { post, url } = Astro.props;
         )
       }
     </header>
-    <div
-      class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
-    >
-      <slot />
+
+    <!-- 文章主体 + TOC 双栏布局 -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-8 flex gap-8 lg:gap-12">
+      <!-- 主内容 -->
+      <div
+        class="prose prose-md lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg prose-headings:scroll-mt-[80px] prose-li:my-0 flex-1 min-w-0"
+        id="article-content"
+      >
+        <slot />
+      </div>
+
+      <!-- 侧边栏 TOC(桌面端) -->
+      <aside class="hidden lg:block w-64 flex-shrink-0">
+        <div class="sticky top-24">
+          <h2
+            class="text-sm font-bold uppercase tracking-wide text-muted dark:text-slate-400 mb-3 flex items-center"
+          >
+            <Icon name="tabler:list" class="w-4 h-4 mr-1.5" />
+            目录
+          </h2>
+          <nav id="toc-nav" class="text-sm border-l border-slate-200 dark:border-slate-700">
+            <!-- 由 JS 动态填充 -->
+          </nav>
+        </div>
+      </aside>
     </div>
+
     <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8 flex justify-between flex-col sm:flex-row">
       <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
       <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-gray-500 dark:text-slate-600" />
     </div>
   </article>
 </section>
+
+<!-- JSON-LD 结构化数据(SEO) -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLD)} is:inline />
+
+<!-- 客户端增强:阅读进度 + TOC + 复制代码 -->
+<script is:inline>
+  (() => {
+    // 1. 阅读进度条
+    const progressBar = document.getElementById('reading-progress');
+    const articleContent = document.getElementById('article-content');
+
+    if (progressBar && articleContent) {
+      function updateProgress() {
+        const rect = articleContent.getBoundingClientRect();
+        const total = rect.height;
+        const scrolled = -rect.top;
+        const progress = Math.max(0, Math.min(100, (scrolled / total) * 100));
+        progressBar.style.width = progress + '%';
+      }
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+    }
+
+    // 2. 自动生成 TOC
+    const tocNav = document.getElementById('toc-nav');
+    if (tocNav && articleContent) {
+      const headings = articleContent.querySelectorAll('h2, h3');
+      if (headings.length > 0) {
+        // 给每个标题加 id(基于文本)
+        headings.forEach((h, i) => {
+          if (!h.id) {
+            h.id =
+              h.textContent
+                ?.trim()
+                .toLowerCase()
+                .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+                .replace(/^-+|-+$/g, '') || `heading-${i}`;
+          }
+        });
+
+        // 构造 TOC HTML
+        const tocList = document.createElement('ul');
+        tocList.className = 'space-y-1.5';
+
+        headings.forEach((h) => {
+          const li = document.createElement('li');
+          const indent = h.tagName === 'H3' ? 'pl-4' : '';
+          li.className = indent;
+          const a = document.createElement('a');
+          a.href = '#' + h.id;
+          a.textContent = h.textContent;
+          a.className =
+            'block py-1 pl-3 -ml-px border-l-2 border-transparent text-muted hover:text-primary hover:border-primary transition';
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.getElementById(h.id);
+            if (target) {
+              const offset = 80;
+              const top = target.getBoundingClientRect().top + window.scrollY - offset;
+              window.scrollTo({ top, behavior: 'smooth' });
+              history.pushState(null, '', '#' + h.id);
+            }
+          });
+          li.appendChild(a);
+          tocList.appendChild(li);
+        });
+
+        tocNav.appendChild(tocList);
+
+        // 滚动时高亮当前章节
+        const tocLinks = tocNav.querySelectorAll('a');
+        function updateActiveSection() {
+          const scrollPos = window.scrollY + 100;
+          let activeIndex = 0;
+          headings.forEach((h, i) => {
+            if (h.offsetTop <= scrollPos) activeIndex = i;
+          });
+          tocLinks.forEach((a, i) => {
+            if (i === activeIndex) {
+              a.classList.add('text-primary', 'border-primary', 'font-semibold');
+              a.classList.remove('border-transparent');
+            } else {
+              a.classList.remove('text-primary', 'border-primary', 'font-semibold');
+              a.classList.add('border-transparent');
+            }
+          });
+        }
+        window.addEventListener('scroll', updateActiveSection, { passive: true });
+        updateActiveSection();
+      } else {
+        if (tocNav.parentElement) tocNav.parentElement.style.display = 'none';
+      }
+    }
+
+    // 3. 给所有 <pre> 代码块加复制按钮
+    if (articleContent) {
+      const preBlocks = articleContent.querySelectorAll('pre');
+      preBlocks.forEach((pre) => {
+        // 跳过已经处理过的
+        if (pre.dataset.copyInit) return;
+        pre.dataset.copyInit = 'true';
+
+        // 包裹容器
+        const wrapper = document.createElement('div');
+        wrapper.className = 'relative group my-4';
+        pre.parentNode?.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        // 复制按钮
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className =
+          'absolute top-2 right-2 px-3 py-1.5 text-xs font-medium bg-slate-700 hover:bg-slate-600 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary';
+        button.innerHTML =
+          '<svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>Copy';
+
+        button.addEventListener('click', async () => {
+          const code = pre.querySelector('code');
+          const text = code ? code.textContent : pre.textContent;
+          try {
+            await navigator.clipboard.writeText(text || '');
+            const orig = button.innerHTML;
+            button.innerHTML =
+              '<svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Copied!';
+            button.classList.add('bg-green-600');
+            setTimeout(() => {
+              button.innerHTML = orig;
+              button.classList.remove('bg-green-600');
+            }, 1500);
+          } catch (err) {
+            console.error('Copy failed:', err);
+          }
+        });
+
+        wrapper.appendChild(button);
+      });
+    }
+  })();
+</script>
