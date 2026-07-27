@@ -1,0 +1,77 @@
+name: 📚 Resource Suggestion
+description: 推荐一个新资源(论文/项目/教程/视频)加入资源导航
+title: "[Resource]: "
+labels: ["enhancement", "resources", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      content: |
+        感谢你推荐资源!请提供完整的资源信息,方便我们评估是否收录。
+
+  - type: input
+    id: name
+    attributes:
+      label: 资源名称
+      description: 资源的名称(论文标题 / 项目名 / 教程名)
+      placeholder: "Microsoft GraphRAG"
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 资源链接
+      description: 资源主页 URL
+      placeholder: "https://github.com/microsoft/graphrag"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 资源类型
+      options:
+        - 论文 / 综述
+        - 开源项目
+        - 教程 / 博客
+        - 视频 / 课程
+        - 工具 / 框架
+        - 其他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 关联范式
+      description: 这个资源最相关的范式
+      options:
+        - KG 增强 LLM
+        - LLM 增强 KG
+        - LLM × KG 协同
+        - 多范式/通用
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: 为什么对 Agent × KG 重要
+      description: 原创点评 — 说明这个资源对 Agent × KG 主题的特殊价值
+      placeholder: |
+        这个资源:
+        1. 解决了什么具体问题
+        2. 与已有资源相比有什么独特之处
+        3. 适合谁(目标读者)
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: 建议标签
+      description: 用逗号分隔,3-5 个
+      placeholder: "GraphRAG, RAG, 知识图谱, 微软"
+    validations:
+      required: false

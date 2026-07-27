@@ -1,0 +1,86 @@
+---
+import merge from 'lodash.merge';
+import type { ImageMetadata } from 'astro';
+
+import Layout from '~/layouts/PageLayout.astro';
+import SinglePost from '~/components/blog/SinglePost.astro';
+import ToBlogLink from '~/components/blog/ToBlogLink.astro';
+import RelatedPosts from '~/components/blog/RelatedPosts.astro';
+
+import { getCanonical, getPermalink } from '~/utils/permalinks';
+import { findImage } from '~/utils/images';
+import type { MetaData } from '~/types';
+
+export async function getStaticPaths() {
+  // 每次调用 getStaticPaths 都重新执行 import.meta.glob
+  const postModules = import.meta.glob('../../../data/post-en/*.md');
+  return Object.keys(postModules).map((path) => {
+    const slug = path.split('/').pop()!.replace('.md', '');
+    return {
+      params: { post: slug },
+      props: { slug },
+    };
+  });
+}
+
+type Props = { slug: string };
+const { slug } = Astro.props;
+
+// 再次获取(因为 props 里的 slug 是关键,modules 在 Astro 渲染时需要)
+const postModules = import.meta.glob('../../../data/post-en/*.md');
+const moduleKey = `../../../data/post-en/${slug}.md`;
+const postLoader = postModules[moduleKey];
+
+if (!postLoader) {
+  throw new Error(`Post not found: ${slug}`);
+}
+
+const postData: any = await (postLoader as () => Promise<any>)();
+const { frontmatter, Content } = postData;
+
+const permalink = `/en/articles/${slug}/`;
+const url = getCanonical(getPermalink(permalink));
+const image = (await findImage(frontmatter.image)) as ImageMetadata | string | undefined;
+
+const metadata: MetaData = merge(
+  {
+    title: frontmatter.title,
+    description: frontmatter.excerpt,
+    robots: { index: true, follow: true },
+    openGraph: {
+      type: 'article',
+      ...(image
+        ? {
+            images: [
+              { url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height },
+            ],
+          }
+        : {}),
+    },
+  },
+  {}
+);
+
+const shapedPost = {
+  id: slug,
+  slug: slug,
+  permalink,
+  title: frontmatter.title,
+  excerpt: frontmatter.excerpt || '',
+  publishDate: new Date(frontmatter.publishDate),
+  updateDate: frontmatter.updateDate ? new Date(frontmatter.updateDate) : undefined,
+  image: frontmatter.image,
+  category: frontmatter.category ? { slug: frontmatter.category, title: frontmatter.category } : undefined,
+  tags: frontmatter.tags || [],
+  author: frontmatter.author || 'LyuBailin',
+  Content: Content as any,
+};
+---
+
+<Layout metadata={metadata}>
+  <SinglePost post={shapedPost as any} url={url}>
+    <Content />
+  </SinglePost>
+  <ToBlogLink />
+  <RelatedPosts post={shapedPost as any} />
+</Layout>

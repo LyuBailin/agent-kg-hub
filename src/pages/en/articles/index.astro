@@ -1,0 +1,60 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import BlogList from '~/components/blog/List.astro';
+
+// 同步加载(用 eager: true 直接拿 frontmatter)
+const postModules = import.meta.glob('../../../data/post-en/*.md', { eager: true });
+
+const posts = Object.entries(postModules)
+  .map(([path, mod]: [string, any]) => {
+    const slug = path.split('/').pop()!.replace('.md', '');
+    const fm = mod.frontmatter || {};
+    return {
+      id: slug,
+      slug,
+      permalink: `/en/articles/${slug}/`,
+      title: fm.title || 'Untitled',
+      excerpt: fm.excerpt || '',
+      publishDate: new Date(fm.publishDate),
+      category: fm.category ? { slug: fm.category, title: fm.category } : undefined,
+      tags: fm.tags || [],
+      author: fm.author || 'LyuBailin',
+      image: fm.image,
+    };
+  })
+  .sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
+
+const metadata = {
+  title: 'All Articles',
+  description: 'Concept deep-dives, resource reviews, and tutorials on Agent × Knowledge Graph',
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+    <div class="mb-8">
+      <h1
+        class="font-bold font-heading leading-tighter tracking-tighter text-heading text-4xl md:text-5xl mb-4"
+      >
+        All Articles
+      </h1>
+      <p class="text-muted text-lg">
+        Deep-dives, resource reviews, and tutorials — {posts.length} article(s) total
+      </p>
+    </div>
+
+    {
+      posts.length > 0 ? (
+        <BlogList posts={posts as any} />
+      ) : (
+        <div class="text-center py-12 text-muted">
+          <p>No articles yet. Check back soon, or <a href="https://github.com/LyuBailin/agent-kg-hub/issues" class="text-primary hover:underline">request a topic</a>.</p>
+        </div>
+      )
+    }
+
+    <p class="mt-12 text-center text-sm text-muted">
+      Looking for the <a href="/agent-kg-hub/articles" class="text-primary hover:underline">Chinese version</a>?
+    </p>
+  </section>
+</Layout>

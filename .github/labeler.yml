@@ -1,0 +1,57 @@
+# Labeler 配置:根据 PR 修改的文件路径自动打标签
+# 文档:https://github.com/actions/labeler
+
+documentation:
+  - '**/*.md'
+  - 'docs/**'
+  - 'README.md'
+  - 'W*-INIT-LOG.md'
+
+content:
+  - 'src/data/post/**'
+  - 'src/content/**'
+
+ui:
+  - 'src/components/**'
+  - 'src/layouts/**'
+  - 'src/pages/index.astro'
+  - 'src/pages/about.astro'
+  - 'src/styles/**'
+  - 'src/assets/styles/**'
+
+i18n:
+  - 'src/pages/en/**'
+  - 'src/i18n/**'
+
+search:
+  - 'src/pages/search.astro'
+  - 'src/pages/en/search.astro'
+  - 'package.json'
+  - 'package-lock.json'
+
+infrastructure:
+  - '.github/**'
+  - 'astro.config.*'
+  - 'src/config.yaml'
+
+dependencies:
+  - 'package.json'
+  - 'package-lock.json'
+
+scripts:
+  - 'scripts/**'
+  - '*.js'
+  - '*.cjs'
+  - '*.mjs'
+
+breaking:
+  - any:
+      - 'astro.config.*'
+      - 'src/config.yaml'
+      - 'package.json'
+
+bug:
+  - any:
+      - '**/*.astro'
+      - '**/*.ts'
+      - '**/*.tsx'

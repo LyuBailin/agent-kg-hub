@@ -1,0 +1,69 @@
+name: ✍️ Content Suggestion
+description: 提议写一篇新文章(概念解读 / 项目深度 / 实战案例)
+title: "[Content]: "
+labels: ["enhancement", "content", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      content: |
+        提议一篇新文章选题!请提供:
+        1. 主题和大致内容
+        2. 为什么现在值得写
+        3. 建议的分类
+
+  - type: input
+    id: title
+    attributes:
+      label: 选题
+      description: 文章标题
+      placeholder: "ReAct 入门:Reasoning + Acting 协同的范式革命"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 文章分类
+      options:
+        - 核心概念(深度解读)
+        - 核心项目(项目深度)
+        - 教程博客(实战教程)
+        - 论文综述(论文精读)
+        - 应用案例(场景实战)
+    validations:
+      required: true
+
+  - type: textarea
+    id: outline
+    attributes:
+      label: 大纲
+      description: 提议的章节结构
+      placeholder: |
+        1. 背景:为什么这个主题重要
+        2. 核心概念:...
+        3. 实现原理:...
+        4. 实战案例:...
+        5. 下一步
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 写作动机
+      description: 为什么这个选题值得现在写?填补了什么空白?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: author
+    attributes:
+      label: 作者
+      description: 谁来写?
+      options:
+        - 我来写(我会在评论中确认)
+        - 邀请其他贡献者
+        - 由维护者评估
+    validations:
+      required: true

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/LyuBailin/agent-kg-hub/discussions
+    about: 提问、讨论、想法分享
+  - name: 📖 在线站点
+    url: https://lyubailin.github.io/agent-kg-hub/
+    about: 查看 Agent KG Hub 实时站点

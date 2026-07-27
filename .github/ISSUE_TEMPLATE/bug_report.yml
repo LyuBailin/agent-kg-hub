@@ -1,0 +1,67 @@
+name: 🐛 Bug Report
+description: 报告一个 bug(网站功能、链接失效、内容错误等)
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      content: |
+        感谢你提交 bug!请提供以下信息,帮助我们快速定位问题。
+
+  - type: input
+    id: url
+    attributes:
+      label: 问题 URL
+      description: 出现 bug 的具体页面 URL(留空如果是一般性问题)
+      placeholder: "https://lyubailin.github.io/agent-kg-hub/..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: describe
+    attributes:
+      label: 详细描述
+      description: 请清晰描述你遇到的问题
+      placeholder: |
+        1. 发生了什么
+        2. 你预期应该发生什么
+        3. 实际发生了什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 如何触发这个 bug?
+      placeholder: |
+        1. 打开 ...
+        2. 点击 ...
+        3. 看到 ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: env
+    attributes:
+      label: 浏览器/设备
+      description: 你在什么环境遇到这个 bug?
+      options:
+        - Chrome (桌面)
+        - Firefox (桌面)
+        - Safari (桌面)
+        - Edge (桌面)
+        - Chrome (Android)
+        - Safari (iOS)
+        - 其他(请在描述中说明)
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 截图或日志(可选)
+      description: 如果有截图或控制台日志,请粘贴
+    validations:
+      required: false
