@@ -60,6 +60,16 @@ export const headerData = {
   ],
   actions: [
     {
+      text: '搜索',
+      href: getPermalink('/search'),
+      icon: 'tabler:search',
+    },
+    {
+      text: 'EN',
+      href: '/agent-kg-hub/en/',
+      icon: 'tabler:language',
+    },
+    {
       text: 'GitHub',
       href: 'https://github.com/LyuBailin/agent-kg-hub',
       target: '_blank',

@@ -1,0 +1,483 @@
+---
+/**
+ * ParadigmMap — Agent × KG 三大融合范式交互图
+ *
+ * 特性:
+ * - 三个核心节点(KG 增强 LLM / LLM 增强 KG / LLM 与 KG 协同)
+ * - 节点之间有双向连接(代表"双向流动")
+ * - 中心节点是 Agent(可点击)
+ * - 鼠标 hover 节点高亮 + 显示详情
+ * - SVG 动画(节点浮动呼吸)
+ * - 移动端 fallback:线性布局
+ */
+
+const paradigms = [
+  {
+    id: 'kg-enhance-llm',
+    title: 'KG 增强 LLM',
+    subtitle: 'Knowledge Graph Enhanced LLM',
+    desc: '在预训练、推理、可解释性三个环节把 KG 作为外部锚点,缓解 LLM 幻觉',
+    color: '#4F46E5',
+    examples: ['GraphRAG', 'ERNIE', 'KEPLER'],
+    position: { x: 200, y: 100 },
+  },
+  {
+    id: 'llm-enhance-kg',
+    title: 'LLM 增强 KG',
+    subtitle: 'LLM Enhanced Knowledge Graph',
+    desc: '用 LLM 解决 KG 自身瓶颈:实体抽取、关系抽取、KG 补全、KG 嵌入',
+    color: '#0EA5E9',
+    examples: ['KGC', 'KG-to-Text', '实体/关系抽取'],
+    position: { x: 100, y: 320 },
+  },
+  {
+    id: 'synergy',
+    title: 'LLM × KG 协同',
+    subtitle: 'LLM & KG Synergy',
+    desc: '两者作为对等伙伴共同完成知识表示与推理。前沿方向,2024-2026 增长最快',
+    color: '#8B5CF6',
+    examples: ['QA-GNN', 'LARK', '自我进化 Agent'],
+    position: { x: 480, y: 220 },
+  },
+];
+---
+
+<section class="relative not-prose scroll-mt-[72px]" id="paradigm-map">
+  <div class="absolute inset-0 pointer-events-none -z-[1]" aria-hidden="true"></div>
+  <div
+    class="intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter intersect-no-queue relative mx-auto px-4 lg:py-20 md:px-6 md:py-16 py-12 max-w-7xl"
+  >
+    <div class="text-center md:mx-auto mb-8 md:mb-12 max-w-3xl">
+      <p
+        class="font-bold text-base text-secondary dark:text-blue-200 tracking-wide uppercase intersect-once intersect-quarter"
+      >
+        互动图
+      </p>
+      <h2 class="font-bold font-heading leading-tighter tracking-tighter text-heading md:text-4xl text-3xl mt-2">
+        三大融合范式
+      </h2>
+      <p class="text-muted text-xl mt-4">
+        鼠标悬停节点查看详情,中心是 Agent
+      </p>
+    </div>
+
+    <!-- 桌面端 SVG 图 -->
+    <div
+      class="hidden md:block max-w-4xl mx-auto"
+      role="img"
+      aria-label="Agent 与知识图谱三大融合范式关系图"
+    >
+      <svg
+        viewBox="0 0 700 500"
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-full h-auto"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <defs>
+          <!-- 渐变 -->
+          <linearGradient id="kg-llm-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.6"></stop>
+            <stop offset="100%" stop-color="#0EA5E9" stop-opacity="0.6"></stop>
+          </linearGradient>
+          <linearGradient id="kg-llm-grad-2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.6"></stop>
+            <stop offset="100%" stop-color="#0EA5E9" stop-opacity="0.6"></stop>
+          </linearGradient>
+          <linearGradient id="llm-synergy" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.6"></stop>
+            <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.6"></stop>
+          </linearGradient>
+          <linearGradient id="llm-synergy-2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.6"></stop>
+            <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.6"></stop>
+          </linearGradient>
+          <linearGradient id="synergy-kg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.6"></stop>
+            <stop offset="100%" stop-color="#4F46E5" stop-opacity="0.6"></stop>
+          </linearGradient>
+          <linearGradient id="synergy-kg-2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.6"></stop>
+            <stop offset="100%" stop-color="#4F46E5" stop-opacity="0.6"></stop>
+          </linearGradient>
+
+          <!-- 中心 Agent 节点渐变 -->
+          <radialGradient id="agent-grad">
+            <stop offset="0%" stop-color="#FFFFFF"></stop>
+            <stop offset="100%" stop-color="#1E1B4B"></stop>
+          </radialGradient>
+
+          <!-- 动画 -->
+          <style>
+            .pulse-1 {
+              animation: pulse-1 3s ease-in-out infinite;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+            .pulse-2 {
+              animation: pulse-2 3s ease-in-out infinite 0.5s;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+            .pulse-3 {
+              animation: pulse-3 3s ease-in-out infinite 1s;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+            @keyframes pulse-1 {
+              0%, 100% { opacity: 0.4; }
+              50% { opacity: 0.8; }
+            }
+            @keyframes pulse-2 {
+              0%, 100% { opacity: 0.4; }
+              50% { opacity: 0.8; }
+            }
+            @keyframes pulse-3 {
+              0%, 100% { opacity: 0.4; }
+              50% { opacity: 0.8; }
+            }
+            .flow-line {
+              stroke-dasharray: 8 4;
+              animation: flow 20s linear infinite;
+            }
+            @keyframes flow {
+              to { stroke-dashoffset: -200; }
+            }
+            .node-group { cursor: pointer; transition: transform 0.3s ease; }
+            .node-group:hover { transform: translateY(-4px); }
+            .node-group:hover .node-circle { stroke-width: 4; }
+            .node-group:hover .node-label { font-weight: 800; }
+            .node-group:hover .detail-panel { opacity: 1; pointer-events: auto; }
+          </style>
+        </defs>
+
+        <!-- 连接线(双向) -->
+        <g class="connections" opacity="0.7">
+          <!-- KG 增强 LLM ↔ LLM 增强 KG -->
+          <line
+            x1="200"
+            y1="160"
+            x2="160"
+            y2="290"
+            stroke="url(#kg-llm-grad)"
+            stroke-width="3"
+            class="flow-line"
+          ></line>
+          <line
+            x1="160"
+            y1="290"
+            x2="200"
+            y2="160"
+            stroke="url(#kg-llm-grad-2)"
+            stroke-width="2"
+            class="flow-line"
+            style="animation-delay: 10s;"
+          ></line>
+          <!-- LLM 增强 KG ↔ LLM×KG 协同 -->
+          <line
+            x1="160"
+            y1="290"
+            x2="450"
+            y2="240"
+            stroke="url(#llm-synergy)"
+            stroke-width="3"
+            class="flow-line"
+            style="animation-delay: 4s;"
+          ></line>
+          <line
+            x1="450"
+            y1="240"
+            x2="160"
+            y2="290"
+            stroke="url(#llm-synergy-2)"
+            stroke-width="2"
+            class="flow-line"
+            style="animation-delay: 14s;"
+          ></line>
+          <!-- LLM×KG 协同 ↔ KG 增强 LLM -->
+          <line
+            x1="450"
+            y1="240"
+            x2="240"
+            y2="120"
+            stroke="url(#synergy-kg)"
+            stroke-width="3"
+            class="flow-line"
+            style="animation-delay: 8s;"
+          ></line>
+          <line
+            x1="240"
+            y1="120"
+            x2="450"
+            y2="240"
+            stroke="url(#synergy-kg-2)"
+            stroke-width="2"
+            class="flow-line"
+            style="animation-delay: 18s;"
+          ></line>
+        </g>
+
+        <!-- 中心 Agent 节点 -->
+        <g class="center-node">
+          <circle
+            cx="280"
+            cy="230"
+            r="55"
+            fill="rgba(79, 70, 229, 0.1)"
+            class="pulse-1"
+          ></circle>
+          <circle
+            cx="280"
+            cy="230"
+            r="40"
+            fill="rgba(14, 165, 233, 0.15)"
+            class="pulse-2"
+          ></circle>
+          <circle
+            cx="280"
+            cy="230"
+            r="28"
+            fill="#1E1B4B"
+            stroke="#4F46E5"
+            stroke-width="2"
+            class="pulse-3"
+          ></circle>
+          <text
+            x="280"
+            y="235"
+            text-anchor="middle"
+            fill="#FFFFFF"
+            font-size="14"
+            font-weight="700"
+            class="font-heading"
+          >Agent</text>
+        </g>
+
+        <!-- 节点 1:KG 增强 LLM -->
+        <g class="node-group" data-paradigm="kg-enhance-llm">
+          <circle
+            cx="200"
+            cy="100"
+            r="42"
+            fill="rgba(79, 70, 229, 0.1)"
+            stroke="#4F46E5"
+            stroke-width="2"
+            class="node-circle"
+          ></circle>
+          <text
+            x="200"
+            y="98"
+            text-anchor="middle"
+            fill="#4F46E5"
+            font-size="11"
+            font-weight="700"
+            class="node-label"
+          >KG 增强 LLM</text>
+          <text
+            x="200"
+            y="115"
+            text-anchor="middle"
+            fill="#6366F1"
+            font-size="9"
+            opacity="0.8"
+          >落地最广</text>
+        </g>
+
+        <!-- 节点 2:LLM 增强 KG -->
+        <g class="node-group" data-paradigm="llm-enhance-kg">
+          <circle
+            cx="100"
+            cy="320"
+            r="42"
+            fill="rgba(14, 165, 233, 0.1)"
+            stroke="#0EA5E9"
+            stroke-width="2"
+            class="node-circle"
+          ></circle>
+          <text
+            x="100"
+            y="318"
+            text-anchor="middle"
+            fill="#0EA5E9"
+            font-size="11"
+            font-weight="700"
+            class="node-label"
+          >LLM 增强 KG</text>
+          <text
+            x="100"
+            y="335"
+            text-anchor="middle"
+            fill="#0284C7"
+            font-size="9"
+            opacity="0.8"
+          >构建侧刚需</text>
+        </g>
+
+        <!-- 节点 3:LLM × KG 协同 -->
+        <g class="node-group" data-paradigm="synergy">
+          <circle
+            cx="480"
+            cy="220"
+            r="42"
+            fill="rgba(139, 92, 246, 0.1)"
+            stroke="#8B5CF6"
+            stroke-width="2"
+            class="node-circle"
+          ></circle>
+          <text
+            x="480"
+            y="215"
+            text-anchor="middle"
+            fill="#8B5CF6"
+            font-size="11"
+            font-weight="700"
+            class="node-label"
+          >LLM × KG 协同</text>
+          <text
+            x="480"
+            y="232"
+            text-anchor="middle"
+            fill="#7C3AED"
+            font-size="9"
+            opacity="0.8"
+          >前沿方向</text>
+        </g>
+
+        <!-- 装饰粒子 -->
+        <g opacity="0.5">
+          <circle cx="50" cy="50" r="2" fill="#4F46E5"></circle>
+          <circle cx="650" cy="80" r="2" fill="#0EA5E9"></circle>
+          <circle cx="600" cy="450" r="2" fill="#8B5CF6"></circle>
+          <circle cx="50" cy="450" r="2" fill="#4F46E5"></circle>
+          <circle cx="350" cy="30" r="1.5" fill="#0EA5E9"></circle>
+          <circle cx="350" cy="470" r="1.5" fill="#8B5CF6"></circle>
+        </g>
+      </svg>
+    </div>
+
+    <!-- 详情面板(hover 显示) -->
+    <div class="max-w-4xl mx-auto mt-8">
+      <div
+        id="paradigm-detail-kg-enhance-llm"
+        class="paradigm-detail hidden p-6 rounded-lg border-2 border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30"
+      >
+        <h3 class="text-xl font-bold text-indigo-700 dark:text-indigo-300 mb-2">
+          KG 增强 LLM
+        </h3>
+        <p class="text-slate-700 dark:text-slate-300 mb-3">
+          在预训练、推理、可解释性三个环节把 KG 作为外部锚点,缓解 LLM 幻觉。
+        </p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">
+          <strong>代表项目:</strong>
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 rounded-full text-sm"
+            >GraphRAG</span
+          >
+          <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 rounded-full text-sm"
+            >ERNIE</span
+          >
+          <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 rounded-full text-sm"
+            >KEPLER</span
+          >
+        </div>
+      </div>
+
+      <div
+        id="paradigm-detail-llm-enhance-kg"
+        class="paradigm-detail hidden p-6 rounded-lg border-2 border-sky-200 dark:border-sky-800 bg-sky-50/50 dark:bg-sky-950/30"
+      >
+        <h3 class="text-xl font-bold text-sky-700 dark:text-sky-300 mb-2">
+          LLM 增强 KG
+        </h3>
+        <p class="text-slate-700 dark:text-slate-300 mb-3">
+          反过来用 LLM 解决 KG 自身的瓶颈,包括实体抽取、关系抽取、KG 补全、KG 嵌入、KG-to-Text 等。
+        </p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">
+          <strong>典型场景:</strong>
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-200 rounded-full text-sm"
+            >KGC</span
+          >
+          <span class="px-3 py-1 bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-200 rounded-full text-sm"
+            >KG 嵌入</span
+          >
+          <span class="px-3 py-1 bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-200 rounded-full text-sm"
+            >实体/关系抽取</span
+          >
+        </div>
+      </div>
+
+      <div
+        id="paradigm-detail-synergy"
+        class="paradigm-detail hidden p-6 rounded-lg border-2 border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/30"
+      >
+        <h3 class="text-xl font-bold text-purple-700 dark:text-purple-300 mb-2">
+          LLM × KG 协同
+        </h3>
+        <p class="text-slate-700 dark:text-slate-300 mb-3">
+          最前沿的方向,将两者建模为对等伙伴共同完成知识表示与推理。2024-2026 年增长最快的研究方向。
+        </p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">
+          <strong>代表工作:</strong>
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-200 rounded-full text-sm"
+            >QA-GNN</span
+          >
+          <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-200 rounded-full text-sm"
+            >LARK</span
+          >
+          <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-200 rounded-full text-sm"
+            >Self-Evolving Agent</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- 移动端 fallback:卡片 -->
+    <div class="md:hidden grid gap-4 mt-8">
+      <div class="p-4 rounded-lg border-2 border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30">
+        <h3 class="text-lg font-bold text-indigo-700 dark:text-indigo-300 mb-1">KG 增强 LLM</h3>
+        <p class="text-sm text-slate-700 dark:text-slate-300">用图谱缓解幻觉。代表:GraphRAG。</p>
+      </div>
+      <div class="p-4 rounded-lg border-2 border-sky-200 dark:border-sky-800 bg-sky-50/50 dark:bg-sky-950/30">
+        <h3 class="text-lg font-bold text-sky-700 dark:text-sky-300 mb-1">LLM 增强 KG</h3>
+        <p class="text-sm text-slate-700 dark:text-slate-300">用 LLM 解决 KG 瓶颈。代表:实体抽取。</p>
+      </div>
+      <div class="p-4 rounded-lg border-2 border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/30">
+        <h3 class="text-lg font-bold text-purple-700 dark:text-purple-300 mb-1">LLM × KG 协同</h3>
+        <p class="text-sm text-slate-700 dark:text-slate-300">两者对等伙伴。代表:QA-GNN。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // 节点 hover 显示详情
+  const nodeGroups = document.querySelectorAll('.paradigm-map .node-group');
+  // 由于 ID 可能冲突,改用 :scope 限定
+  const container = document.getElementById('paradigm-map');
+  if (container) {
+    const nodes = container.querySelectorAll('.node-group');
+    const details = container.querySelectorAll('.paradigm-detail');
+
+    function showDetail(paradigmId) {
+      details.forEach((d) => d.classList.add('hidden'));
+      const target = container.querySelector(`#paradigm-detail-${paradigmId}`);
+      if (target) target.classList.remove('hidden');
+    }
+
+    function hideAll() {
+      details.forEach((d) => d.classList.add('hidden'));
+    }
+
+    nodes.forEach((node) => {
+      const id = node.getAttribute('data-paradigm');
+      node.addEventListener('mouseenter', () => showDetail(id));
+      node.addEventListener('mouseleave', () => hideAll());
+      // 移动端 tap 支持
+      node.addEventListener('click', () => showDetail(id));
+    });
+  }
+</script>

@@ -100,6 +100,9 @@ jobs:
           ASTRO_TELEMETRY_DISABLED: '1'
         run: npm run build
 
+      - name: Build search index with Pagefind
+        run: npx pagefind --site dist --output-subdir pagefind
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

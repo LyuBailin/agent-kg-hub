@@ -1,0 +1,123 @@
+---
+import Hero from '~/components/widgets/Hero.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import Note from '~/components/widgets/Note.astro';
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'About',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero tagline="About">
+    <Fragment slot="title">
+      Why <span class="text-accent dark:text-white">Agent KG Hub</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      The intersection of LLM Agents and Knowledge Graphs is one of the most important directions of 2024-2026,
+      but the Chinese-speaking community lacks a systematic, beginner-friendly, continuously-updated resource hub.
+      This site tries to fill that gap.
+    </Fragment>
+  </Hero>
+
+  <Note title="Position" description="Not an awesome list, not an academic survey — carefully curated, immediately actionable references." />
+
+  <Features3
+    title="Differentiators"
+    subtitle="Why this is different from existing awesome lists and academic surveys"
+    columns={3}
+    items={[
+      {
+        title: 'Focused Intersection',
+        description:
+          'Only resources strongly related to the Agent × KG intersection. Not aiming for comprehensiveness.',
+        icon: 'tabler:target',
+      },
+      {
+        title: 'Original Commentary',
+        description:
+          'Each resource comes with original commentary explaining why it matters specifically for Agent × KG.',
+        icon: 'tabler:message-dots',
+      },
+      {
+        title: 'Deep Dives',
+        description:
+          '1-2 article-level deep dives on core concepts (GraphRAG, ReAct, GLA) with diagrams and code.',
+        icon: 'tabler:book',
+      },
+      {
+        title: 'Chinese-First',
+        description:
+          'Chinese as the primary language, with English originals preserved for key papers and projects.',
+        icon: 'tabler:language',
+      },
+      {
+        title: 'Continuous Updates',
+        description:
+          'Weekly review, monthly 1 long-form article, quarterly major updates. Keeping in sync with the frontier.',
+        icon: 'tabler:refresh',
+      },
+      {
+        title: 'Open Contribution',
+        description:
+          'Welcome to recommend resources, contribute articles, report issues. Building the community together.',
+        icon: 'tabler:users',
+      },
+    ]}
+  />
+
+  <Steps2
+    title="Maintenance Cadence"
+    subtitle="Long-term, not overnight"
+    items={[
+      {
+        title: 'Weekly',
+        description: 'Core resource review + 1-2 new entries + issue triage',
+        icon: 'tabler:calendar-week',
+      },
+      {
+        title: 'Monthly',
+        description: '1 concept deep-dive + theme/UI improvements',
+        icon: 'tabler:calendar-month',
+      },
+      {
+        title: 'Quarterly',
+        description: 'Ecosystem roundup + major version updates + roadmap adjustments',
+        icon: 'tabler:calendar-stats',
+      },
+    ]}
+  />
+
+  <Steps2
+    isReversed
+    title="References"
+    subtitle="Schema, project coordinates, and key concepts are based on the following sources (full list in README)"
+    items={[
+      {
+        title: 'IEEE Survey: Graph-Augmented LLM Agents',
+        description: 'Graphs as the unified abstraction language for LLM Agent systems',
+        icon: 'tabler:book-2',
+      },
+      {
+        title: 'Microsoft GraphRAG Official Docs',
+        description: 'Industrial-grade KG-enhanced RAG',
+        icon: 'tabler:brand-github',
+      },
+      {
+        title: 'HuggingFace smolagents Blog',
+        description: 'Reference for minimal Code Agent implementation',
+        icon: 'tabler:flame',
+      },
+      {
+        title: 'Datawhale Hello-Agents Tutorial',
+        description: 'Chinese-language Agent introduction tutorial',
+        icon: 'tabler:language',
+      },
+    ]}
+  />
+
+  <Note title="License" description="Code: MIT. Content (articles, resource reviews): CC BY 4.0 — attribution required for reprinting." />
+</Layout>

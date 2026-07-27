@@ -1,0 +1,161 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+const metadata = {
+  title: '站内搜索',
+  description: '搜索 Agent KG Hub 的所有内容 - 资源导航、概念解读、技术文章',
+  robots: { index: false, follow: true },
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+    <div class="text-center mb-8">
+      <h1
+        class="font-bold font-heading leading-tighter tracking-tighter text-heading text-4xl md:text-5xl mb-4"
+      >
+        <span class="inline-block align-middle">
+          <Icon name="tabler:search" class="w-10 h-10 inline-block mr-2 text-primary" />
+        </span>
+        站内搜索
+      </h1>
+      <p class="text-muted text-lg">搜索本站所有资源导航、概念解读、技术文章</p>
+    </div>
+
+    <!-- Pagefind 搜索容器 -->
+    <div id="search" class="mx-auto">
+      <div class="mb-6">
+        <input
+          type="search"
+          id="search-input"
+          placeholder="输入关键词,例如:GraphRAG、smolagents、KG 补全..."
+          class="w-full px-5 py-4 text-lg border-2 border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+          autocomplete="off"
+        />
+      </div>
+
+      <div id="search-status" class="text-sm text-muted mb-4 hidden"></div>
+
+      <div id="search-results" class="space-y-4">
+        <!-- Pagefind 结果会注入这里 -->
+      </div>
+
+      <noscript>
+        <p class="text-muted text-center py-8">
+          搜索功能需要 JavaScript 支持。请启用 JS 后重试。
+        </p>
+      </noscript>
+    </div>
+
+    <!-- Pagefind 不可用时的降级提示 -->
+    <div id="search-unavailable" class="hidden">
+      <div class="text-center py-12">
+        <Icon name="tabler:search-off" class="w-16 h-16 mx-auto text-muted opacity-50" />
+        <h2 class="text-xl font-semibold mt-4 mb-2">搜索索引正在构建中</h2>
+        <p class="text-muted mb-6">
+          本地开发模式不支持 Pagefind 搜索,完整搜索功能在 GitHub Pages 部署后可用。
+        </p>
+        <p class="text-muted text-sm">
+          或者,你可以直接浏览
+          <a href="/agent-kg-hub/articles" class="text-primary hover:underline">全部文章</a>
+          或
+          <a href="/agent-kg-hub/category" class="text-primary hover:underline">全部分类</a>
+          。
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<!-- Pagefind UI(从 pagefind/ 加载索引) -->
+<script is:inline>
+  (async () => {
+    try {
+      // 动态加载 Pagefind UI
+      const pagefindModule = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+      await pagefindModule.init();
+      window.pagefind = pagefindModule;
+
+      const input = document.getElementById('search-input');
+      const results = document.getElementById('search-results');
+      const status = document.getElementById('search-status');
+      const searchContainer = document.getElementById('search');
+      const unavailable = document.getElementById('search-unavailable');
+
+      // 隐藏降级提示,显示搜索框
+      if (unavailable) unavailable.classList.add('hidden');
+      if (searchContainer) searchContainer.classList.remove('hidden');
+
+      let debounceTimer;
+      async function performSearch(query) {
+        if (!query || query.length < 2) {
+          results.innerHTML = '';
+          status.classList.add('hidden');
+          return;
+        }
+
+        const search = await window.pagefind.search(query);
+        status.classList.remove('hidden');
+        status.textContent = `找到 ${search.results.length} 个结果`;
+
+        if (search.results.length === 0) {
+          results.innerHTML = `
+            <div class="text-center py-8 text-muted">
+              <p>没有找到相关内容。试试其他关键词?</p>
+            </div>
+          `;
+          return;
+        }
+
+        // 取前 20 个结果
+        const top = search.results.slice(0, 20);
+        const data = await Promise.all(top.map((r) => r.data()));
+
+        results.innerHTML = data
+          .map(
+            (d) => `
+          <article class="p-5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary dark:hover:border-primary transition">
+            <a href="${d.url}" class="block">
+              <h2 class="text-xl font-bold mb-2 text-slate-900 dark:text-slate-100 hover:text-primary transition">
+                ${d.meta?.title || d.title || '未命名'}
+              </h2>
+              <p class="text-muted text-sm mb-2 line-clamp-3">
+                ${d.excerpt || ''}
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs">
+                ${(d.tags || [])
+                  .slice(0, 3)
+                  .map((t) => `<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded-full">${t}</span>`)
+                  .join('')}
+                <span class="text-slate-400">${d.url}</span>
+              </div>
+            </a>
+          </article>
+        `
+          )
+          .join('');
+      }
+
+      input.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => performSearch(e.target.value), 250);
+      });
+
+      // 支持 URL query 参数 ?q=
+      const params = new URLSearchParams(window.location.search);
+      const initialQuery = params.get('q');
+      if (initialQuery) {
+        input.value = initialQuery;
+        performSearch(initialQuery);
+      }
+    } catch (err) {
+      console.warn('Pagefind not available:', err);
+      // Pagefind 不可用(本地 dev 模式),显示降级 UI
+      const search = document.getElementById('search');
+      const unavailable = document.getElementById('search-unavailable');
+      if (search) search.classList.add('hidden');
+      if (unavailable) unavailable.classList.remove('hidden');
+    }
+  })();
+</script>
