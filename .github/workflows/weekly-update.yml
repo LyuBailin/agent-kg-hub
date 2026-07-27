@@ -37,6 +37,8 @@ jobs:
 
       - name: Fetch latest releases of tracked projects
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $projects = @(
             'microsoft/graphrag',
