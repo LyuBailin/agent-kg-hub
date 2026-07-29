@@ -7,6 +7,7 @@ import type { SEOProps } from 'astro-seo';
 import { SITE, METADATA, I18N } from 'astrowind:config';
 import type { MetaData, MetaDataOpenGraph } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
+import { detectLocale, localeToBcp47 } from '~/utils/locale';
 
 import { adaptOpenGraphImages } from '~/utils/images';
 
@@ -29,7 +30,7 @@ const mergedOg: MetaDataOpenGraph = merge(
     url: canonical,
     siteName: SITE?.name,
     images: [],
-    locale: I18N?.language || 'en',
+    locale: localeToBcp47(detectLocale(Astro.url.pathname)),
     type: 'website',
   },
   METADATA?.openGraph,

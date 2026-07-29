@@ -1,51 +1,24 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getPermalink, getBlogPermalink, getAsset } from '~/utils/permalinks';
 
-export const headerData = {
+export const headerDataZh = {
   links: [
     {
       text: '资源导航',
       links: [
-        {
-          text: '核心项目',
-          href: getPermalink('/category/projects'),
-        },
-        {
-          text: '论文综述',
-          href: getPermalink('/category/papers'),
-        },
-        {
-          text: '教程与博客',
-          href: getPermalink('/category/tutorials'),
-        },
-        {
-          text: '工具与框架',
-          href: getPermalink('/category/tools'),
-        },
-        {
-          text: '按标签浏览',
-          href: getPermalink('/tag'),
-        },
+        { text: '核心项目', href: getPermalink('/category/projects') },
+        { text: '论文综述', href: getPermalink('/category/papers') },
+        { text: '教程与博客', href: getPermalink('/category/tutorials') },
+        { text: '工具与框架', href: getPermalink('/category/tools') },
+        { text: '按标签浏览', href: getPermalink('/tag') },
       ],
     },
     {
       text: '概念解读',
       links: [
-        {
-          text: '三大融合范式',
-          href: getPermalink('/#paradigms'),
-        },
-        {
-          text: '全部文章',
-          href: getBlogPermalink(),
-        },
-        {
-          text: '核心项目深度',
-          href: getPermalink('/category/projects'),
-        },
-        {
-          text: '入门路径',
-          href: getPermalink('/category/getting-started'),
-        },
+        { text: '三大融合范式', href: getPermalink('/#paradigms') },
+        { text: '全部文章', href: getBlogPermalink() },
+        { text: '核心项目深度', href: getPermalink('/category/projects') },
+        { text: '入门路径', href: getPermalink('/category/getting-started') },
       ],
     },
     {
@@ -59,26 +32,13 @@ export const headerData = {
     },
   ],
   actions: [
-    {
-      text: '搜索',
-      href: getPermalink('/search'),
-      icon: 'tabler:search',
-    },
-    {
-      text: 'EN',
-      href: '/agent-kg-hub/en/',
-      icon: 'tabler:language',
-    },
-    {
-      text: 'GitHub',
-      href: 'https://github.com/LyuBailin/agent-kg-hub',
-      target: '_blank',
-      icon: 'tabler:brand-github',
-    },
+    { text: '搜索', href: getPermalink('/search'), icon: 'tabler:search' },
+    { text: 'EN', href: '/agent-kg-hub/en/', icon: 'tabler:language' },
+    { text: 'GitHub', href: 'https://github.com/LyuBailin/agent-kg-hub', target: '_blank', icon: 'tabler:brand-github' },
   ],
 };
 
-export const footerData = {
+export const footerDataZh = {
   links: [
     {
       title: '内容',
@@ -125,7 +85,10 @@ export const footerData = {
     { ariaLabel: 'GitHub', icon: 'tabler:brand-github', href: 'https://github.com/LyuBailin/agent-kg-hub' },
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
-  footNote: `
-    由 <a class="text-primary underline dark:text-muted" href="https://github.com/LyuBailin" target="_blank" rel="noopener">LyuBailin</a> 维护 · 基于 <a class="text-primary underline dark:text-muted" href="https://github.com/arthelokyo/astrowind" target="_blank" rel="noopener">AstroWind</a> 主题 · MIT 协议
-  `,
+  footNote: `由 <a class="text-primary underline dark:text-muted" href="https://github.com/LyuBailin" target="_blank" rel="noopener">LyuBailin</a> 维护 · 基于 <a class="text-primary underline dark:text-muted" href="https://github.com/arthelokyo/astrowind" target="_blank" rel="noopener">AstroWind</a> 主题 · MIT 协议`,
+};
+
+export const announcementZh = {
+  badge: 'NEW',
+  message: 'Agent KG Hub v0.1.0 已上线 - 欢迎推荐资源与投稿 »',
 };

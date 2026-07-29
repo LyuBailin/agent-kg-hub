@@ -7,6 +7,23 @@
 ### 计划中
 - 下一个大版本(9 月):首页大改版、学习路径页
 
+## [W9] - 2026-07-29
+
+### 修复
+- **Note 组件 description 不插值**:`/category` `/tag` 索引页改用模板字符串,让 `{categories.length}` 等变量正确插入
+- **Features2 卡片标题不渲染 HTML 实体**:title 改用 `set:html`,让 `(N)` 文章计数括号正常显示
+- **英文版 Header/Footer/Announcement 仍是中文**:
+  - 拆 `src/navigation.ts` 为 `src/navigation/{zh,en,index}.ts`,提供 `getHeaderData / getFooterData / getAnnouncement(locale)` 工具
+  - `PageLayout` 根据当前 URL 自动选择 zh/en 文案
+- **英文版 `<html lang>` 与 `og:locale` 错配 zh-CN**:
+  - 新增 `src/utils/locale.ts`,提供 `detectLocale(pathname)` + `localeToBcp47(locale)`
+  - `Layout` / `Metadata` 用 URL 推断 locale,设置正确的 `lang` 与 `og:locale`
+  - 关键修复:detectLocale 用 segment-boundary 正则 `/(^|\/)en(\/|$)/`,兼容 GitHub Pages 的 base path(`/agent-kg-hub/en/...`)
+
+### 改进
+- 英文版顶部公告条 / 4 个 footer 分区 / Header 下拉菜单 全部英文化
+- 英文版"EN ↔ 中文"切换按钮互相跳转到正确语言首页
+
 ## [W8] - 2026-07-29
 
 ### 修复

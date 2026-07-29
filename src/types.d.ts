@@ -49,6 +49,13 @@ export interface MetaData {
 
   openGraph?: MetaDataOpenGraph;
   twitter?: MetaDataTwitter;
+
+  /**
+   * Optional BCP 47 language tag for the page (e.g. "en", "zh-CN").
+   * When set, overrides the auto-detected locale from the URL path so that
+   * `<html lang>` and `og:locale` reflect the page's actual language.
+   */
+  language?: string;
 }
 
 export interface MetaDataRobots {

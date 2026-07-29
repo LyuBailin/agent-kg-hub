@@ -16,13 +16,18 @@ import BasicScripts from '~/components/common/BasicScripts.astro';
 import { ClientRouter } from 'astro:transitions';
 
 import type { MetaData as MetaDataType } from '~/types';
+import { detectLocale } from '~/utils/locale';
 
 export interface Props {
   metadata?: MetaDataType;
 }
 
 const { metadata = {} } = Astro.props;
-const { language, textDirection } = I18N;
+
+// 优先用 metadata.language,其次按 URL 推断,最后回落到项目默认
+const isEnPath = detectLocale(Astro.url.pathname) === 'en';
+const language = metadata.language ?? (isEnPath ? 'en' : I18N.language);
+const textDirection = isEnPath ? 'ltr' : I18N.textDirection;
 ---
 
 <!doctype html>
