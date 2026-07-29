@@ -7,6 +7,22 @@
 ### 计划中
 - W8 候选:深色模式精细化、移动端 ParadigmMap 优化
 
+## [W7] - 2026-07-29
+
+### 新增
+- **W5 三篇概念长文英文版**:`concept-agent-memory` / `concept-agent-evaluation` / `concept-kg-quality` 现都有英文版(共 ~45KB)
+- **英文版 `/en/category/` 分类总览索引页**:4 个分类的卡片导航(英文文案)
+- **英文版 `/en/category/<slug>/` 分类分页**:与中文版对应
+- **英文版 `/en/tag/` 标签总览索引页**:全部英文标签的 pill 云
+- **英文版 `/en/tag/<slug>/` 标签分页**:与中文版对应
+- **`findCategories()` / `findTags()` 重构**:支持传入自定义 posts 数组,中英文版共用
+- **`fetchEnPosts()` 工具**:`src/utils/posts-en.ts` 集中加载英文版文章,索引页与分页复用
+
+### 改进
+- 英文版文章总数:10 → 13 篇
+- 英文版导航体系:从只有首页/about/search/articles,补齐到含分类/标签浏览
+- ROADMAP 中 W7 计划项全部完成(翻译 + 索引页)
+
 ## [W6] - 2026-07-29
 
 ### 新增

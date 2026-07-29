@@ -1,0 +1,69 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Note from '~/components/widgets/Note.astro';
+
+import { findCategories } from '~/utils/blog';
+import { fetchEnPosts } from '~/utils/posts-en';
+import { getPermalink } from '~/utils/permalinks';
+
+export const prerender = true;
+
+const categories = await findCategories(fetchEnPosts());
+
+// 英文版 category 文案
+const CATEGORY_META: Record<string, { icon: string; description: string }> = {
+  'Core Concepts': {
+    icon: 'tabler:atom-2',
+    description: 'Deep dives on the core concepts of the Agent × KG intersection — GraphRAG, ReAct, Graph-Augmented LLM Agents, and more.',
+  },
+  'Core Projects': {
+    icon: 'tabler:package',
+    description: 'Ongoing deep-dive reviews of open-source projects: GraphRAG, LangGraph, smolagents, and more.',
+  },
+  'Tutorials & Blogs': {
+    icon: 'tabler:book-2',
+    description: 'Chinese and English tutorials and blog posts, from beginner to advanced.',
+  },
+  'Papers & Surveys': {
+    icon: 'tabler:article',
+    description: 'Curated papers and survey deep-reads covering frontier research and systematic frameworks.',
+  },
+};
+
+const items = categories.map((cat) => ({
+  title: `${cat.title} <span class="text-base font-normal text-muted">(${cat.count})</span>`,
+  description: CATEGORY_META[cat.title]?.description ?? `Articles in the ${cat.title} category.`,
+  icon: CATEGORY_META[cat.title]?.icon ?? 'tabler:folder',
+  callToAction: {
+    text: 'View articles',
+    href: `/en/category/${cat.slug}/`,
+    variant: 'link' as const,
+    icon: 'tabler:arrow-right',
+  },
+}));
+
+const metadata = {
+  title: 'All Categories',
+  description: 'Browse Agent × Knowledge Graph articles by topic.',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero tagline="Browse">
+    <Fragment slot="title">All Categories</Fragment>
+    <Fragment slot="subtitle">
+      Jump straight into a topic you care about. Each category aggregates concept deep-dives, project reviews, tutorials, and papers.
+    </Fragment>
+  </Hero>
+
+  <Note title="Note" description="Categories are derived from each article's frontmatter `category` field, growing as the hub expands. {categories.length} categories in total." />
+
+  <Features2
+    title="Category directory"
+    subtitle="Discover content by topic"
+    columns={3}
+    items={items}
+  />
+</Layout>

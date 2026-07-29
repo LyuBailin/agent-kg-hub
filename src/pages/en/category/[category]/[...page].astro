@@ -1,0 +1,50 @@
+---
+import type { GetStaticPaths } from 'astro';
+
+import Layout from '~/layouts/PageLayout.astro';
+import BlogList from '~/components/blog/List.astro';
+import Headline from '~/components/blog/Headline.astro';
+import Pagination from '~/components/blog/Pagination.astro';
+
+import { fetchEnPosts } from '~/utils/posts-en';
+
+export const prerender = true;
+
+export const getStaticPaths: GetStaticPaths = ({ paginate }) => {
+  const posts = fetchEnPosts();
+  const buckets: Record<string, { title: string; slug: string }> = {};
+  for (const post of posts) {
+    const slug = post.category?.slug;
+    if (!slug) continue;
+    if (!buckets[slug]) {
+      buckets[slug] = { title: post.category!.title, slug };
+    }
+  }
+
+  return Object.values(buckets).flatMap((category) =>
+    paginate(
+      posts.filter((p) => p.category?.slug === category.slug),
+      {
+        params: { category: category.slug },
+        pageSize: 8,
+        props: { category },
+      }
+    )
+  );
+};
+
+const { page, category } = Astro.props as any;
+const currentPage = page.currentPage ?? 1;
+
+const metadata = {
+  title: `Category: ${category.title}${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 md:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+    <Headline subtitle={`Articles in the ${category.title} category.`}>{category.title}</Headline>
+    <BlogList posts={page.data} />
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+  </section>
+</Layout>
