@@ -5,7 +5,20 @@
 ## [Unreleased]
 
 ### 计划中
-- W8 候选:深色模式精细化、移动端 ParadigmMap 优化
+- 下一个大版本(9 月):首页大改版、学习路径页
+
+## [W8] - 2026-07-29
+
+### 修复
+- **ParadigmMap 锚点死链**:section `id` 从 `paradigm-map` 改为 `paradigms`,对齐 `navigation.ts` 的 `/#paradigms` 锚点跳转(原 nav 链接跳不到正确位置)
+
+### 改进
+- **ParadigmMap 移动端 fallback 完整化**:从只有 1 句简介升级到展示完整 `desc` + `subtitle` + `examples` 列表(桌面端一直有,现在移动端也对齐)
+- **ParadigmMap SVG 深色模式适配**:
+  - 节点文字深色模式用 indigo-300 / sky-300 / violet-300 替换原深色
+  - 节点描边深色模式用 indigo-400 / sky-400 / violet-400 加亮
+  - 中心 Agent 节点深色模式用更深的 radial gradient,避免被背景吃掉
+  - 装饰粒子同步加亮
 
 ## [W7] - 2026-07-29
 
