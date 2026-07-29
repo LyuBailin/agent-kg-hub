@@ -1,0 +1,68 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Note from '~/components/widgets/Note.astro';
+
+import { findCategories } from '~/utils/blog';
+import { getPermalink } from '~/utils/permalinks';
+
+export const prerender = true;
+
+const categories = await findCategories();
+
+// 分类元信息(icon + 描述)集中维护,新增/重命名分类只改这里
+const CATEGORY_META: Record<string, { icon: string; description: string }> = {
+  '核心概念': {
+    icon: 'tabler:atom-2',
+    description: 'Agent × KG 交叉领域的核心概念深度解读,如 GraphRAG、ReAct、图智能体。',
+  },
+  '核心项目': {
+    icon: 'tabler:package',
+    description: '持续追踪的开源项目深度点评:GraphRAG、LangGraph、smolagents 等。',
+  },
+  '教程博客': {
+    icon: 'tabler:book-2',
+    description: '从入门到进阶的中文/英文教程与博客文章合集。',
+  },
+  '论文综述': {
+    icon: 'tabler:article',
+    description: '精选论文与综述精读,覆盖前沿研究与体系化框架。',
+  },
+};
+
+const items = categories.map((cat) => ({
+  title: `${cat.title} <span class="text-base font-normal text-muted">(${cat.count})</span>`,
+  description: CATEGORY_META[cat.title]?.description ?? '该分类下的文章合集。',
+  icon: CATEGORY_META[cat.title]?.icon ?? 'tabler:folder',
+  callToAction: {
+    text: '查看文章',
+    href: getPermalink(cat.slug, 'category'),
+    variant: 'link' as const,
+    icon: 'tabler:arrow-right',
+  },
+}));
+
+const metadata = {
+  title: '全部分类',
+  description: '按主题浏览 Agent × 知识图谱的文章合集。',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero tagline="浏览">
+    <Fragment slot="title">全部分类</Fragment>
+    <Fragment slot="subtitle">
+      按主题快速进入你想看的内容分类。每个分类下聚合了概念解读、项目点评、教程与论文。
+    </Fragment>
+  </Hero>
+
+  <Note title="说明" description="分类来源于每篇文章的 frontmatter `category` 字段,持续随内容扩充。共 {categories.length} 个分类。" />
+
+  <Features2
+    title="分类目录"
+    subtitle="按主题发现内容"
+    columns={3}
+    items={items}
+  />
+</Layout>

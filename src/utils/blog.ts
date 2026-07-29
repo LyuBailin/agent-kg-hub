@@ -173,6 +173,49 @@ export const findLatestPosts = async ({ count }: { count?: number }): Promise<Ar
   return posts ? posts.slice(0, _count) : [];
 };
 
+/**
+ * Aggregate all categories with their post counts.
+ * Used by /category index page to build the category overview.
+ * Pass an explicit `posts` array for non-default collections (e.g. English posts).
+ */
+export const findCategories = async (posts?: Array<Post>): Promise<Array<Taxonomy & { count: number }>> => {
+  const all = posts ?? (await fetchPosts());
+  const buckets: Record<string, Taxonomy & { count: number }> = {};
+
+  for (const post of all) {
+    const slug = post.category?.slug;
+    if (!slug) continue;
+    if (!buckets[slug]) {
+      buckets[slug] = { ...(post.category as Taxonomy), count: 0 };
+    }
+    buckets[slug].count += 1;
+  }
+
+  return Object.values(buckets).sort((a, b) => b.count - a.count);
+};
+
+/**
+ * Aggregate all tags with their post counts.
+ * Used by /tag index page to build the tag overview.
+ * Pass an explicit `posts` array for non-default collections (e.g. English posts).
+ */
+export const findTags = async (posts?: Array<Post>): Promise<Array<Taxonomy & { count: number }>> => {
+  const all = posts ?? (await fetchPosts());
+  const buckets: Record<string, Taxonomy & { count: number }> = {};
+
+  for (const post of all) {
+    if (!Array.isArray(post.tags)) continue;
+    for (const tag of post.tags) {
+      if (!buckets[tag.slug]) {
+        buckets[tag.slug] = { ...tag, count: 0 };
+      }
+      buckets[tag.slug].count += 1;
+    }
+  }
+
+  return Object.values(buckets).sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+};
+
 /** */
 export const getStaticPathsBlogList = async ({ paginate }: { paginate: PaginateFunction }) => {
   if (!isBlogEnabled || !isBlogListRouteEnabled) return [];
