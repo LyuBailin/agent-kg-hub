@@ -5,9 +5,9 @@ export const headerDataZh = {
     {
       text: '资源导航',
       links: [
-        { text: '核心项目', href: getPermalink('/category/projects') },
-        { text: '论文综述', href: getPermalink('/category/papers') },
-        { text: '教程与博客', href: getPermalink('/category/tutorials') },
+        { text: '核心项目', href: getPermalink('/category/he2-xin1-xiang4-mu4') },
+        { text: '论文综述', href: getPermalink('/category/lun4-wen2-zong1-shu4') },
+        { text: '教程与博客', href: getPermalink('/category/jiao4-cheng2-bo2-ke4') },
         { text: '按标签浏览', href: getPermalink('/tag') },
       ],
     },
@@ -17,7 +17,7 @@ export const headerDataZh = {
         { text: '学习路径', href: getPermalink('/learning-path') },
         { text: '三大融合范式', href: getPermalink('/#paradigms') },
         { text: '全部文章', href: getBlogPermalink() },
-        { text: '核心项目深度', href: getPermalink('/category/projects') },
+        { text: '核心项目深度', href: getPermalink('/category/he2-xin1-xiang4-mu4') },
       ],
     },
     {
