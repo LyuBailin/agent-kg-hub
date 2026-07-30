@@ -8,7 +8,6 @@ export const headerDataZh = {
         { text: '核心项目', href: getPermalink('/category/projects') },
         { text: '论文综述', href: getPermalink('/category/papers') },
         { text: '教程与博客', href: getPermalink('/category/tutorials') },
-        { text: '工具与框架', href: getPermalink('/category/tools') },
         { text: '按标签浏览', href: getPermalink('/tag') },
       ],
     },
@@ -19,7 +18,6 @@ export const headerDataZh = {
         { text: '三大融合范式', href: getPermalink('/#paradigms') },
         { text: '全部文章', href: getBlogPermalink() },
         { text: '核心项目深度', href: getPermalink('/category/projects') },
-        { text: '入门路径', href: getPermalink('/category/getting-started') },
       ],
     },
     {

@@ -8,7 +8,6 @@ export const headerDataEn = {
         { text: 'Core Projects', href: '/en/category/core-projects/' },
         { text: 'Papers & Surveys', href: '/en/category/papers-and-surveys/' },
         { text: 'Tutorials & Blogs', href: '/en/category/tutorials-and-blogs/' },
-        { text: 'Tools & Frameworks', href: '/en/category/tools-and-frameworks/' },
         { text: 'Browse by tag', href: '/en/tag/' },
       ],
     },
@@ -19,7 +18,6 @@ export const headerDataEn = {
         { text: 'Three Fusion Paradigms', href: '/agent-kg-hub/#paradigms' },
         { text: 'All articles', href: '/en/articles/' },
         { text: 'Core Projects deep-dive', href: '/en/category/core-projects/' },
-        { text: 'Getting started', href: '/en/category/getting-started/' },
       ],
     },
     {
