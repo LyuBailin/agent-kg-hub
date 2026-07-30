@@ -6,3 +6,6 @@ contact_links:
   - name: 📖 在线站点
     url: https://lyubailin.github.io/agent-kg-hub/
     about: 查看 Agent KG Hub 实时站点
+  - name: 🌐 参与翻译
+    url: https://github.com/LyuBailin/agent-kg-hub/issues?q=is%3Aissue+label%3A%22i18n%22
+    about: 帮助把中文文章翻译成英文(欢迎新手,只需基本英文+领域理解)

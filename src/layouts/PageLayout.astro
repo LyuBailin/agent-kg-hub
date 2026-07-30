@@ -3,8 +3,10 @@ import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Announcement from '~/components/widgets/Announcement.astro';
+import Comments from '~/components/blog/Comments.astro';
 
 import { getHeaderData, getFooterData, getAnnouncement } from '~/navigation';
+import { detectLocale } from '~/utils/locale';
 
 import type { MetaData } from '~/types';
 
@@ -18,6 +20,41 @@ const pathname = Astro.url.pathname;
 const headerData = getHeaderData(pathname);
 const footerData = getFooterData(pathname);
 const announcement = getAnnouncement(pathname);
+
+// URL pattern 检测 — 只在单篇文章页注入评论
+// 规则:
+// 1. 中文: `/agent-kg-hub/<slug>` 其中 slug 不在白名单(首页/学习路径/分类/about/privacy/terms/articles 列表)
+// 2. 英文: `/agent-kg-hub/en/articles/<slug>/` 已限定
+const isArticleZh = (() => {
+  if (!pathname.startsWith('/agent-kg-hub/')) return false;
+  const rest = pathname.replace('/agent-kg-hub/', '').replace(/\/$/, '');
+  if (rest === 'en' || rest.startsWith('en/')) return false; // 英文走 en/articles(/...)
+  if (
+    rest === '' ||
+    rest === 'index' ||
+    rest === 'search' ||
+    rest === 'about' ||
+    rest === 'privacy' ||
+    rest === 'terms' ||
+    rest === 'articles' ||
+    rest === 'category' ||
+    rest === 'tag' ||
+    rest === 'learning-path' ||
+    rest.startsWith('articles/') || // 列表分页 /articles/2 等
+    rest.startsWith('category/') ||
+    rest.startsWith('tag/')
+  )
+    return false;
+  return true;
+})();
+
+const isArticleEn =
+  pathname.startsWith('/agent-kg-hub/en/articles/') &&
+  !pathname.endsWith('/articles/') &&
+  !pathname.endsWith('/articles');
+
+const showComments = isArticleZh || isArticleEn;
+const commentsLang = isArticleEn ? 'en' : 'zh';
 ---
 
 <Layout metadata={metadata}>
@@ -29,6 +66,7 @@ const announcement = getAnnouncement(pathname);
   </slot>
   <main>
     <slot />
+    {showComments && <Comments title={metadata?.title} />}
   </main>
   <slot name="footer">
     <Footer {...footerData} />

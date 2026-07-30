@@ -35,6 +35,23 @@
     - 真实案例走完 7 步(科技公司知识库)
 - 文章总数:17 → 19 篇(中英各 +2)
 
+## [W14] - 2026-07-30
+
+### 新增
+- **Giscus 评论系统**:
+  - 新 `src/components/blog/Comments.astro`:基于 GitHub Discussions 的嵌入式评论组件,暗色模式自动同步,noscript 降级到 GitHub Discussions
+  - `src/layouts/PageLayout.astro` 注入:URL pattern 智能检测单篇文章页(中英),列表页/首页/about/learning-path 等不显示
+  - 修复:`/agent-kg-hub/en/` 英文首页被误判为文章导致评论显示的 bug
+  - 占位符 `R_PLACEHOLDER_REPLACE_ME` / `DIC_PLACEHOLDER_REPLACE_ME` — 用户去 https://giscus.app/ 配置后替换
+
+### 改进
+- **PR/Issue 模板优化**:
+  - `config.yml` 追加 🌐 参与翻译 contact link(指向 i18n label issues)
+  - `bug_report.yml` 新增 expected / actual / network 字段,环境字段重命名
+  - `content_suggestion.yml` 新增 direction / audience / detail-outline 字段
+  - `resource_suggestion.yml` 新增 license / already-listed 字段(帮助去重)
+  - `PULL_REQUEST_TEMPLATE.md` 新增 📝 新增概念长文(≥ 2000 字) 选项,加 i18n 提示和截图规范
+
 ## [W12] - 2026-07-30
 
 ### 新增

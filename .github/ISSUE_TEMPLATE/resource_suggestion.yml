@@ -75,3 +75,31 @@ body:
       placeholder: "GraphRAG, RAG, 知识图谱, 微软"
     validations:
       required: false
+
+  - type: dropdown
+    id: license
+    attributes:
+      label: 许可协议
+      description: 资源本身的开源 / 创作协议(影响收录时是否需要额外标注)
+      options:
+        - MIT
+        - Apache 2.0
+        - BSD (2-clause / 3-clause)
+        - GPL (v2 / v3)
+        - CC BY
+        - 其他(在描述中说明)
+        - 不确定 / 适用
+    validations:
+      required: false
+
+  - type: dropdown
+    id: already-listed
+    attributes:
+      label: 是否已收录
+      description: 你是否在站内搜索过这个资源?帮助维护者去重
+      options:
+        - 否(站内未找到)
+        - 是(已在某处收录,我会贴出现有链接)
+        - 不确定
+    validations:
+      required: true

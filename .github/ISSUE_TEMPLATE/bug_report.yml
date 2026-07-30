@@ -42,10 +42,28 @@ body:
     validations:
       required: true
 
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+      description: 你预期应该发生什么?
+      placeholder: "例:点击 '订阅' 后应该弹出确认对话框"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+      description: 实际发生了什么?
+      placeholder: "例:点击后页面跳转到 404,控制台报 'TypeError: ...'"
+    validations:
+      required: true
+
   - type: dropdown
     id: env
     attributes:
-      label: 浏览器/设备
+      label: 环境 — 浏览器/设备
       description: 你在什么环境遇到这个 bug?
       options:
         - Chrome (桌面)
@@ -58,10 +76,24 @@ body:
     validations:
       required: false
 
+  - type: dropdown
+    id: network
+    attributes:
+      label: 环境 — 网络
+      description: 网络环境(影响 GitHub Pages CDN 加载速度等)
+      options:
+        - 国内(中国大陆)
+        - 海外
+        - VPN / 代理
+        - 校园网 / 企业内网
+        - 不确定
+    validations:
+      required: false
+
   - type: textarea
     id: logs
     attributes:
       label: 截图或日志(可选)
-      description: 如果有截图或控制台日志,请粘贴
+      description: 如果有截图或控制台日志,请粘贴;也可以拖拽图片到下方评论框
     validations:
       required: false

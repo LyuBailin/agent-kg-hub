@@ -1,0 +1,76 @@
+---
+/**
+ * Giscus 评论组件 — 嵌入式 GitHub Discussions 评论系统
+ * 仅在单篇文章页(PageLayout 注入时检测 URL)启用
+ *
+ * 配置:用 placeholder 值,用户后续替换成自己的 giscus 配置
+ * 文档:https://giscus.app/
+ */
+
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  /** 文章标题(用于评论框 placeholder) */
+  title?: string;
+}
+
+const { title } = Astro.props;
+
+// Giscus 配置(占位,用户需要在 giscus.app 配置后填入)
+// 这些值 hardcode 在组件内,不动 src/config.yaml
+const giscusConfig = {
+  src: 'https://giscus.app/client.js',
+  dataRepo: 'LyuBailin/agent-kg-hub',
+  dataRepoId: 'R_PLACEHOLDER_REPLACE_ME', // TODO: 用户替换
+  dataCategory: 'Comments',
+  dataCategoryId: 'DIC_PLACEHOLDER_REPLACE_ME', // TODO: 用户替换
+  dataMapping: 'pathname',
+  dataStrict: '0',
+  dataReactionsEnabled: '1',
+  dataEmitMetadata: '0',
+  dataInputPosition: 'top',
+  dataTheme: 'preferred_color_scheme',
+  dataLang: 'zh-CN',
+  dataLoading: 'lazy',
+  crossorigin: 'anonymous',
+  async: true,
+};
+---
+
+<section class="not-prose mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+  <h2 class="text-xl font-bold mb-4 text-slate-900 dark:text-white flex items-center">
+    <Icon name="tabler:message-circle" class="w-5 h-5 mr-2" />
+    讨论与反馈
+  </h2>
+  <p class="text-sm text-muted dark:text-slate-400 mb-4">
+    {title ? `关于「${title}」的讨论` : '欢迎在下方留言讨论、提建议或报告问题。'}
+    评论系统基于 <a class="text-primary underline" href="https://github.com/LyuBailin/agent-kg-hub/discussions" target="_blank" rel="noopener">GitHub Discussions</a>,需要 GitHub 账号。
+  </p>
+  <div class="giscus-frame">
+    <script
+      is:inline
+      src={giscusConfig.src}
+      data-repo={giscusConfig.dataRepo}
+      data-repo-id={giscusConfig.dataRepoId}
+      data-category={giscusConfig.dataCategory}
+      data-category-id={giscusConfig.dataCategoryId}
+      data-mapping={giscusConfig.dataMapping}
+      data-strict={giscusConfig.dataStrict}
+      data-reactions-enabled={giscusConfig.dataReactionsEnabled}
+      data-emit-metadata={giscusConfig.dataEmitMetadata}
+      data-input-position={giscusConfig.dataInputPosition}
+      data-theme={giscusConfig.dataTheme}
+      data-lang={giscusConfig.dataLang}
+      data-loading={giscusConfig.dataLoading}
+      crossorigin={giscusConfig.crossorigin}
+      async={giscusConfig.async}
+    />
+  </div>
+  <noscript>
+    <p class="text-sm text-muted dark:text-slate-400 py-4">
+      评论功能需要 JavaScript 支持。也可以前往
+      <a class="text-primary underline" href="https://github.com/LyuBailin/agent-kg-hub/discussions" target="_blank" rel="noopener">GitHub Discussions</a>
+      直接参与讨论。
+    </p>
+  </noscript>
+</section>

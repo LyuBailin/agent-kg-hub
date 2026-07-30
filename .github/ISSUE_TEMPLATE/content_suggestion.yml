@@ -22,6 +22,28 @@ body:
       required: true
 
   - type: dropdown
+    id: direction
+    attributes:
+      label: 建议方向
+      description: 这篇文章最主要的内容方向
+      options:
+        - 概念解读(介绍一个核心概念/技术)
+        - 资源点评(对一个项目/论文/工具的深度评测)
+        - 教程(手把手的实战步骤)
+        - 综述(对子领域的全景梳理)
+    validations:
+      required: true
+
+  - type: input
+    id: audience
+    attributes:
+      label: 目标读者
+      description: 这篇文章主要面向谁?他们的背景是什么?
+      placeholder: "例:已熟悉 LLM 基础、想了解 KG 增强方案的算法工程师"
+    validations:
+      required: true
+
+  - type: dropdown
     id: category
     attributes:
       label: 文章分类
@@ -47,6 +69,21 @@ body:
         5. 下一步
     validations:
       required: true
+
+  - type: textarea
+    id: detail-outline
+    attributes:
+      label: 内容大纲(可选)
+      description: 更细的内容规划 — 每个章节的要点、参考链接、示例代码片段等
+      placeholder: |
+        §1 背景
+          - 引用:某论文/某篇文章(URL)
+          - 关键数据/案例
+        §2 核心概念
+          - 配图建议:...
+          - 公式:...
+    validations:
+      required: false
 
   - type: textarea
     id: motivation
