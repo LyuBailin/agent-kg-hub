@@ -16,6 +16,25 @@
   - 修复:同时加 `data-pagefind-meta="category"` 到 SinglePost.astro,JS 侧把 `d.meta?.category?.title` / `d.meta.category.title` 改为 `d.meta?.category` / `d.meta.category`
 - **W11 搜索结果 title 字段访问链冗余**:`d.meta?.title?.title` 简化为 `d.meta?.title`(fallback chain 已经在,只是多余嵌套)
 
+## [W13] - 2026-07-30
+
+### 新增
+- **2 篇新概念长文(中英双语,共 4 文件)**:
+  - `concept-rag-vs-graphrag-selection.md`(zh 14KB / en 16KB)
+    - 工程师视角的 RAG vs GraphRAG 选型决策框架
+    - 4 维评分:问题类型 / 语料规模 / 关系密度 / 查询模式
+    - 5 个真实场景对比(电商 FAQ / 医疗文献 / 法律合同 / 客服工单 / 内部 wiki)
+    - 混合架构(向量召回 + 图精排)适用条件
+    - 7 条避坑清单("不要为简单 FAQ 上 GraphRAG" 等)
+  - `concept-kg-schema-design.md`(zh 23KB / en 26KB)
+    - KG Schema 设计从零到一实战
+    - 3 个常见错误:直接复制通用 KG / 粒度太粗 / 关系过载
+    - 5 步设计流程(用例分析 → 实体候选 → 关系 → 属性 → 验证)
+    - 3 种 Schema 风格对比(OWL / Neo4j 属性图 / LightRAG 轻量)
+    - Schema 演进路径(MVP → 实战 → 收敛)
+    - 真实案例走完 7 步(科技公司知识库)
+- 文章总数:17 → 19 篇(中英各 +2)
+
 ## [W12] - 2026-07-30
 
 ### 新增
