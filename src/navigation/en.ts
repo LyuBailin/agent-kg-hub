@@ -1,4 +1,4 @@
-import { getPermalink, getBlogPermalink, getAsset } from '~/utils/permalinks';
+import { getAsset } from '~/utils/permalinks';
 
 export const headerDataEn = {
   links: [
@@ -24,10 +24,10 @@ export const headerDataEn = {
     {
       text: 'About',
       links: [
-        { text: 'Why this hub', href: getPermalink('/about') },
+        { text: 'Why this hub', href: '/en/about/' },
         { text: 'Contribute', href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md', target: '_blank' },
-        { text: 'Terms', href: getPermalink('/terms') },
-        { text: 'Privacy', href: getPermalink('/privacy') },
+        { text: 'Terms', href: '/en/terms/' },
+        { text: 'Privacy', href: '/en/privacy/' },
       ],
     },
   ],
@@ -52,9 +52,9 @@ export const footerDataEn = {
     {
       title: 'About',
       links: [
-        { text: 'Background', href: getPermalink('/about') },
-        { text: 'Maintenance', href: getPermalink('/about#maintenance') },
-        { text: 'Sources', href: getPermalink('/about#sources') },
+        { text: 'Background', href: '/en/about/' },
+        { text: 'Maintenance', href: '/en/about/#maintenance' },
+        { text: 'Sources', href: '/en/about/#sources' },
         { text: 'License', href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/LICENSE', target: '_blank' },
       ],
     },
@@ -78,8 +78,8 @@ export const footerDataEn = {
     },
   ],
   secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
-    { text: 'Privacy', href: getPermalink('/privacy') },
+    { text: 'Terms', href: '/en/terms/' },
+    { text: 'Privacy', href: '/en/privacy/' },
   ],
   socialLinks: [
     { ariaLabel: 'GitHub', icon: 'tabler:brand-github', href: 'https://github.com/LyuBailin/agent-kg-hub' },

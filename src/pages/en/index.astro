@@ -2,19 +2,82 @@
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero from '~/components/widgets/Hero.astro';
-import Features from '~/components/widgets/Features.astro';
 import Content from '~/components/widgets/Content.astro';
-import Features2 from '~/components/widgets/Features2.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
-import Note from '~/components/widgets/Note.astro';
 import ParadigmMap from '~/components/widgets/ParadigmMap.astro';
+import GoalGrid from '~/components/widgets/GoalGrid.astro';
 
 const metadata = {
   title: 'Agent × Knowledge Graph Resource Hub',
   description:
     'A focused resource hub for LLM Agent and Knowledge Graph intersection - covering GraphRAG, Graph-Augmented LLM Agents, and the three major fusion paradigms.',
 };
+
+// Homepage "problem-driven" goal cards (W10 redesign)
+// Each card maps to a concrete concept article that already exists.
+const goals = [
+  {
+    icon: 'tabler:graph',
+    title: 'I want to enhance RAG with a KG',
+    description:
+      'Start from the pain points of traditional RAG, understand why you need a graph, and learn how the Local / Global / DRIFT / Lazy retrieval modes work.',
+    tags: ['GraphRAG', 'RAG', 'Microsoft'],
+    href: '/agent-kg-hub/en/articles/concept-graphrag-intro/',
+    cta: 'See the path',
+    color: 'indigo',
+  },
+  {
+    icon: 'tabler:chart-bar',
+    title: 'I want to evaluate an Agent',
+    description:
+      'End-to-end benchmarks vs. trajectory evaluation, key metrics, and how to use AgentBench / SWE-bench / GAIA in practice.',
+    tags: ['Agent', 'Evaluation', 'Benchmark'],
+    href: '/agent-kg-hub/en/articles/concept-agent-evaluation/',
+    cta: 'See the path',
+    color: 'sky',
+  },
+  {
+    icon: 'tabler:brain',
+    title: 'I want to give an Agent long-term memory',
+    description:
+      'How short-term / long-term / episodic / procedural memory work together, and landmark systems like MemGPT, MemoryBank, and Mem0.',
+    tags: ['Agent', 'Memory', 'MemGPT'],
+    href: '/agent-kg-hub/en/articles/concept-agent-memory/',
+    cta: 'See the path',
+    color: 'violet',
+  },
+  {
+    icon: 'tabler:route',
+    title: 'I want LLM to learn "querying a KG"',
+    description:
+      'Treat the KG as a structured anchor for LLM reasoning — train the model with RL / CoT to actively query, cite, and verify KG knowledge.',
+    tags: ['KG', 'Reasoning', 'KG-R1'],
+    href: '/agent-kg-hub/en/articles/concept-kg-reasoning/',
+    cta: 'See the path',
+    color: 'emerald',
+  },
+  {
+    icon: 'tabler:robot',
+    title: 'I want to build an Agent from scratch',
+    description:
+      'The underlying loop of nearly every modern Agent framework — ReAct unifies "reasoning" and "acting" into a single LLM cycle.',
+    tags: ['ReAct', 'Agent', 'Prompt'],
+    href: '/agent-kg-hub/en/articles/concept-react-intro/',
+    cta: 'See the path',
+    color: 'amber',
+  },
+  {
+    icon: 'tabler:share-3',
+    title: 'I want the full picture of GLA',
+    description:
+      'The 2025 IEEE survey formally defines Graph-Augmented LLM Agents — unifying the four dimensions of planning / memory / tools / collaboration as a graph.',
+    tags: ['GLA', 'Graph Agent', 'Survey'],
+    href: '/agent-kg-hub/en/articles/concept-graph-augmented-agents/',
+    cta: 'See the path',
+    color: 'rose',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
@@ -24,14 +87,14 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
+        text: 'Browse by Goal',
+        href: '/agent-kg-hub/en/#goals',
+        icon: 'tabler:target',
+      },
+      {
         text: 'Browse Resources',
         href: '/agent-kg-hub/en/category/',
         icon: 'tabler:compass',
-      },
-      {
-        text: 'Read Concepts',
-        href: '/agent-kg-hub/en/articles/',
-        icon: 'tabler:book',
       },
       {
         text: 'Search',
@@ -55,7 +118,7 @@ const metadata = {
     <Fragment slot="subtitle">
       A focused resource aggregation + concept deep-dives for the
       <span class="font-semibold">Agent × KG intersection</span>.
-      Covering three major fusion paradigms: KG-Enhanced LLM, LLM-Enhanced KG, and LLM-KG Synergy.
+      Not sure where to start? <span class="font-semibold text-accent dark:text-white">Pick a goal</span> and we'll take you straight to the right entry point.
     </Fragment>
 
     <Fragment slot="bg">
@@ -104,9 +167,16 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <Note title="Position" description="Not an awesome list, not an academic survey — carefully curated, immediately actionable references." />
+  <!-- GoalGrid: problem-driven navigation (W10 new) -->
 
-  <ParadigmMap />
+  <GoalGrid
+    tagline="Browse by goal"
+    title="What do you want to do?"
+    subtitle="Six of the most common Agent × KG scenarios — each card links straight to a deep-dive article."
+    goals={goals}
+  />
+
+  <ParadigmMap locale="en" />
 
   <Content
     isReversed
@@ -140,38 +210,6 @@ const metadata = {
       Categorized with original commentary, helping you decide which projects deserve deep investigation.
     </Fragment>
   </Content>
-
-  <Features2
-    title="What This Hub Offers"
-    subtitle="Four types of content services around Agent × KG"
-    tagline="Content"
-    items={[
-      {
-        title: 'Resource Navigation',
-        description:
-          'Curated papers, open-source projects, blogs, and tutorials — each with original commentary explaining why it matters for Agent × KG.',
-        icon: 'tabler:compass',
-      },
-      {
-        title: 'Concept Deep-Dives',
-        description:
-          '1-2 article-level deep dives on core concepts like GraphRAG, ReAct, and Graph-Augmented LLM Agents (GLA) — with diagrams and code snippets.',
-        icon: 'tabler:book',
-      },
-      {
-        title: 'Learning Paths',
-        description:
-          'Difficulty-graded content — from "what is a KG" to "building a knowledge-enhanced Agent with GraphRAG".',
-        icon: 'tabler:route',
-      },
-      {
-        title: 'Ecosystem Tracking',
-        description:
-          'Continuous updates of new papers, projects, and tools in this space. Weekly review, monthly major updates.',
-        icon: 'tabler:refresh',
-      },
-    ]}
-  />
 
   <BlogLatestPosts
     title="Latest Deep Dives"

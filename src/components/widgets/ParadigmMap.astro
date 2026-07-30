@@ -10,31 +10,118 @@
  * - SVG 动画(节点浮动呼吸)
  * - 移动端 fallback:完整卡片(展示 desc + examples)
  * - 深色模式适配:节点文字、中心节点在 dark 模式下用更亮的颜色
+ * - i18n: 通过 `locale` prop 切换中英文文案(默认 'zh')
  */
 
-const paradigms = [
-  {
-    id: 'kg-enhance-llm',
-    title: 'KG 增强 LLM',
-    subtitle: 'Knowledge Graph Enhanced LLM',
-    desc: '在预训练、推理、可解释性三个环节把 KG 作为外部锚点,缓解 LLM 幻觉',
-    examples: ['GraphRAG', 'ERNIE', 'KEPLER'],
+type Locale = 'zh' | 'en';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'zh' } = Astro.props;
+
+interface Paradigm {
+  id: string;
+  title: string;
+  subtitle: string;
+  desc: string;
+  examples: string[];
+  nodeLabel: string;
+  nodeSub: string;
+}
+
+interface I18nData {
+  section: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    ariaLabel: string;
+  };
+  detailLabels: [string, string, string];
+  paradigms: Paradigm[];
+}
+
+const i18nData: Record<Locale, I18nData> = {
+  zh: {
+    section: {
+      badge: '互动图',
+      title: '三大融合范式',
+      subtitle: '鼠标悬停节点查看详情,中心是 Agent',
+      ariaLabel: 'Agent 与知识图谱三大融合范式关系图',
+    },
+    detailLabels: ['代表项目', '典型场景', '代表工作'],
+    paradigms: [
+      {
+        id: 'kg-enhance-llm',
+        title: 'KG 增强 LLM',
+        subtitle: 'Knowledge Graph Enhanced LLM',
+        desc: '在预训练、推理、可解释性三个环节把 KG 作为外部锚点,缓解 LLM 幻觉',
+        examples: ['GraphRAG', 'ERNIE', 'KEPLER'],
+        nodeLabel: 'KG 增强 LLM',
+        nodeSub: '落地最广',
+      },
+      {
+        id: 'llm-enhance-kg',
+        title: 'LLM 增强 KG',
+        subtitle: 'LLM Enhanced Knowledge Graph',
+        desc: '用 LLM 解决 KG 自身瓶颈:实体抽取、关系抽取、KG 补全、KG 嵌入',
+        examples: ['KGC', 'KG-to-Text', '实体/关系抽取'],
+        nodeLabel: 'LLM 增强 KG',
+        nodeSub: '构建侧刚需',
+      },
+      {
+        id: 'synergy',
+        title: 'LLM × KG 协同',
+        subtitle: 'LLM & KG Synergy',
+        desc: '两者作为对等伙伴共同完成知识表示与推理。前沿方向,2024-2026 增长最快',
+        examples: ['QA-GNN', 'LARK', '自我进化 Agent'],
+        nodeLabel: 'LLM × KG 协同',
+        nodeSub: '前沿方向',
+      },
+    ],
   },
-  {
-    id: 'llm-enhance-kg',
-    title: 'LLM 增强 KG',
-    subtitle: 'LLM Enhanced Knowledge Graph',
-    desc: '用 LLM 解决 KG 自身瓶颈:实体抽取、关系抽取、KG 补全、KG 嵌入',
-    examples: ['KGC', 'KG-to-Text', '实体/关系抽取'],
+  en: {
+    section: {
+      badge: 'Interactive',
+      title: 'Three Fusion Paradigms',
+      subtitle: 'Hover a node to see details. The center is Agent',
+      ariaLabel: 'Diagram of the three fusion paradigms between Agent and Knowledge Graph',
+    },
+    detailLabels: ['Notable projects', 'Typical scenarios', 'Representative work'],
+    paradigms: [
+      {
+        id: 'kg-enhance-llm',
+        title: 'KG-Enhanced LLM',
+        subtitle: 'Knowledge Graph Enhanced LLM',
+        desc: 'Use KG as an external anchor across pretraining, reasoning, and interpretability to mitigate LLM hallucinations.',
+        examples: ['GraphRAG', 'ERNIE', 'KEPLER'],
+        nodeLabel: 'KG-Enhanced LLM',
+        nodeSub: 'Most adopted',
+      },
+      {
+        id: 'llm-enhance-kg',
+        title: 'LLM-Enhanced KG',
+        subtitle: 'LLM Enhanced Knowledge Graph',
+        desc: 'Use LLMs to address KG bottlenecks: entity extraction, relation extraction, KG completion, and KG embedding.',
+        examples: ['KGC', 'KG-to-Text', 'Entity/Relation extraction'],
+        nodeLabel: 'LLM-Enhanced KG',
+        nodeSub: 'Essential for building',
+      },
+      {
+        id: 'synergy',
+        title: 'LLM × KG Synergy',
+        subtitle: 'LLM & KG Synergy',
+        desc: 'LLM and KG act as equal partners for knowledge representation and reasoning. A fast-growing frontier in 2024-2026.',
+        examples: ['QA-GNN', 'LARK', 'Self-evolving Agent'],
+        nodeLabel: 'LLM × KG Synergy',
+        nodeSub: 'Frontier direction',
+      },
+    ],
   },
-  {
-    id: 'synergy',
-    title: 'LLM × KG 协同',
-    subtitle: 'LLM & KG Synergy',
-    desc: '两者作为对等伙伴共同完成知识表示与推理。前沿方向,2024-2026 增长最快',
-    examples: ['QA-GNN', 'LARK', '自我进化 Agent'],
-  },
-];
+};
+
+const { section, detailLabels, paradigms } = i18nData[locale];
 ---
 
 <section class="relative not-prose scroll-mt-[72px]" id="paradigms">
@@ -46,13 +133,13 @@ const paradigms = [
       <p
         class="font-bold text-base text-secondary dark:text-blue-200 tracking-wide uppercase intersect-once intersect-quarter"
       >
-        互动图
+        {section.badge}
       </p>
       <h2 class="font-bold font-heading leading-tighter tracking-tighter text-heading md:text-4xl text-3xl mt-2">
-        三大融合范式
+        {section.title}
       </h2>
       <p class="text-muted text-xl mt-4">
-        鼠标悬停节点查看详情,中心是 Agent
+        {section.subtitle}
       </p>
     </div>
 
@@ -60,7 +147,7 @@ const paradigms = [
     <div
       class="hidden md:block max-w-4xl mx-auto"
       role="img"
-      aria-label="Agent 与知识图谱三大融合范式关系图"
+      aria-label={section.ariaLabel}
     >
       <svg
         viewBox="0 0 700 500"
@@ -156,22 +243,22 @@ const paradigms = [
           <text x="280" y="235" text-anchor="middle" font-size="14" font-weight="700" class="agent-text font-heading">Agent</text>
         </g>
 
-        <g class="node-group" data-paradigm="kg-enhance-llm">
+        <g class="node-group" data-paradigm={paradigms[0].id}>
           <circle cx="200" cy="100" r="42" fill="rgba(79, 70, 229, 0.1)" stroke="#4F46E5" stroke-width="2" class="node-circle"></circle>
-          <text x="200" y="98" text-anchor="middle" font-size="11" font-weight="700" class="node-label">KG 增强 LLM</text>
-          <text x="200" y="115" text-anchor="middle" font-size="9" opacity="0.8" class="node-sub">落地最广</text>
+          <text x="200" y="98" text-anchor="middle" font-size="11" font-weight="700" class="node-label">{paradigms[0].nodeLabel}</text>
+          <text x="200" y="115" text-anchor="middle" font-size="9" opacity="0.8" class="node-sub">{paradigms[0].nodeSub}</text>
         </g>
 
-        <g class="node-group" data-paradigm="llm-enhance-kg">
+        <g class="node-group" data-paradigm={paradigms[1].id}>
           <circle cx="100" cy="320" r="42" fill="rgba(14, 165, 233, 0.1)" stroke="#0EA5E9" stroke-width="2" class="node-circle"></circle>
-          <text x="100" y="318" text-anchor="middle" font-size="11" font-weight="700" class="node-label">LLM 增强 KG</text>
-          <text x="100" y="335" text-anchor="middle" font-size="9" opacity="0.8" class="node-sub">构建侧刚需</text>
+          <text x="100" y="318" text-anchor="middle" font-size="11" font-weight="700" class="node-label">{paradigms[1].nodeLabel}</text>
+          <text x="100" y="335" text-anchor="middle" font-size="9" opacity="0.8" class="node-sub">{paradigms[1].nodeSub}</text>
         </g>
 
-        <g class="node-group" data-paradigm="synergy">
+        <g class="node-group" data-paradigm={paradigms[2].id}>
           <circle cx="480" cy="220" r="42" fill="rgba(139, 92, 246, 0.1)" stroke="#8B5CF6" stroke-width="2" class="node-circle"></circle>
-          <text x="480" y="215" text-anchor="middle" font-size="11" font-weight="700" class="node-label">LLM × KG 协同</text>
-          <text x="480" y="232" text-anchor="middle" font-size="9" opacity="0.8" class="node-sub">前沿方向</text>
+          <text x="480" y="215" text-anchor="middle" font-size="11" font-weight="700" class="node-label">{paradigms[2].nodeLabel}</text>
+          <text x="480" y="232" text-anchor="middle" font-size="9" opacity="0.8" class="node-sub">{paradigms[2].nodeSub}</text>
         </g>
 
         <g opacity="0.5">
@@ -188,12 +275,12 @@ const paradigms = [
     <!-- 详情面板(桌面端 hover 显示) -->
     <div class="hidden md:block max-w-4xl mx-auto mt-8">
       <div
-        id="paradigm-detail-kg-enhance-llm"
+        id={`paradigm-detail-${paradigms[0].id}`}
         class="paradigm-detail hidden p-6 rounded-lg border-2 border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/30"
       >
         <h3 class="text-xl font-bold text-indigo-700 dark:text-indigo-300 mb-2">{paradigms[0].title}</h3>
         <p class="text-slate-700 dark:text-slate-300 mb-3">{paradigms[0].desc}</p>
-        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2"><strong>代表项目:</strong></p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2"><strong>{detailLabels[0]}:</strong></p>
         <div class="flex flex-wrap gap-2">
           {paradigms[0].examples.map((ex) => (
             <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 rounded-full text-sm">{ex}</span>
@@ -201,12 +288,12 @@ const paradigms = [
         </div>
       </div>
       <div
-        id="paradigm-detail-llm-enhance-kg"
+        id={`paradigm-detail-${paradigms[1].id}`}
         class="paradigm-detail hidden p-6 rounded-lg border-2 border-sky-200 dark:border-sky-800 bg-sky-50/50 dark:bg-sky-950/30"
       >
         <h3 class="text-xl font-bold text-sky-700 dark:text-sky-300 mb-2">{paradigms[1].title}</h3>
         <p class="text-slate-700 dark:text-slate-300 mb-3">{paradigms[1].desc}</p>
-        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2"><strong>典型场景:</strong></p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2"><strong>{detailLabels[1]}:</strong></p>
         <div class="flex flex-wrap gap-2">
           {paradigms[1].examples.map((ex) => (
             <span class="px-3 py-1 bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-200 rounded-full text-sm">{ex}</span>
@@ -214,12 +301,12 @@ const paradigms = [
         </div>
       </div>
       <div
-        id="paradigm-detail-synergy"
+        id={`paradigm-detail-${paradigms[2].id}`}
         class="paradigm-detail hidden p-6 rounded-lg border-2 border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/30"
       >
         <h3 class="text-xl font-bold text-purple-700 dark:text-purple-300 mb-2">{paradigms[2].title}</h3>
         <p class="text-slate-700 dark:text-slate-300 mb-3">{paradigms[2].desc}</p>
-        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2"><strong>代表工作:</strong></p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2"><strong>{detailLabels[2]}:</strong></p>
         <div class="flex flex-wrap gap-2">
           {paradigms[2].examples.map((ex) => (
             <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-200 rounded-full text-sm">{ex}</span>

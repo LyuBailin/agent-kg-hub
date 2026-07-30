@@ -46,13 +46,13 @@ const columnsClass =
     tagline={tagline}
     classes={{
       container: 'max-w-xl sm:mx-auto lg:max-w-2xl',
-      title: 'text-4xl md:text-5xl font-bold tracking-tighter mb-4 font-heading',
+      title: 'text-4xl md:text-5xl xl:text-6xl font-bold tracking-tighter mb-4 font-heading',
       subtitle: 'max-w-3xl mx-auto sm:text-center text-xl text-muted dark:text-slate-400',
     }}
   />
-  <div class="mx-auto max-w-7xl p-4 md:px-8">
-    <div class={`md:flex ${isReversed ? 'md:flex-row-reverse' : ''} md:gap-16`}>
-      <div class="md:basis-1/2 self-center">
+  <div class="mx-auto max-w-7xl p-4 md:px-8 xl:px-12">
+    <div class={`md:flex ${isReversed ? 'md:flex-row-reverse' : ''} md:gap-16 xl:gap-20`}>
+      <div class="md:basis-1/2 xl:basis-5/12 self-center">
         {content && <div class="mb-12 text-lg dark:text-slate-400" set:html={content} />}
 
         {
@@ -105,7 +105,7 @@ const columnsClass =
           )
         }
       </div>
-      <div aria-hidden="true" class="mt-10 md:mt-0 md:basis-1/2">
+      <div aria-hidden="true" class="mt-10 md:mt-0 md:basis-1/2 xl:basis-7/12">
         {
           image && (
             <div class="relative m-auto max-w-4xl">

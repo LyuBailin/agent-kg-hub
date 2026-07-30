@@ -7,6 +7,18 @@
 ### 计划中
 - 下一个大版本(9 月):首页大改版、学习路径页
 
+## [W10] - 2026-07-30
+
+### 新增
+- **4 篇新资源点评(中英双语)**:
+  - `resource-cognee.md`(zh + en)— 核心项目:给 AI Agent 装上长期记忆的 ECL 流水线框架
+  - `resource-lightrag.md`(zh + en)— 核心项目:港大 HKUDS 出品的轻量级 GraphRAG 工程实现
+  - `resource-graphrag-survey-peng.md`(zh + en)— 论文综述:Peng et al. 2024 的 GraphRAG 综述(arXiv 2408.08921)
+  - `resource-llm-graph-builder.md`(zh + en)— 教程博客:Neo4j Labs 官方的无代码知识图谱构建工具
+- 文章总数:13 → 17 篇(中英各 +4)
+- 静态页面数:158 → 186 页(+28,新增 4 篇文章 × 7 个衍生页面)
+- 覆盖 ROADMAP W7 计划项"3-5 篇新资源(核心项目 +2、论文综述 +1、教程博客 +1)"
+
 ## [W9] - 2026-07-29
 
 ### 修复

@@ -2,18 +2,75 @@
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero from '~/components/widgets/Hero.astro';
-import Features from '~/components/widgets/Features.astro';
 import Content from '~/components/widgets/Content.astro';
-import Features2 from '~/components/widgets/Features2.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
-import Note from '~/components/widgets/Note.astro';
 import ParadigmMap from '~/components/widgets/ParadigmMap.astro';
+import GoalGrid from '~/components/widgets/GoalGrid.astro';
 
 const metadata = {
   title: 'Agent × 知识图谱技术资源导航',
   ignoreTitleTemplate: true,
 };
+
+// 首页"问题驱动"目标卡片 (W10 改版)
+// 每张卡片对应一个用户场景 → 直接链到现有 6 篇核心概念文章
+const goals = [
+  {
+    icon: 'tabler:graph',
+    title: '我想用 KG 增强 RAG',
+    description: '从传统 RAG 的痛点出发,理解为什么需要图,以及 Local/Global/DRIFT/Lazy 四种检索模式怎么用。',
+    tags: ['GraphRAG', 'RAG', '微软'],
+    href: '/agent-kg-hub/concept-graphrag-intro/',
+    cta: '查看方案',
+    color: 'indigo',
+  },
+  {
+    icon: 'tabler:chart-bar',
+    title: '我想评估 Agent 的能力',
+    description: '端到端 benchmark vs 轨迹评估、关键指标体系、AgentBench / SWE-bench / GAIA 怎么用。',
+    tags: ['Agent', '评估', 'Benchmark'],
+    href: '/agent-kg-hub/concept-agent-evaluation/',
+    cta: '查看方案',
+    color: 'sky',
+  },
+  {
+    icon: 'tabler:brain',
+    title: '我想让 Agent 拥有长期记忆',
+    description: '短期 / 长期 / 情节 / 程序 4 种记忆如何协作,MemGPT / MemoryBank / Mem0 等代表工作。',
+    tags: ['Agent', '记忆', 'MemGPT'],
+    href: '/agent-kg-hub/concept-agent-memory/',
+    cta: '查看方案',
+    color: 'violet',
+  },
+  {
+    icon: 'tabler:route',
+    title: '我想让 LLM 学会"用 KG 查询"',
+    description: '把 KG 作为 LLM 推理的结构化锚点,通过 RL / CoT 训练 LLM 主动查询、引用、验证 KG 知识。',
+    tags: ['KG', '推理', 'KG-R1'],
+    href: '/agent-kg-hub/concept-kg-reasoning/',
+    cta: '查看方案',
+    color: 'emerald',
+  },
+  {
+    icon: 'tabler:robot',
+    title: '我想从零构建一个 Agent',
+    description: '几乎所有现代 Agent 框架的底层逻辑 —— ReAct 把"推理"和"行动"统一到一个 LLM 循环。',
+    tags: ['ReAct', 'Agent', 'Prompt'],
+    href: '/agent-kg-hub/concept-react-intro/',
+    cta: '查看方案',
+    color: 'amber',
+  },
+  {
+    icon: 'tabler:share-3',
+    title: '我想理解图智能体(GLA)全景',
+    description: '2025 IEEE 综述正式定义的方向,把 Agent 的规划 / 记忆 / 工具 / 协同 4 维度统一抽象为图。',
+    tags: ['GLA', '图智能体', '综述'],
+    href: '/agent-kg-hub/concept-graph-augmented-agents/',
+    cta: '查看方案',
+    color: 'rose',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
@@ -23,14 +80,14 @@ const metadata = {
     actions={[
       {
         variant: 'primary',
-        text: '浏览资源导航',
-        href: '/agent-kg-hub/category/',
-        icon: 'tabler:compass',
+        text: '按目标浏览',
+        href: '/agent-kg-hub/#goals',
+        icon: 'tabler:target',
       },
       {
-        text: '阅读概念解读',
-        href: '/agent-kg-hub/articles/',
-        icon: 'tabler:book',
+        text: '浏览资源',
+        href: '/agent-kg-hub/category/',
+        icon: 'tabler:compass',
       },
       {
         text: '站内搜索',
@@ -48,7 +105,7 @@ const metadata = {
 
     <Fragment slot="subtitle">
       聚焦 Agent 与 KG 交叉领域的<span class="font-semibold">轻量资源聚合 + 关键概念深度解读</span>。
-      覆盖三大融合范式:KG 增强 LLM、LLM 增强 KG、LLM 与 KG 协同。
+      不知道从哪开始?<span class="font-semibold text-accent dark:text-white">选一个目标</span>,我们直接带你到对应入口。
     </Fragment>
 
     <!-- Hero 装饰:动态知识图谱背景 -->
@@ -71,7 +128,6 @@ const metadata = {
             <stop offset="100%" stop-color="#0EA5E9"></stop>
           </radialGradient>
         </defs>
-        <!-- 节点 -->
         <g fill="url(#hero-node-grad)">
           <circle cx="100" cy="80" r="4"></circle>
           <circle cx="220" cy="150" r="3"></circle>
@@ -96,7 +152,6 @@ const metadata = {
           <circle cx="610" cy="560" r="3"></circle>
           <circle cx="750" cy="520" r="4"></circle>
         </g>
-        <!-- 连接线 -->
         <g stroke="url(#hero-line)" stroke-width="1" opacity="0.6">
           <line x1="100" y1="80" x2="220" y2="150"></line>
           <line x1="220" y1="150" x2="350" y2="100"></line>
@@ -130,9 +185,14 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <!-- Note Widget ******************* -->
+  <!-- GoalGrid: 问题驱动目标导航 (W10 新增) -->
 
-  <Note title="定位" description="不是 awesome list,也不是学术综述 — 是经过筛选的、能直接上手的实战参考。" />
+  <GoalGrid
+    tagline="按目标浏览"
+    title="想做什么?从这里开始"
+    subtitle="6 个最常见的 Agent × KG 场景,每个卡片都直接链到对应深度文章。"
+    goals={goals}
+  />
 
   <!-- ParadigmMap 交互图 -->
 
@@ -172,40 +232,6 @@ const metadata = {
       通过分类整理 + 原创点评,帮助你快速判断哪些项目值得深入研究。
     </Fragment>
   </Content>
-
-  <!-- Features2 Widget: 仓库提供的服务 ************** -->
-
-  <Features2
-    title="这个仓库能给你什么"
-    subtitle="围绕 Agent × KG 主题,提供 4 类内容服务"
-    tagline="内容架构"
-    items={[
-      {
-        title: '资源导航',
-        description:
-          '分类整理论文、开源项目、博客、视频教程,每条资源附原创点评,说明"为什么它对 Agent + KG 主题特别重要"。',
-        icon: 'tabler:compass',
-      },
-      {
-        title: '概念解读',
-        description:
-          '对 GraphRAG、ReAct、图智能体(GLA)等核心概念做 1-2 篇文章级别的深度解读,带图解和代码片段。',
-        icon: 'tabler:book',
-      },
-      {
-        title: '学习路径',
-        description:
-          '按难度递进的内容编排,从"什么是 KG"到"如何用 GraphRAG 构建自己的知识增强 Agent"。',
-        icon: 'tabler:route',
-      },
-      {
-        title: '生态追踪',
-        description:
-          '持续更新该领域的新论文、新项目、新工具,保持与前沿同步。每周审核,每月大更。',
-        icon: 'tabler:refresh',
-      },
-    ]}
-  />
 
   <!-- BlogLatestPosts Widget ******* -->
 
