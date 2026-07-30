@@ -57,6 +57,18 @@ const jsonLD = {
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto">
   <article>
+    {
+      /* Pagefind filter + meta: 让每篇文章关联到 category 过滤器
+         (search.astro 分类 tab 用 filter 过滤,结果卡片 pill 用 meta 显示)
+         隐藏元素不影响 UI,Pagefind 索引时仍会抓取 */
+    }
+    {
+      post.category && (
+        <span data-pagefind-filter="category" data-pagefind-meta="category" style="display:none" aria-hidden="true">
+          {post.category.title}
+        </span>
+      )
+    }
     <header
       class={post.image
         ? 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'
@@ -142,9 +154,7 @@ const jsonLD = {
       <!-- 侧边栏 TOC(桌面端) -->
       <aside class="hidden lg:block w-64 flex-shrink-0">
         <div class="sticky top-24">
-          <h2
-            class="text-sm font-bold uppercase tracking-wide text-muted dark:text-slate-400 mb-3 flex items-center"
-          >
+          <h2 class="text-sm font-bold uppercase tracking-wide text-muted dark:text-slate-400 mb-3 flex items-center">
             <Icon name="tabler:list" class="w-4 h-4 mr-1.5" />
             目录
           </h2>

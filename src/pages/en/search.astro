@@ -29,9 +29,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 <Layout metadata={metadata}>
   <section class="px-4 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
     <div class="text-center mb-8">
-      <h1
-        class="font-bold font-heading leading-tighter tracking-tighter text-heading text-4xl md:text-5xl mb-4"
-      >
+      <h1 class="font-bold font-heading leading-tighter tracking-tighter text-heading text-4xl md:text-5xl mb-4">
         <span class="inline-block align-middle">
           <Icon name="tabler:search" class="w-10 h-10 inline-block mr-2 text-primary" />
         </span>
@@ -52,7 +50,12 @@ const CATEGORY_LABELS: Record<string, string> = {
       </div>
 
       <!-- Category filter tabs -->
-      <div class="mb-6 flex flex-wrap gap-2 justify-center" id="search-filters" role="tablist" aria-label="Filter by category">
+      <div
+        class="mb-6 flex flex-wrap gap-2 justify-center"
+        id="search-filters"
+        role="tablist"
+        aria-label="Filter by category"
+      >
         {
           CATEGORIES.map((cat) => (
             <button
@@ -78,9 +81,7 @@ const CATEGORY_LABELS: Record<string, string> = {
       <div id="search-results" class="space-y-4"></div>
 
       <noscript>
-        <p class="text-muted text-center py-8">
-          Search requires JavaScript. Please enable JS and try again.
-        </p>
+        <p class="text-muted text-center py-8">Search requires JavaScript. Please enable JS and try again.</p>
       </noscript>
     </div>
 
@@ -144,20 +145,30 @@ const CATEGORY_LABELS: Record<string, string> = {
           if (isActive) {
             btn.classList.add('bg-primary', 'text-white', 'border-primary');
             btn.classList.remove(
-              'bg-white', 'dark:bg-slate-800',
-              'text-slate-700', 'dark:text-slate-300',
-              'border-slate-200', 'dark:border-slate-700',
-              'hover:border-primary', 'hover:text-primary',
-              'dark:hover:border-primary', 'dark:hover:text-primary'
+              'bg-white',
+              'dark:bg-slate-800',
+              'text-slate-700',
+              'dark:text-slate-300',
+              'border-slate-200',
+              'dark:border-slate-700',
+              'hover:border-primary',
+              'hover:text-primary',
+              'dark:hover:border-primary',
+              'dark:hover:text-primary'
             );
           } else {
             btn.classList.remove('bg-primary', 'text-white', 'border-primary');
             btn.classList.add(
-              'bg-white', 'dark:bg-slate-800',
-              'text-slate-700', 'dark:text-slate-300',
-              'border-slate-200', 'dark:border-slate-700',
-              'hover:border-primary', 'hover:text-primary',
-              'dark:hover:border-primary', 'dark:hover:text-primary'
+              'bg-white',
+              'dark:bg-slate-800',
+              'text-slate-700',
+              'dark:text-slate-300',
+              'border-slate-200',
+              'dark:border-slate-700',
+              'hover:border-primary',
+              'hover:text-primary',
+              'dark:hover:border-primary',
+              'dark:hover:text-primary'
             );
           }
         });
@@ -171,9 +182,7 @@ const CATEGORY_LABELS: Record<string, string> = {
           return;
         }
 
-        const searchOptions = activeCategory
-          ? { filters: { category: activeCategory } }
-          : undefined;
+        const searchOptions = activeCategory ? { filters: { category: activeCategory } } : undefined;
         const search = await window.pagefind.search(query, searchOptions);
         status.classList.remove('hidden');
 
@@ -194,13 +203,15 @@ const CATEGORY_LABELS: Record<string, string> = {
           <article class="p-5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-primary dark:hover:border-primary transition">
             <a href="${d.url}" class="block">
               <h2 class="text-xl font-bold mb-2 text-slate-900 dark:text-slate-100 hover:text-primary transition">
-                ${d.meta?.title?.title || d.meta?.title || d.title || 'Untitled'}
+                ${d.meta?.title || d.title || 'Untitled'}
               </h2>
               <p class="text-muted text-sm mb-2 line-clamp-3 search-excerpt">${d.excerpt || ''}</p>
               <div class="flex flex-wrap gap-2 text-xs items-center">
-                ${d.meta?.category?.title
-                  ? `<span class="px-2 py-0.5 bg-primary/10 text-primary rounded-full font-medium">${d.meta.category.title}</span>`
-                  : ''}
+                ${
+                  d.meta?.category
+                    ? `<span class="px-2 py-0.5 bg-primary/10 text-primary rounded-full font-medium">${d.meta.category}</span>`
+                    : ''
+                }
                 ${(d.tags || [])
                   .slice(0, 3)
                   .map((t) => `<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded-full">${t}</span>`)
