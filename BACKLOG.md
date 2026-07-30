@@ -20,13 +20,40 @@
 | W9 | 4 个 i18n bug 修复:Note 插值 / Features2 (N) 计数 / 英文 Header-Footer / html lang + og:locale |
 | W10 | 多任务合并 mega-bundle:响应式 xl 断点 + en i18n 深度(about/privacy/terms/paradigmMap)+ 4 篇新资源(cognee/lightrag/peng-survey/llm-graph-builder)+ 首页 problem-centric 重构(GoalGrid) |
 | W11 | Pagefind 搜索分类筛选(5 个 tab + URL 深链接)+ 关键词 mark 高亮 + category pill + 状态文本 + local-dev fallback |
+| W11.1 | **fix(search)**:补 `data-pagefind-filter="category"` 隐藏 span 到 SinglePost.astro,让分类 tab 真正生效(根因:Pagefind 索引里根本没 category 字段) |
 | W12 | 学习路径页 `/learning-path` + `/en/learning-path`:4 条路径(入门/GraphRAG/Agent 能力/KG 深入)覆盖 17 篇无重复,带 accent color、阅读时长、"开始这条路径" CTA,Header 导航加入入口 |
+| W13 | 2 篇新概念长文:`concept-rag-vs-graphrag-selection`(选型决策,4 维评分 / 5 场景 / 7 避坑)+ `concept-kg-schema-design`(5 步设计 / 3 风格 / 7 步案例),中英双语共 4 文件。17 → 19 篇文章 |
+| W14 | **feat(community)**:优化 4 个 Issue 模板 + PR 模板(双语 / 翻译联系链接)+ 集成 Giscus 评论(`Comments.astro` 注入单文章页,zh+en 同步);占位 ID 需用户从 giscus.app 填 |
+| W15 | **feat(rss)**:RSS 全文 — 引入 `import.meta.glob('?raw')` + 自写最小 markdown→HTML + `<content:encoded><![CDATA[...]]></content:encoded>` + `<author>` + `<categories>`(category + tags)+ `xmlns:content` |
+| W16 | **feat(homepage)**:GoalGrid 第 7 张卡片(置顶)"我想按学习路径 0→1 系统学",rose 色,直链 `/learning-path/`,新用户最显眼入口 |
+| W16.1 | **fix(homepage)**:副标题 6→7 同步(W16 漏改,本轮补),与 CHANGELOG 文案对齐 |
 
-**当前统计**:188 个静态页面,17 篇中文章 + 17 篇英文文章,4 个分类 / 56+ 标签。
+**当前统计**:201 个静态页面,19 篇文章 × 2 语言(19 zh + 19 en),4 个分类 / 56+ 标签,1 个 RSS 全量源,1 个 Giscus 评论占位(待填 giscus.app repo/category ID)。
 
 ---
 
-## 待办 6 个独立 task(可并行)
+## W10 规划 6 task 收尾(全部 ✅ 已完成)
+
+| Task | 完成于 | 关键 commit |
+|---|---|---|
+| A · 响应式 1366 笔记本 | W10 | `155bc8c` mega-bundle |
+| B · 英文版 i18n 深度 | W10 | `155bc8c` mega-bundle |
+| C · W7 录入 3-5 篇新资源 | W10 | `155bc8c` mega-bundle(cognee/lightrag/peng-survey/llm-graph-builder)|
+| D · 首页大改版(ROADMAP Q4) | W10 + W16 | `155bc8c`(GoalGrid)+ `4f24501`(W16 学习路径卡)|
+| E · 学习路径页(ROADMAP Q4) | W12 | `0807d5d` |
+| F · 搜索增强(ROADMAP Q4) | W11 + W11.1 | `9de1150` + `670668a` |
+
+**W10 6 task 全部 closed**。后续 wave 是临时追加,见上方"已完成基线"W11.1 - W16.1。
+
+---
+
+## 待办 6 个独立 task(可并行)—— W10 规划,W10-W12 全部完成 ✅
+
+> 下方 6 task 是 W10 写的并行规划,**全部已 closed**(详见上方"W10 规划 6 task 收尾"小节)。
+> 这里保留原始 spec 作为决策记录,方便后续回顾为什么这么设计。
+> 当前没有新的待办 task,新 wave(W11.1/W13/W14/W15/W16)都是临时追加,见"已完成基线"。
+
+---
 
 ### Task A · 响应式精细化(1366 笔记本)
 
