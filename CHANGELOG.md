@@ -52,6 +52,20 @@
   - `resource_suggestion.yml` 新增 license / already-listed 字段(帮助去重)
   - `PULL_REQUEST_TEMPLATE.md` 新增 📝 新增概念长文(≥ 2000 字) 选项,加 i18n 提示和截图规范
 
+## [W15] - 2026-07-30
+
+### 改进
+- **RSS 全文输出**(`src/pages/rss.xml.ts`):
+  - 每条 item 加 `<content:encoded><![CDATA[...]]></content:encoded>` CDATA 包装的完整文章 HTML(RSS reader 可直接读全文)
+  - 加 `author` 字段(取自 `post.author`,默认 `LyuBailin`)
+  - 加 `categories` 数组(包含 `post.category.title` + 所有 tag.title)
+  - 加稳定 `guid`(等于 permalink)
+  - 加 `xmlns:content` 命名空间声明让 reader 识别
+  - 实现自包含的 minimal markdown→HTML 转换器(无外部依赖,`marked` / `markdown-it` 都不在 package.json)
+  - 覆盖:fenced code / ATX heading / blockquote / ul / ol / hr / paragraph / inline code / image / link / bold / italic
+  - 严格 XML 转义 + `]]>` 安全切分(避免 CDATA 提前终止)
+  - 容错:找不到 .md 源时 fallback 到 excerpt,build 不会因 RSS 生成挂掉
+
 ## [W12] - 2026-07-30
 
 ### 新增
