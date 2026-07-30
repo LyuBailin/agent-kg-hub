@@ -15,6 +15,7 @@ export const headerDataEn = {
     {
       text: 'Concepts',
       links: [
+        { text: 'Learning paths', href: '/en/learning-path/' },
         { text: 'Three Fusion Paradigms', href: '/agent-kg-hub/#paradigms' },
         { text: 'All articles', href: '/en/articles/' },
         { text: 'Core Projects deep-dive', href: '/en/category/core-projects/' },

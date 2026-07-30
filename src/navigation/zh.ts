@@ -15,6 +15,7 @@ export const headerDataZh = {
     {
       text: '概念解读',
       links: [
+        { text: '学习路径', href: getPermalink('/learning-path') },
         { text: '三大融合范式', href: getPermalink('/#paradigms') },
         { text: '全部文章', href: getBlogPermalink() },
         { text: '核心项目深度', href: getPermalink('/category/projects') },

@@ -18,8 +18,11 @@
 | W7 | en/category en/tag + 3 篇 W5 概念长文英译(concept-agent-memory / evaluation / kg-quality) |
 | W8 | ParadigmMap 锚点修(paradigm-map → paradigms)+ 移动端 fallback 完整化 + SVG 深色模式适配 |
 | W9 | 4 个 i18n bug 修复:Note 插值 / Features2 (N) 计数 / 英文 Header-Footer / html lang + og:locale |
+| W10 | 多任务合并 mega-bundle:响应式 xl 断点 + en i18n 深度(about/privacy/terms/paradigmMap)+ 4 篇新资源(cognee/lightrag/peng-survey/llm-graph-builder)+ 首页 problem-centric 重构(GoalGrid) |
+| W11 | Pagefind 搜索分类筛选(5 个 tab + URL 深链接)+ 关键词 mark 高亮 + category pill + 状态文本 + local-dev fallback |
+| W12 | 学习路径页 `/learning-path` + `/en/learning-path`:4 条路径(入门/GraphRAG/Agent 能力/KG 深入)覆盖 17 篇无重复,带 accent color、阅读时长、"开始这条路径" CTA,Header 导航加入入口 |
 
-**当前统计**:158 个静态页面,13 篇中文章 + 13 篇英文文章,4 个分类 / 56 个标签。
+**当前统计**:188 个静态页面,17 篇中文章 + 17 篇英文文章,4 个分类 / 56+ 标签。
 
 ---
 

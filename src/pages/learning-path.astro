@@ -1,0 +1,250 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import { Icon } from 'astro-icon/components';
+
+import { findPostsBySlugs } from '~/utils/blog';
+import { getPermalink } from '~/utils/permalinks';
+
+export const prerender = true;
+
+// 4 条学习路径,每条 3-5 篇文章
+// 设计原则:覆盖全部 17 篇文章且无重复;每条路径有明确的目标读者
+const paths = [
+  {
+    id: 'getting-started',
+    icon: 'tabler:rocket',
+    name: '零基础入门',
+    badge: '推荐起点',
+    description: '从 Agent 和 KG 基础概念开始,2-3 小时读完能跟得上后续所有路径的讨论。',
+    target: '刚接触 Agent × KG 交叉领域的开发者',
+    color: 'indigo',
+    articles: [
+      { slug: 'concept-react-intro', note: 'ReAct 范式 — 理解 LLM Agent 怎么把"推理"和"行动"串起来。' },
+      { slug: 'concept-graphrag-intro', note: 'GraphRAG 入门 — KG 增强 RAG 的代表方案。' },
+      { slug: 'resource-hello-agents', note: '中文社区最佳入门教程(2-3 万字,带代码)。' },
+    ],
+  },
+  {
+    id: 'graphrag-engineering',
+    icon: 'tabler:graph',
+    name: 'GraphRAG 工程实战',
+    badge: '工程师路线',
+    description: '从原理到 3 个代表项目,再到工具,完成一次完整的 GraphRAG 选型与上手。',
+    target: '要在生产环境用 GraphRAG 的应用 / 后端工程师',
+    color: 'sky',
+    articles: [
+      { slug: 'resource-microsoft-graphrag', note: '工业级事实标准,Local/Global/DRIFT/Lazy 四种检索模式。' },
+      { slug: 'resource-lightrag', note: '轻量级开源方案,索引成本低一个数量级,4 万+ stars。' },
+      { slug: 'resource-llm-graph-builder', note: '无代码工具,5 分钟把 PDF 灌进 Neo4j。' },
+      { slug: 'resource-graphrag-survey-peng', note: '2024 年综述,系统梳理 G-Indexing / G-Retrieval / G-Generation 三阶段。' },
+    ],
+  },
+  {
+    id: 'agent-capability',
+    icon: 'tabler:brain',
+    name: 'Agent 能力构建',
+    badge: '应用开发者',
+    description: '从记忆机制到工程实现,让 Agent 拥有长期记忆、状态机、和评估能力。',
+    target: '要把 Agent 真正用起来的应用开发者',
+    color: 'violet',
+    articles: [
+      { slug: 'concept-agent-memory', note: '4 种记忆机制原理 — 短期 / 长期 / 情节 / 程序。' },
+      { slug: 'resource-cognee', note: '6 行代码给 Agent 装长期记忆的工程实现。' },
+      { slug: 'resource-langgraph', note: '用有向图建模 Agent 状态机的代表性框架。' },
+      { slug: 'resource-smolagents', note: '极简 Code Agent 范式参考(~1k 行核心代码)。' },
+      { slug: 'concept-agent-evaluation', note: '评估方法学 — AgentBench / SWE-bench / GAIA 怎么用。' },
+    ],
+  },
+  {
+    id: 'kg-augmented-deep',
+    icon: 'tabler:route',
+    name: 'KG 增强 LLM 深入',
+    badge: '研究方向',
+    description: '从学术坐标到具体方法,理解"图"作为 Agent 统一抽象的深度方向。',
+    target: '要做研究 / 深入底层技术的开发者',
+    color: 'emerald',
+    articles: [
+      { slug: 'concept-graph-augmented-agents', note: '图智能体(GLA)综述 — 三大融合范式的总览。' },
+      { slug: 'concept-kg-reasoning', note: 'KG 增强推理 — RL / CoT 让 LLM 主动查询 KG(KG-R1 / ToG)。' },
+      { slug: 'resource-qa-gnn', note: '把 KG 推理路径喂给 LLM 的经典工作(ACL 2021)。' },
+      { slug: 'concept-kg-quality', note: 'KG 质量评估方法学 — 完整性 / 准确性 / 一致性。' },
+      { slug: 'resource-graphrag-survey', note: 'IEEE 综述 — 图智能体在学术圈的坐标。' },
+    ],
+  },
+];
+
+// 校验所有文章都存在,build 时如果漏了直接挂掉,不出 404
+const allSlugs = paths.flatMap((p) => p.articles.map((a) => a.slug));
+const allPosts = await findPostsBySlugs(allSlugs);
+const postMap = new Map(allPosts.map((p) => [p.slug, p]));
+
+for (const slug of allSlugs) {
+  if (!postMap.has(slug)) {
+    throw new Error(`[learning-path.astro] 文章 "${slug}" 在 src/data/post/ 中找不到,build 终止`);
+  }
+}
+
+// 合并每篇文章的真实 title / permalink / 分类
+for (const path of paths) {
+  for (const article of path.articles) {
+    const post = postMap.get(article.slug)!;
+    article.title = post.title;
+    article.category = post.category?.title || '';
+    article.permalink = getPermalink(post.permalink, 'post');
+    article.readingTime = post.readingTime;
+  }
+}
+
+// 颜色样式集中维护(避免 Tailwind 动态 class 被 purge 掉)
+const COLORS: Record<string, { iconBg: string; iconText: string; ring: string; badge: string; step: string; link: string }> = {
+  indigo: {
+    iconBg: 'bg-indigo-100 dark:bg-indigo-900/40',
+    iconText: 'text-indigo-600 dark:text-indigo-300',
+    ring: 'ring-indigo-200 dark:ring-indigo-800/50 dark:hover:ring-indigo-600 hover:ring-indigo-400',
+    badge: 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-200',
+    step: 'bg-indigo-500',
+    link: 'text-indigo-600 dark:text-indigo-300 hover:text-indigo-700 dark:hover:text-indigo-200',
+  },
+  sky: {
+    iconBg: 'bg-sky-100 dark:bg-sky-900/40',
+    iconText: 'text-sky-600 dark:text-sky-300',
+    ring: 'ring-sky-200 dark:ring-sky-800/50 dark:hover:ring-sky-600 hover:ring-sky-400',
+    badge: 'bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-200',
+    step: 'bg-sky-500',
+    link: 'text-sky-600 dark:text-sky-300 hover:text-sky-700 dark:hover:text-sky-200',
+  },
+  violet: {
+    iconBg: 'bg-violet-100 dark:bg-violet-900/40',
+    iconText: 'text-violet-600 dark:text-violet-300',
+    ring: 'ring-violet-200 dark:ring-violet-800/50 dark:hover:ring-violet-600 hover:ring-violet-400',
+    badge: 'bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-200',
+    step: 'bg-violet-500',
+    link: 'text-violet-600 dark:text-violet-300 hover:text-violet-700 dark:hover:text-violet-200',
+  },
+  emerald: {
+    iconBg: 'bg-emerald-100 dark:bg-emerald-900/40',
+    iconText: 'text-emerald-600 dark:text-emerald-300',
+    ring: 'ring-emerald-200 dark:ring-emerald-800/50 dark:hover:ring-emerald-600 hover:ring-emerald-400',
+    badge: 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-200',
+    step: 'bg-emerald-500',
+    link: 'text-emerald-600 dark:text-emerald-300 hover:text-emerald-700 dark:hover:text-emerald-200',
+  },
+};
+
+const metadata = {
+  title: '学习路径',
+  description: '0 → 1 路线图:4 条学习路径串联 17 篇文章,按你的目标选一条 2-6 小时上手 Agent × KG。',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero tagline="学习路径">
+    <Fragment slot="title">
+      0 → 1 <span class="text-accent dark:text-white">Agent × KG</span> 学习路线
+    </Fragment>
+    <Fragment slot="subtitle">
+      4 条精心策划的阅读路径,串联现有 {paths.reduce((sum, p) => sum + p.articles.length, 0)} 篇文章。按你的目标选一条,2-6 小时就能上手。
+    </Fragment>
+  </Hero>
+
+  <Note
+    title="怎么选路径?"
+    description="刚接触 → 选「零基础入门」;有具体工程目标 → 直接跳到对应路径;做研究或想深入 → 选「KG 增强 LLM 深入」。每条路径里的文章按顺序读,每篇 5-15 分钟。"
+  />
+
+  <section class="px-4 sm:px-6 xl:px-8 mx-auto max-w-7xl py-8 lg:py-16">
+    <div class="grid gap-8 lg:grid-cols-2">
+      {
+        paths.map((path) => {
+          const c = COLORS[path.color];
+          return (
+            <article
+              class:list={[
+                'flex flex-col bg-white dark:bg-slate-800/50 rounded-xl p-6 lg:p-7 ring-1 transition-shadow hover:shadow-lg',
+                c.ring,
+              ]}
+            >
+              <div class="flex items-start justify-between mb-4 gap-3">
+                <div class="flex items-center min-w-0">
+                  <div class:list={['flex items-center justify-center h-12 w-12 rounded-lg flex-shrink-0', c.iconBg, c.iconText]}>
+                    <Icon name={path.icon} class="w-6 h-6" />
+                  </div>
+                  <h2 class="ml-3 text-xl lg:text-2xl font-bold font-heading dark:text-white text-slate-900 truncate">
+                    {path.name}
+                  </h2>
+                </div>
+                <span class:list={['text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0', c.badge]}>
+                  {path.badge}
+                </span>
+              </div>
+
+              <p class="text-base text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                {path.description}
+              </p>
+
+              <div class="text-sm text-slate-500 dark:text-slate-400 mb-5">
+                <span class="font-semibold text-slate-700 dark:text-slate-300">适合:</span>
+                {path.target}
+              </div>
+
+              <div class="mb-5">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+                  阅读路径 · {path.articles.length} 步
+                </h3>
+                <ol class="space-y-3">
+                  {path.articles.map((article, i) => (
+                    <li class="flex">
+                      <div class:list={['flex-shrink-0 w-7 h-7 rounded-full text-white font-bold text-sm flex items-center justify-center mr-3 mt-0.5', c.step]}>
+                        {i + 1}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <a
+                          href={article.permalink}
+                          class="font-semibold text-base text-slate-900 dark:text-white hover:text-primary dark:hover:text-primary transition"
+                        >
+                          {article.title}
+                        </a>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+                          {article.note}
+                        </p>
+                        <div class="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-slate-400 dark:text-slate-500">
+                          <span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700/60 rounded">
+                            {article.category}
+                          </span>
+                          {article.readingTime && (
+                            <span>· {Math.ceil(article.readingTime)} 分钟阅读</span>
+                          )}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              <div class="mt-auto pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                <a
+                  href={path.articles[0].permalink}
+                  class:list={['inline-flex items-center font-semibold transition', c.link]}
+                >
+                  开始这条路径
+                  <Icon name="tabler:arrow-right" class="w-4 h-4 ml-1" />
+                </a>
+                <span class="text-xs text-slate-400 dark:text-slate-500">
+                  预计 {path.articles.length * 8} 分钟
+                </span>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <Note
+    title="想自定义路径?"
+    description={`如果你想按特定标签或分类组合阅读,可以用 <a class="text-primary underline" href="${getPermalink('/tag')}">全部标签</a> 或 <a class="text-primary underline" href="${getPermalink('/category')}">全部分类</a> 浏览。也可以从 <a class="text-primary underline" href="${getPermalink('/')}">首页按目标浏览</a> 直接跳到对应文章。`}
+  />
+</Layout>

@@ -2,10 +2,27 @@
 
 所有对本项目的显著变更都记录在此文件。格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
-## [Unreleased]
+## [W12] - 2026-07-30
 
-### 计划中
-- 下一个大版本(9 月):学习路径页(Learning Path)
+### 新增
+- **学习路径页(Learning Paths)**:
+  - 中文 `/learning-path/` + 英文 `/en/learning-path/`
+  - 4 条精心策划的阅读路径,串联 17 篇文章,无重复
+  - 路径一:零基础入门(3 篇) — ReAct → GraphRAG → Hello-Agents
+  - 路径二:GraphRAG 工程实战(4 篇) — Microsoft GraphRAG → LightRAG → llm-graph-builder → Peng 综述
+  - 路径三:Agent 能力构建(5 篇) — Agent Memory → Cognee → LangGraph → smolagents → Agent 评估
+  - 路径四:KG 增强 LLM 深入(5 篇) — GLA → KG 推理 → QA-GNN → KG 质量 → IEEE 综述
+  - 每条路径有:icon / 名称 / 标签(推荐起点 / 工程师路线 等) / 描述 / 适合人群 / 编号文章列表 / 预计时间 / "开始这条路径" CTA
+  - 每篇文章显示:标题(链原文) + 一句话说明 + 分类 pill + 阅读时长
+  - 用 4 种 accent color (indigo/sky/violet/emerald) 视觉区分路径
+  - 顶部 Note 提示"怎么选路径",底部 Note 提示"自定义路径"用 tag/category 浏览
+  - 用 `findPostsBySlugs` 校验所有文章存在 — 漏一篇直接 build 失败,不会出现 404 链接
+
+### 改进
+- 导航 (zh/en):Header "概念解读"/"Concepts" 下拉菜单首位加入"学习路径"/"Learning paths" 入口
+- 静态页面数:186 → 188 (+2)
+
+## [Unreleased]
 
 ## [W11] - 2026-07-30
 
