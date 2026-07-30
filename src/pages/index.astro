@@ -13,9 +13,18 @@ const metadata = {
   ignoreTitleTemplate: true,
 };
 
-// 首页"问题驱动"目标卡片 (W10 改版)
-// 每张卡片对应一个用户场景 → 直接链到现有 6 篇核心概念文章
+// 首页"问题驱动"目标卡片 (W10 改版 + W16 加学习路径)
+// 每张卡片对应一个用户场景 → 直接链到现有 6 篇核心概念文章 + 1 张学习路径入口
 const goals = [
+  {
+    icon: 'tabler:walk',
+    title: '我想按学习路径 0→1 系统学',
+    description: '4 条精心策划的阅读路径(入门 / GraphRAG / Agent 能力 / KG 深入),按顺序读 2-6 小时就能上手。',
+    tags: ['学习路径', '系统化', '入门'],
+    href: '/agent-kg-hub/learning-path/',
+    cta: '查看路径',
+    color: 'rose',
+  },
   {
     icon: 'tabler:graph',
     title: '我想用 KG 增强 RAG',

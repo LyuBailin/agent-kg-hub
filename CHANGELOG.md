@@ -66,6 +66,14 @@
   - 严格 XML 转义 + `]]>` 安全切分(避免 CDATA 提前终止)
   - 容错:找不到 .md 源时 fallback 到 excerpt,build 不会因 RSS 生成挂掉
 
+## [W16] - 2026-07-30
+
+### 改进
+- **首页 GoalGrid 加"按学习路径"卡片**(`src/pages/index.astro`):
+  - 7 个目标卡片 → 新增第 1 张:`我想按学习路径 0→1 系统学`(icon `tabler:walk`,rose 色),直接链到 `/agent-kg-hub/learning-path/`
+  - 把"按目标浏览"段副标题从 "6 个最常见的 Agent × KG 场景" 改为 "7 个最常见的 Agent × KG 场景:6 张直接到深度文章,1 张到系统化学习路径"
+  - 让 learning-path 页成为首页最显眼的入口(放第一张卡片),新用户不再迷路
+
 ## [W12] - 2026-07-30
 
 ### 新增
