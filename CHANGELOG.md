@@ -74,6 +74,18 @@
   - 把"按目标浏览"段副标题从 "6 个最常见的 Agent × KG 场景" 改为 "7 个最常见的 Agent × KG 场景,每个卡片都直接链到对应深度文章或学习路径入口"
   - 让 learning-path 页成为首页最显眼的入口(放第一张卡片),新用户不再迷路
 
+## [W16.2] - 2026-07-30
+
+### 修复
+- **W16 后第二轮链接审计 — 修复 3 个 en 侧硬编码的跨语言 / stale 链接**(W16.1 已修 zh nav,本次聚焦 en):
+  - **`src/navigation/en.ts:18`** `Three Fusion Paradigms` 链接 `/agent-kg-hub/#paradigms` → `/en/#paradigms` — en 用户点会跳到中文首页的 paradigms 区块,应该跳到英文首页同区块
+  - **`src/pages/en/learning-path.astro:244`** 底部 "homepage goal grid" 链接 `/agent-kg-hub/` → `/en/` — en 用户点会跳到中文首页,应该跳到英文首页
+  - **en GoalGrid parity(W16 只改了 zh)**:
+    - 副标题 `Six of the most common` → `Seven of the most common`(与 zh "7 个" 对齐)
+    - `goals` 数组补第 1 张 learning path 卡片(`tabler:walk` / rose / 链 `/en/learning-path/`),让 en 首页也展示 7 个目标,不再比 zh 少 1 个
+- **触发原因**:用户反馈 "资源导航下面的链接都不对" → 上一轮修了 zh nav pinyin 之后,我自己系统扫了一遍所有硬编码 `/agent-kg-hub/` 路径,发现 en 侧有 3 处类似问题
+- **验证**:`npm run build` 0 错误 0 警告 / en home 实际渲染 7 张 "I want" 卡片 / en nav `Three Fusion Paradigms` 指向 `/en/#paradigms`(英文首页 anchor 存在)
+
 ## [W12] - 2026-07-30
 
 ### 新增

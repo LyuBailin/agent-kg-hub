@@ -14,9 +14,19 @@ const metadata = {
     'A focused resource hub for LLM Agent and Knowledge Graph intersection - covering GraphRAG, Graph-Augmented LLM Agents, and the three major fusion paradigms.',
 };
 
-// Homepage "problem-driven" goal cards (W10 redesign)
-// Each card maps to a concrete concept article that already exists.
+// Homepage "problem-driven" goal cards (W10 redesign + W16 add learning path)
+// Each card maps to a concrete concept article that already exists, or to the learning paths index.
 const goals = [
+  {
+    icon: 'tabler:walk',
+    title: 'I want a 0→1 learning path',
+    description:
+      'Four curated reading paths (intro / GraphRAG / Agent capabilities / KG deep-dive) — read in order over 2-6 hours and you’re hands-on.',
+    tags: ['Learning Path', 'Systematic', 'Intro'],
+    href: '/agent-kg-hub/en/learning-path/',
+    cta: 'See the path',
+    color: 'rose',
+  },
   {
     icon: 'tabler:graph',
     title: 'I want to enhance RAG with a KG',
@@ -172,7 +182,7 @@ const goals = [
   <GoalGrid
     tagline="Browse by goal"
     title="What do you want to do?"
-    subtitle="Six of the most common Agent × KG scenarios — each card links straight to a deep-dive article."
+    subtitle="Seven of the most common Agent × KG scenarios — each card links straight to a deep-dive article or learning path."
     goals={goals}
   />
 
