@@ -110,6 +110,53 @@
 
 ## [Unreleased]
 
+## [W19.5] - 2026-08-05
+
+### 修复 — axe-core 审计 0 violations
+
+跑 axe-core 4.12 全站扫描,从 W19 主菜前的 **50+ issues** 全部清到 **0**:
+
+| 页面 | W19 修前 | W19 修后 |
+|---|---|---|
+| `/` (Home) | 1 (btn-primary 5.5:1) | **0** |
+| `/en/` (Home) | 1 (btn-primary) | **0** |
+| `/concept-react-intro/` (Article) | 8 (Shiki 代码高亮 token) | **0** |
+| `/learning-path/` | 38 (slate-500/400 muted text) | **0** |
+| `/search/` | 4 (kbd contrast + link color-only) | **0** |
+| `/404.html` | 5 (no main landmark + region) | **0** |
+| `/articles/`, `/category/`, `/tag/`, `/about/`, `/privacy/`, `/terms/`, `/en/learning-path/`, `/en/search/`, `/en/concept-react-intro/` | n/a | **0** |
+
+### 关键改动
+
+- **Custom Shiki theme via CSS variables** (`astro.config.ts` + `src/assets/styles/tailwind.css`):
+  - `shikiConfig: { theme: 'css-variables' }` 替代默认的 `github-dark`/`github-light`
+  - 在 `tailwind.css` 定义 12 个 `--astro-code-*` 变量,light 模式 + dark 模式都通过 WCAG AA 4.5:1
+  - Shiki 编译期 emit `<span style="color:var(--astro-code-token-...)">`,CSS 接管颜色
+  - 之前 `github-dark` 蓝灰 token (#79b8ff) 在 #24292e 上只有 3.2:1 — axe 必报
+- **404 页 a11y** (`src/pages/404.astro`):
+  - 之前用 `Layout` 没有 `<main>` landmark,触发 `landmark-one-main` + 4 个 `region`
+  - 现在用 `<main id="main-content" tabindex="-1">` 包裹,skip-link 也能用
+  - 顺手把 `text-muted` → `text-slate-700 dark:text-slate-300`,链接默认 `underline`
+- **Announcement bar landmark** (`src/components/widgets/Announcement.astro`):
+  - 加 `role="region" aria-label="站点公告"`,不再"飘"在所有 landmark 之外
+  - badge "NEW" 标 `aria-hidden="true"`(纯装饰,屏幕阅读器跳过)
+- **404 之前用 Layout,现在用 Layout(继承 main 包装)+ 单独 main** — 修复了之前 404 在 PageLayout 嵌套 main 的错误
+
+### 验证方法
+
+```bash
+# 1. 安装 ChromeDriver
+npx browser-driver-manager install chrome
+
+# 2. 启动 build serve
+python -m http.server 4321 --directory dist
+
+# 3. axe-core 扫描全站
+npx @axe-core/cli http://localhost:4321/ http://localhost:4321/concept-react-intro/ ...
+```
+
+## [W19] - 2026-08-05
+
 ## [W19] - 2026-08-05
 
 ### 改进 — A11Y 深入
