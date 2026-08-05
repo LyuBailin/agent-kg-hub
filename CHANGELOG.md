@@ -153,9 +153,19 @@
   - `alt={post?.excerpt || ''}` → `alt=""`(因为所有文章用同一个 default.png 当装饰背景,alt 用 excerpt 反而误导屏幕阅读器;空 alt 才是正确的"装饰"标记)
 
 ### 已知但未修的项(留个 W20+ 的口子)
-- 颜色对比度 — 部分 muted 文本在白底是 `slate-600/75%`,理论上不达 WCAG AA(4.5:1),需要设计层面调色
-- A11Y 自动化测试 — 没装 axe-core,可以用 `pnpm dlx @axe-core/cli` 跑全站,但还没集成到 CI
+- **代码高亮对比度** — 8 个 issues 在 `pre > code > .line > span`(Shiki github-dark 主题),改主题色或加 brightening filter 可以消除
+- **btn-primary 边界对比** — home 页 1 个 issue,`#4F46E5` 白字 5.5:1 刚刚过 AA,改成 `#4338CA` (indigo-700) 可以到 6.5:1 (AAA)
+- A11Y 自动化测试 — 没装 axe-core 进 CI,可以加 `pnpm dlx @axe-core/cli` 到 PR check
 - Anchor links for headings — 文章章节没有"复制锚点"按钮,GitHub 风格,做起来不难
+
+## [W19.3] - 2026-08-05
+
+### 修复
+- **Learning path 页面对比度**(axe-core 报告 38 violations,清掉):
+  - `text-slate-500 dark:text-slate-400`(描述、"适合:") → `text-slate-700 dark:text-slate-300`(白底 4.5:1 起步,黑底 12:1)
+  - `text-slate-400 dark:text-slate-500`("min" / "X 分钟" / 描述) → `text-slate-600 dark:text-slate-400`
+  - 分类 pill `bg-slate-100 dark:bg-slate-700/60` + 默认 slate-400 文本 → `bg-slate-200 dark:bg-slate-700` + `text-slate-800 dark:text-slate-200` 显式设字色
+  - 同步 zh + en 两个版本
 
 ## [W18] - 2026-08-05
 
