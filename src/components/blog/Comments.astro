@@ -35,6 +35,10 @@ const giscusConfig = {
   crossorigin: 'anonymous',
   async: true,
 };
+
+// 没填配置时显示引导提示(避免空白 iframe / giscus 报错)
+const isConfigured =
+  !giscusConfig.dataRepoId.includes('PLACEHOLDER') && !giscusConfig.dataCategoryId.includes('PLACEHOLDER');
 ---
 
 <section class="not-prose mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
@@ -46,26 +50,42 @@ const giscusConfig = {
     {title ? `关于「${title}」的讨论` : '欢迎在下方留言讨论、提建议或报告问题。'}
     评论系统基于 <a class="text-primary underline" href="https://github.com/LyuBailin/agent-kg-hub/discussions" target="_blank" rel="noopener">GitHub Discussions</a>,需要 GitHub 账号。
   </p>
-  <div class="giscus-frame">
-    <script
-      is:inline
-      src={giscusConfig.src}
-      data-repo={giscusConfig.dataRepo}
-      data-repo-id={giscusConfig.dataRepoId}
-      data-category={giscusConfig.dataCategory}
-      data-category-id={giscusConfig.dataCategoryId}
-      data-mapping={giscusConfig.dataMapping}
-      data-strict={giscusConfig.dataStrict}
-      data-reactions-enabled={giscusConfig.dataReactionsEnabled}
-      data-emit-metadata={giscusConfig.dataEmitMetadata}
-      data-input-position={giscusConfig.dataInputPosition}
-      data-theme={giscusConfig.dataTheme}
-      data-lang={giscusConfig.dataLang}
-      data-loading={giscusConfig.dataLoading}
-      crossorigin={giscusConfig.crossorigin}
-      async={giscusConfig.async}
-    />
-  </div>
+  {
+    isConfigured ? (
+      <div class="giscus-frame">
+        <script
+          is:inline
+          src={giscusConfig.src}
+          data-repo={giscusConfig.dataRepo}
+          data-repo-id={giscusConfig.dataRepoId}
+          data-category={giscusConfig.dataCategory}
+          data-category-id={giscusConfig.dataCategoryId}
+          data-mapping={giscusConfig.dataMapping}
+          data-strict={giscusConfig.dataStrict}
+          data-reactions-enabled={giscusConfig.dataReactionsEnabled}
+          data-emit-metadata={giscusConfig.dataEmitMetadata}
+          data-input-position={giscusConfig.dataInputPosition}
+          data-theme={giscusConfig.dataTheme}
+          data-lang={giscusConfig.dataLang}
+          data-loading={giscusConfig.dataLoading}
+          crossorigin={giscusConfig.crossorigin}
+          async={giscusConfig.async}
+        />
+      </div>
+    ) : (
+      <div class="not-prose rounded-lg border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 text-sm text-muted dark:text-slate-400">
+        <p class="font-semibold text-slate-700 dark:text-slate-300 mb-2">
+          <Icon name="tabler:info-circle" class="w-4 h-4 inline-block mr-1 -mt-0.5" />
+          评论系统暂未启用
+        </p>
+        <p>
+          启用方法:在 <a class="text-primary underline" href="https://giscus.app/zh-CN" target="_blank" rel="noopener">giscus.app</a> 配置 repo <code>LyuBailin/agent-kg-hub</code> 的 Discussions,
+          把拿到的 <code>data-repo-id</code> / <code>data-category-id</code> 填到 <code>src/components/blog/Comments.astro</code> 顶部的 <code>giscusConfig</code> 即可。
+          也可以直接 <a class="text-primary underline" href="https://github.com/LyuBailin/agent-kg-hub/discussions" target="_blank" rel="noopener">在 GitHub Discussions 讨论</a>。
+        </p>
+      </div>
+    )
+  }
   <noscript>
     <p class="text-sm text-muted dark:text-slate-400 py-4">
       评论功能需要 JavaScript 支持。也可以前往
