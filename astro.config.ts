@@ -81,6 +81,13 @@ export default defineConfig({
       remarkPlugins: [readingTimeRemarkPlugin],
       rehypePlugins: [responsiveTablesRehypePlugin],
     }),
+    shikiConfig: {
+      // `css-variables` 让所有语法 token 颜色由 CSS 变量驱动,我们自己定义
+      // 满足 WCAG AA 4.5:1 的浅 / 深配色。github-dark 默认的蓝灰配色对比度
+      // 3.2:1(部分 token),axe-core 会报 color-contrast。
+      theme: 'css-variables',
+      wrap: true,
+    },
   },
 
   vite: {

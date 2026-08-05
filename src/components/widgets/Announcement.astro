@@ -10,11 +10,13 @@ const { badge = 'NEW', message = 'Agent KG Hub v0.1.0 — welcome contributions'
 ---
 
 <div
+  role="region"
+  aria-label="站点公告"
   class="text-sm bg-slate-900 text-slate-300 dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
 >
   <span
     class="bg-white/20 dark:bg-slate-700 text-slate-100 dark:text-slate-300 font-semibold px-1 py-0.5 text-xs mr-0.5 rtl:mr-0 rtl:ml-0.5 inline-block"
-    >{badge}</span
+    aria-hidden="true">{badge}</span
   >
   <a
     href="https://github.com/LyuBailin/agent-kg-hub"

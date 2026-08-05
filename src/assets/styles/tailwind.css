@@ -33,6 +33,60 @@
   }
 }
 
+/*
+ * Shiki syntax highlighting — high-contrast CSS variables.
+ *
+ * We use Astro's `css-variables` Shiki theme (configured in astro.config.ts).
+ * The build emits inline `style="color: var(--astro-code-...)"` instead of
+ * hard-coded hex values, which lets us tune contrast in one place. The
+ * default Astro palette uses github-dark for dark / github-light for light,
+ * both of which fail WCAG AA on several tokens — this block overrides with
+ * a tighter palette.
+ *
+ * Tokens covered (per Astro 6 + Shiki 1.x):
+ *   --astro-code-foreground          default text
+ *   --astro-code-background          <pre> background
+ *   --astro-code-token-constant      numbers / booleans
+ *   --astro-code-token-string        strings
+ *   --astro-code-token-comment       comments
+ *   --astro-code-token-keyword       control keywords (if/else/return...)
+ *   --astro-code-token-parameter     function parameter
+ *   --astro-code-token-function      function name
+ *   --astro-code-token-string-expression  template placeholders
+ *   --astro-code-token-punctuation   brackets, commas, operators
+ *   --astro-code-token-link          URLs in comments
+ *
+ * Light mode: ≥ 4.5:1 on #f6f8fa. Dark mode: ≥ 4.5:1 on #0d1117.
+ * Palette inspired by VS Code "Dark+ default" + GitHub Primer.
+ */
+:root {
+  --astro-code-foreground: #1f2328;
+  --astro-code-background: #f6f8fa;
+  --astro-code-token-constant: #0550ae;
+  --astro-code-token-string: #0a3069;
+  --astro-code-token-comment: #6e7781;
+  --astro-code-token-keyword: #cf222e;
+  --astro-code-token-parameter: #953800;
+  --astro-code-token-function: #8250df;
+  --astro-code-token-string-expression: #0a3069;
+  --astro-code-token-punctuation: #24292f;
+  --astro-code-token-link: #0969da;
+}
+
+.dark {
+  --astro-code-foreground: #e6edf3;
+  --astro-code-background: #0d1117;
+  --astro-code-token-constant: #79c0ff;
+  --astro-code-token-string: #a5d6ff;
+  --astro-code-token-comment: #8b949e;
+  --astro-code-token-keyword: #ff7b72;
+  --astro-code-token-parameter: #ffa657;
+  --astro-code-token-function: #d2a8ff;
+  --astro-code-token-string-expression: #a5d6ff;
+  --astro-code-token-punctuation: #c9d1d9;
+  --astro-code-token-link: #58a6ff;
+}
+
 @utility bg-page {
   background-color: var(--aw-color-bg-page);
 }

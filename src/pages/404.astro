@@ -6,15 +6,15 @@ const title = `页面未找到 - Agent KG Hub`;
 ---
 
 <Layout metadata={{ title }}>
-  <section class="flex items-center h-full p-16">
+  <main id="main-content" tabindex="-1" class="flex items-center h-full p-16">
     <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
       <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
+        <h1 class="mb-8 font-bold text-9xl">
           <span class="sr-only">Error</span>
           <span class="text-primary">404</span>
-        </h2>
+        </h1>
         <p class="text-3xl font-semibold md:text-3xl">这里没有内容</p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
+        <p class="mt-4 mb-8 text-lg text-slate-700 dark:text-slate-300">
           你访问的页面可能已被移除、地址输错了,或者还没有创建。回到首页继续探索吧。
         </p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
@@ -28,13 +28,13 @@ const title = `页面未找到 - Agent KG Hub`;
             报告问题
           </a>
         </div>
-        <p class="mt-8 text-sm text-muted dark:text-slate-500">
+        <p class="mt-8 text-sm text-slate-600 dark:text-slate-400">
           也可以试试
-          <a href="/agent-kg-hub/articles" class="text-primary hover:underline">全部文章</a>
+          <a href="/agent-kg-hub/articles" class="text-primary underline hover:no-underline">全部文章</a>
           或
-          <a href="/agent-kg-hub/about" class="text-primary hover:underline">关于本站</a>
+          <a href="/agent-kg-hub/about" class="text-primary underline hover:no-underline">关于本站</a>
         </p>
       </div>
     </div>
-  </section>
+  </main>
 </Layout>
