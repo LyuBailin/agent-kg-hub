@@ -1,5 +1,5 @@
 ---
-import type { GetStaticPaths } from 'astro';
+import type { GetStaticPaths, Page } from 'astro';
 
 import Layout from '~/layouts/PageLayout.astro';
 import BlogList from '~/components/blog/List.astro';
@@ -7,12 +7,13 @@ import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
 
 import { fetchEnPosts } from '~/utils/posts-en';
+import type { Post, Taxonomy } from '~/types';
 
 export const prerender = true;
 
 export const getStaticPaths: GetStaticPaths = ({ paginate }) => {
   const posts = fetchEnPosts();
-  const buckets: Record<string, { title: string; slug: string }> = {};
+  const buckets: Record<string, Taxonomy> = {};
   for (const post of posts) {
     if (!Array.isArray(post.tags)) continue;
     for (const tag of post.tags) {
@@ -34,7 +35,12 @@ export const getStaticPaths: GetStaticPaths = ({ paginate }) => {
   );
 };
 
-const { page, tag } = Astro.props as any;
+interface Props {
+  page: Page<Post>;
+  tag: Taxonomy;
+}
+
+const { page, tag } = Astro.props as Props;
 const currentPage = page.currentPage ?? 1;
 
 const metadata = {

@@ -156,6 +156,26 @@ const cdnSrcSet =
   isCdnUrl && cdnWidths?.length
     ? cdnWidths.map((bw) => `${buildCdnUrl(bw, heightFromWidth(bw))} ${bw}w`).join(', ')
     : undefined;
+
+/**
+ * Props handed to the native <Image /> component.
+ *
+ * The native typing is too narrow for our forwarding wrapper (it demands the
+ * exact `src | ImageMetadata` union and won't accept the pre-resolved value we
+ * already validated). We cast through `unknown` once here so call sites keep
+ * clean types, and so `astro-eslint-parser` doesn't choke on an inline spread
+ * + cast (it errored with "Unknown token" before this was extracted).
+ */
+const astroImageProps = {
+  ...rest,
+  src: resolved,
+  width: w,
+  height: h,
+  alt,
+  widths,
+  format,
+  style: finalStyle,
+} as unknown as Parameters<typeof AstroImage>[0];
 ---
 
 {
@@ -174,19 +194,6 @@ const cdnSrcSet =
   ) : (
     /* The native <Image /> typing is overly strict for our forwarding wrapper;
        we cast through `unknown` once so each call site keeps clean types. */
-    resolved && (
-      <AstroImage
-        {...({
-          ...rest,
-          src: resolved,
-          width: w,
-          height: h,
-          alt,
-          widths,
-          format,
-          style: finalStyle,
-        } as unknown as Parameters<typeof AstroImage>[0])}
-      />
-    )
+    resolved && <AstroImage {...astroImageProps} />
   )
 }

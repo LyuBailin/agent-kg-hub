@@ -1,6 +1,7 @@
 ---
 import merge from 'lodash.merge';
 import type { ImageMetadata } from 'astro';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 
 import Layout from '~/layouts/PageLayout.astro';
 import SinglePost from '~/components/blog/SinglePost.astro';
@@ -9,11 +10,26 @@ import RelatedPosts from '~/components/blog/RelatedPosts.astro';
 
 import { getCanonical, getPermalink } from '~/utils/permalinks';
 import { findImage } from '~/utils/images';
-import type { MetaData } from '~/types';
+import type { MetaData, Post } from '~/types';
+
+/** Shape returned by the lazy `import.meta.glob` for a single post .md file. */
+interface EnPostModuleData {
+  frontmatter: {
+    title: string;
+    excerpt?: string;
+    publishDate?: string;
+    updateDate?: string;
+    image?: string;
+    category?: string;
+    tags?: string[];
+    author?: string;
+  };
+  Content: AstroComponentFactory;
+}
 
 export async function getStaticPaths() {
   // 每次调用 getStaticPaths 都重新执行 import.meta.glob
-  const postModules = import.meta.glob('../../../data/post-en/*.md');
+  const postModules = import.meta.glob<EnPostModuleData>('../../../data/post-en/*.md');
   return Object.keys(postModules).map((path) => {
     const slug = path.split('/').pop()!.replace('.md', '');
     return {
@@ -26,7 +42,7 @@ export async function getStaticPaths() {
 const { slug } = Astro.props;
 
 // 再次获取(因为 props 里的 slug 是关键,modules 在 Astro 渲染时需要)
-const postModules = import.meta.glob('../../../data/post-en/*.md');
+const postModules = import.meta.glob<EnPostModuleData>('../../../data/post-en/*.md');
 const moduleKey = `../../../data/post-en/${slug}.md`;
 const postLoader = postModules[moduleKey];
 
@@ -34,8 +50,7 @@ if (!postLoader) {
   throw new Error(`Post not found: ${slug}`);
 }
 
-const postData: any = await (postLoader as () => Promise<any>)();
-const { frontmatter, Content } = postData;
+const { frontmatter, Content } = await postLoader();
 
 const permalink = `/en/articles/${slug}/`;
 const url = getCanonical(getPermalink(permalink));
@@ -68,26 +83,26 @@ const metadata: MetaData = merge(
   {}
 );
 
-const shapedPost = {
+const shapedPost: Post = {
   id: slug,
   slug: slug,
   permalink,
   title: frontmatter.title,
   excerpt: frontmatter.excerpt || '',
-  publishDate: new Date(frontmatter.publishDate),
+  publishDate: new Date(frontmatter.publishDate ?? 0),
   updateDate: frontmatter.updateDate ? new Date(frontmatter.updateDate) : undefined,
   image: frontmatter.image,
   category: frontmatter.category ? { slug: frontmatter.category, title: frontmatter.category } : undefined,
-  tags: frontmatter.tags || [],
+  tags: (frontmatter.tags || []).map((t) => ({ slug: t, title: t })),
   author: frontmatter.author || 'LyuBailin',
-  Content: Content as any,
+  Content,
 };
 ---
 
 <Layout metadata={metadata}>
-  <SinglePost post={shapedPost as any} url={url}>
+  <SinglePost post={shapedPost} url={url}>
     <Content />
   </SinglePost>
   <ToBlogLink />
-  <RelatedPosts post={shapedPost as any} />
+  <RelatedPosts post={shapedPost} />
 </Layout>
