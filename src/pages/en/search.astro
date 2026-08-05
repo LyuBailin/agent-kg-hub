@@ -43,10 +43,13 @@ const CATEGORIES: Array<{ slug: string; label: string; icon: string }> = [
 
     <div id="search" class="mx-auto">
       <div class="mb-4">
+        <label for="search-input" class="sr-only">Search articles</label>
         <input
           type="search"
           id="search-input"
           placeholder="Enter keywords, e.g.: GraphRAG, smolagents, KG completion..."
+          aria-label="Search articles"
+          aria-describedby="search-status"
           class="w-full px-5 py-4 text-lg border-2 border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
           autocomplete="off"
         />
@@ -63,25 +66,35 @@ const CATEGORIES: Array<{ slug: string; label: string; icon: string }> = [
           CATEGORIES.map((cat) => (
             <button
               type="button"
+              id={`filter-${cat.slug || 'all'}`}
               data-category={cat.slug}
               role="tab"
               aria-selected={cat.slug === '' ? 'true' : 'false'}
+              aria-controls="search-results"
               class:list={[
-                'search-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border transition',
+                'search-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border motion-safe:transition',
                 cat.slug === ''
                   ? 'bg-primary text-white border-primary'
                   : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary',
               ]}
             >
-              <Icon name={cat.icon} class="w-4 h-4" />
+              <Icon name={cat.icon} class="w-4 h-4" aria-hidden="true" />
               <span>{cat.label}</span>
             </button>
           ))
         }
       </div>
 
-      <div id="search-status" class="text-sm text-muted mb-4 hidden"></div>
-      <div id="search-results" class="space-y-4"></div>
+      <div
+        id="search-status"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        class="text-sm text-muted mb-4 hidden"
+      >
+      </div>
+
+      <div id="search-results" role="tabpanel" aria-live="polite" aria-busy="false" class="space-y-4"></div>
 
       <noscript>
         <p class="text-muted text-center py-8">Search requires JavaScript. Please enable JS and try again.</p>
@@ -145,6 +158,10 @@ const CATEGORIES: Array<{ slug: string; label: string; icon: string }> = [
         filterButtons.forEach((btn) => {
           const isActive = btn.getAttribute('data-category') === activeCategory;
           btn.setAttribute('aria-selected', String(isActive));
+          // Point the tabpanel at the active tab for screen readers.
+          if (isActive) {
+            results.setAttribute('aria-labelledby', btn.id);
+          }
           if (isActive) {
             btn.classList.add('bg-primary', 'text-white', 'border-primary');
             btn.classList.remove(
@@ -182,15 +199,18 @@ const CATEGORIES: Array<{ slug: string; label: string; icon: string }> = [
         if (!query || query.length < 2) {
           results.innerHTML = '';
           status.classList.add('hidden');
+          results.setAttribute('aria-busy', 'false');
           return;
         }
 
+        results.setAttribute('aria-busy', 'true');
         const searchOptions = activeCategory ? { filters: { category: activeCategory } } : undefined;
         const search = await window.pagefind.search(query, searchOptions);
         status.classList.remove('hidden');
 
         const scopeText = activeCategory ? ` (${activeCategory})` : '';
         status.textContent = `Found ${search.results.length} result(s)${scopeText}`;
+        results.setAttribute('aria-busy', 'false');
 
         if (search.results.length === 0) {
           results.innerHTML = `<div class="text-center py-8 text-muted"><p>No results. Try different keywords${activeCategory ? ' or another category' : ''}?</p></div>`;

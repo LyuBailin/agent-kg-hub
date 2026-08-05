@@ -115,3 +115,38 @@
 .dd *:first-child {
   margin-top: 0;
 }
+
+/*
+ * A11Y — Respect `prefers-reduced-motion` (WCAG 2.3.3 / 2.2.2)
+ *
+ * When the user has reduced-motion enabled at the OS level, neutralize all
+ * non-essential animations and transitions. This is the WCAG-recommended
+ * blanket rule; motion-safe: utilities already opt into the inverse pattern
+ * (apply only when motion is allowed) so this rule covers everything that
+ * was authored before motion-safe: existed in this codebase.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * A11Y — Skip-link / focusable target helpers
+ *
+ * Make `tabindex="-1"` containers programmatically focusable without showing
+ * the browser's default focus ring (we add our own via :focus-visible).
+ */
+[tabindex='-1']:focus {
+  outline: none;
+}
+[tabindex='-1']:focus-visible {
+  outline: 2px solid var(--aw-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
