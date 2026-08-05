@@ -110,6 +110,55 @@
 
 ## [Unreleased]
 
+## [W19] - 2026-08-05
+
+### 改进 — A11Y 深入
+
+- **`prefers-reduced-motion` 全局尊重**(`src/assets/styles/tailwind.css`):
+  - WCAG 2.3.3 推荐的全站规则:`@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }`
+  - 偏好减少动效的用户 → 几乎所有 transition / animation 自动缩短到 0.01ms,scroll 改成瞬时
+  - 已经显式用 `motion-safe:` 标记的地方保持原样,这条规则只是兜底
+- **Skip-link 真正移动焦点**(`src/layouts/Layout.astro` + `src/layouts/PageLayout.astro`):
+  - `<main id="main-content">` 加 `tabindex="-1"`,键盘 / 屏幕阅读器用户能 programmatic focus 到 main
+  - skip-link 链接的 click handler 在 hash change 之后用 `main.focus({ preventScroll: true })` 移动焦点(光跳到锚点不会移动焦点)
+  - `tabindex="-1"` 的 `:focus-visible` 样式用主题色描边,让用户看到 focus 状态
+- **搜索 a11y**(`src/pages/search.astro` + `src/pages/en/search.astro`):
+  - `<input>` 加 `<label class="sr-only">` + `aria-label` + `aria-describedby` 指向 status div
+  - status div 加 `role="status" aria-live="polite" aria-atomic="true"` — 屏幕阅读器会播报"找到 N 个结果"
+  - results div 加 `role="tabpanel" aria-live="polite" aria-busy` — 搜索时 aria-busy=true,完成时 false
+  - filter `<button>` 加 `id` + `aria-controls="search-results"` + 同步 `aria-labelledby` 给 tabpanel
+  - filter 图标加 `aria-hidden="true"`
+- **Header 下拉菜单 ARIA**(`src/components/widgets/Header.astro` + `src/components/common/BasicScripts.astro`):
+  - 触发按钮加 `aria-haspopup="menu" aria-expanded="false"`
+  - 菜单 `<ul>` 加 `role="menu"`,`<li>` 加 `role="none"`,菜单项 `<a>` 加 `role="menuitem"`
+  - 跟随 `.dropdown:hover, .dropdown:focus-within` 同步 `aria-expanded`(用 mouseenter/mouseleave/focusin/focusout)
+  - 键盘用户 Tab 进去时下拉展开 + 屏幕阅读器报"expanded",Tab 出去自动收起
+- **复制代码按钮 a11y**(`src/components/blog/SinglePost.astro`):
+  - 加 `aria-label="复制代码到剪贴板"`
+  - 加 `<span class="sr-only" role="status" aria-live="polite">` live region,成功时填"已复制代码",失败时填"复制失败"
+  - SVG 图标加 `aria-hidden="true"`
+  - `transition-opacity` 改成 `motion-safe:transition-opacity`(尊重 reduce-motion)
+- **TOC a11y**(`src/components/blog/SinglePost.astro`):
+  - 滚动时同步 `aria-current="location"` 给当前章节(屏幕阅读器可以知道当前在看哪节)
+  - `<nav id="toc-nav">` 加 `aria-label="文章目录"`
+- **SocialShare 按钮 a11y**(`src/components/common/SocialShare.astro`):
+  - 容器 `<div>` 升级成 `<div role="group" aria-label="分享文章到社交媒体">`
+  - 每个按钮加 `type="button"`(之前缺,form 嵌入时会有问题)
+  - `title` 属性保留(鼠标 hover)+ 加 `aria-label` 同义(屏幕阅读器稳定报)
+- **装饰元素标注**:
+  - reading-progress bar 加 `aria-hidden="true"`(纯装饰,屏幕阅读器忽略)
+  - hero SVG 容器 `aria-hidden="true"`(已经是)
+  - paradigm-map SVG `role="img" aria-label`(已经是)
+- **Article hero image**:
+  - `alt={post?.excerpt || ''}` → `alt=""`(因为所有文章用同一个 default.png 当装饰背景,alt 用 excerpt 反而误导屏幕阅读器;空 alt 才是正确的"装饰"标记)
+
+### 已知但未修的项(留个 W20+ 的口子)
+- 颜色对比度 — 部分 muted 文本在白底是 `slate-600/75%`,理论上不达 WCAG AA(4.5:1),需要设计层面调色
+- A11Y 自动化测试 — 没装 axe-core,可以用 `pnpm dlx @axe-core/cli` 跑全站,但还没集成到 CI
+- Anchor links for headings — 文章章节没有"复制锚点"按钮,GitHub 风格,做起来不难
+
+## [W18] - 2026-08-05
+
 ## [W18] - 2026-08-05
 
 ### 改进
