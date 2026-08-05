@@ -110,6 +110,51 @@
 
 ## [Unreleased]
 
+## [W17] - 2026-08-05
+
+### 改进
+- **README 导航同步**(`README.md`):
+  - 删掉"工具与框架"分类引用 — W16.1 已删 nav 项,README 之前还残留,这次彻底清掉
+  - 在"内容导航"段新增"🧭 学习路径"入口(4 条 0→1 路线,系统化串联 17 篇文章)
+  - 微调"概念解读"描述,补几个代表文章名
+- **Giscus 评论配置友好提示**(`src/components/blog/Comments.astro`):
+  - 当 `dataRepoId` / `dataCategoryId` 还是 `*_PLACEHOLDER_REPLACE_ME` 时,显示"评论系统暂未启用"提示卡片,不再渲染会 404 的 giscus iframe
+  - 提示卡里给出 giscus.app 链接 + 编辑 `Comments.astro` 的具体行号说明
+  - 用户填好真实 repo id 后,自动切回真实评论组件(无需改其他文件)
+
+### 清理
+- 删 `W1-INIT-LOG.md` — 项目已成型,初始搭建日志没用了,历史在 git 里
+
+## [W17.1] - 2026-08-05
+
+### 修复
+- **12 个 ESLint 错误清零**(`npm run check:eslint` 现在 0 错误 0 警告):
+  - `src/utils/posts-en.ts`:`mod: any` → 引入 `EnPostFrontmatter` interface + `EnPostModule`,所有字段类型化,`fm.tags.map((t) => ...)` 自动推断 `t: string` 不再是 `any`
+  - `src/pages/en/articles/index.astro`:同模式(独立 frontmatter interface,`fm` 显式 anchor 到该 interface,避免 TS 把 `EnPostFrontmatter | {}` 折叠到 `{}`)
+  - `src/pages/en/articles/[...post].astro`:
+    - 5 处 `as any` 全清:`postLoader as () => Promise<any>` → `() => Promise<EnPostModuleData>`,`shapedPost as any` × 2 → `shapedPost: Post`,`Content: Content as any` → `Content: Content`
+    - 新增 `EnPostModuleData` interface,导出 `AstroComponentFactory` 类型供 `Content` 字段
+  - `src/pages/en/category/[category]/[...page].astro`:`Astro.props as any` → 定义 `interface Props { page: Page<Post>; category: Taxonomy }` 后 `Astro.props as Props`
+  - `src/pages/en/tag/[tag]/[...page].astro`:同上,引入 `Props` interface
+  - `src/pages/rss.xml.ts`:`renderInline` 里的 NUL byte 哨兵字符(`\x00CODE0\x00`)触犯 `no-control-regex` — 换成 PUA 区字符 U+2E00 / U+2E01(同样不可能出现在正文,且不被任何 markdown 语法命中)
+  - `src/components/common/Image.astro`:`{...({...} as unknown as Parameters<...>[0])}` 行内展开 + 强转被 `astro-eslint-parser` 报 "Parsing error: Unknown token" — 抽到 frontmatter 顶部的 `const astroImageProps`,加详细注释解释为什么 cast 一次就够
+- 所有 `publishDate` / `updateDate` 现在严格 `string | Date | undefined`,缺日期时 fallback 到 `new Date(0)`,build 不会因缺日期静默出 Invalid Date
+- 类型安全深度:从 22 个 astro check 错误(W17 已修)→ 0;从 12 个 ESLint 错误 → 0
+
+## [W17.2] - 2026-08-05
+
+### 改进
+- **Prettier 全量格式化**(`npm run check:prettier` 现在 0 错误):
+  - 86 个源文件(`src/components`、`src/layouts`、`src/utils`、`src/pages`、`src/navigation`)被 prettier 重新格式化,主要是 object 单行 → 多行 / 引号统一 / 尾随逗号
+  - 21 个文件有真实内容变更,533 insertions / 236 deletions
+  - 改 `.prettierignore` 排除:
+    - 自动生成 / 手工编辑内容:`package-lock.json`、`.prettierrc.mjs`、`.prettierignore`、`CHANGELOG.md`、`README.md`、`CONTRIBUTING.md`、`CITATION.cff`
+    - 配置 / 手工调整:`package.json`、`tsconfig.json`、`astro.config.ts`、`eslint.config.js`、`sandbox.config.json`、`vscode.tailwind.json`
+    - CMS / 静态资源:`public/decapcms/`
+    - **文章 markdown(`src/data/`)**:核心 — 19 篇文章有手工调整的代码块、引用、callout 间距,prettier 会重排中文段落,影响阅读体验,显式忽略
+    - 第三方 vendor 代码:`vendor/`
+- **`npm run check`(astro + eslint + prettier)三关全绿**,符合项目最初 `package.json` 定义的 CI-quality 链
+
 ## [W11] - 2026-07-30
 
 ### 改进
