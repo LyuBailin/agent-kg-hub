@@ -24,7 +24,11 @@ export const headerDataEn = {
       text: 'About',
       links: [
         { text: 'Why this hub', href: '/en/about/' },
-        { text: 'Contribute', href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md', target: '_blank' },
+        {
+          text: 'Contribute',
+          href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md',
+          target: '_blank',
+        },
         { text: 'Terms', href: '/en/terms/' },
         { text: 'Privacy', href: '/en/privacy/' },
       ],
@@ -33,7 +37,12 @@ export const headerDataEn = {
   actions: [
     { text: 'Search', href: '/en/search/', icon: 'tabler:search' },
     { text: '中文', href: '/agent-kg-hub/', icon: 'tabler:language' },
-    { text: 'GitHub', href: 'https://github.com/LyuBailin/agent-kg-hub', target: '_blank', icon: 'tabler:brand-github' },
+    {
+      text: 'GitHub',
+      href: 'https://github.com/LyuBailin/agent-kg-hub',
+      target: '_blank',
+      icon: 'tabler:brand-github',
+    },
   ],
 };
 
@@ -62,7 +71,11 @@ export const footerDataEn = {
       links: [
         { text: 'GitHub repo', href: 'https://github.com/LyuBailin/agent-kg-hub', target: '_blank' },
         { text: 'Open an issue', href: 'https://github.com/LyuBailin/agent-kg-hub/issues', target: '_blank' },
-        { text: 'Contributing', href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md', target: '_blank' },
+        {
+          text: 'Contributing',
+          href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md',
+          target: '_blank',
+        },
         { text: 'RSS feed', href: getAsset('/rss.xml') },
       ],
     },

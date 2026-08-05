@@ -26,12 +26,13 @@ const metadata = {
 <Layout metadata={metadata}>
   <Hero tagline="浏览">
     <Fragment slot="title">全部标签</Fragment>
-    <Fragment slot="subtitle">
-      按关键词快速找到你关心的话题。标签越多说明这个方向内容越丰富。
-    </Fragment>
+    <Fragment slot="subtitle"> 按关键词快速找到你关心的话题。标签越多说明这个方向内容越丰富。 </Fragment>
   </Hero>
 
-  <Note title="说明" description={`标签来源于每篇文章的 frontmatter <code>tags</code> 字段,共 <strong>${tags.length}</strong> 个标签,聚合自全部文章。`} />
+  <Note
+    title="说明"
+    description={`标签来源于每篇文章的 frontmatter <code>tags</code> 字段,共 <strong>${tags.length}</strong> 个标签,聚合自全部文章。`}
+  />
 
   <section class="px-4 md:px-6 py-12 md:py-16 mx-auto max-w-6xl">
     <div class="flex flex-wrap gap-2 md:gap-3 justify-center">

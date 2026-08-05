@@ -15,7 +15,8 @@ const categories = await findCategories(fetchEnPosts());
 const CATEGORY_META: Record<string, { icon: string; description: string }> = {
   'Core Concepts': {
     icon: 'tabler:atom-2',
-    description: 'Deep dives on the core concepts of the Agent × KG intersection — GraphRAG, ReAct, Graph-Augmented LLM Agents, and more.',
+    description:
+      'Deep dives on the core concepts of the Agent × KG intersection — GraphRAG, ReAct, Graph-Augmented LLM Agents, and more.',
   },
   'Core Projects': {
     icon: 'tabler:package',
@@ -53,16 +54,15 @@ const metadata = {
   <Hero tagline="Browse">
     <Fragment slot="title">All Categories</Fragment>
     <Fragment slot="subtitle">
-      Jump straight into a topic you care about. Each category aggregates concept deep-dives, project reviews, tutorials, and papers.
+      Jump straight into a topic you care about. Each category aggregates concept deep-dives, project reviews,
+      tutorials, and papers.
     </Fragment>
   </Hero>
 
-  <Note title="Note" description={`Categories are derived from each article's frontmatter <code>category</code> field, growing as the hub expands. <strong>${categories.length}</strong> categories in total.`} />
-
-  <Features2
-    title="Category directory"
-    subtitle="Discover content by topic"
-    columns={3}
-    items={items}
+  <Note
+    title="Note"
+    description={`Categories are derived from each article's frontmatter <code>category</code> field, growing as the hub expands. <strong>${categories.length}</strong> categories in total.`}
   />
+
+  <Features2 title="Category directory" subtitle="Discover content by topic" columns={3} items={items} />
 </Layout>

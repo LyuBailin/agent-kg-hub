@@ -13,19 +13,19 @@ const categories = await findCategories();
 
 // 分类元信息(icon + 描述)集中维护,新增/重命名分类只改这里
 const CATEGORY_META: Record<string, { icon: string; description: string }> = {
-  '核心概念': {
+  核心概念: {
     icon: 'tabler:atom-2',
     description: 'Agent × KG 交叉领域的核心概念深度解读,如 GraphRAG、ReAct、图智能体。',
   },
-  '核心项目': {
+  核心项目: {
     icon: 'tabler:package',
     description: '持续追踪的开源项目深度点评:GraphRAG、LangGraph、smolagents 等。',
   },
-  '教程博客': {
+  教程博客: {
     icon: 'tabler:book-2',
     description: '从入门到进阶的中文/英文教程与博客文章合集。',
   },
-  '论文综述': {
+  论文综述: {
     icon: 'tabler:article',
     description: '精选论文与综述精读,覆盖前沿研究与体系化框架。',
   },
@@ -57,12 +57,10 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <Note title="说明" description={`分类来源于每篇文章的 frontmatter <code>category</code> 字段,持续随内容扩充。共 <strong>${categories.length}</strong> 个分类。`} />
-
-  <Features2
-    title="分类目录"
-    subtitle="按主题发现内容"
-    columns={3}
-    items={items}
+  <Note
+    title="说明"
+    description={`分类来源于每篇文章的 frontmatter <code>category</code> 字段,持续随内容扩充。共 <strong>${categories.length}</strong> 个分类。`}
   />
+
+  <Features2 title="分类目录" subtitle="按主题发现内容" columns={3} items={items} />
 </Layout>

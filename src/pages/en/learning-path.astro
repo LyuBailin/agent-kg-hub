@@ -34,7 +34,8 @@ const paths: LearningPath[] = [
     icon: 'tabler:rocket',
     name: 'Zero-to-One Onboarding',
     badge: 'Recommended start',
-    description: 'Start with the core concepts of Agent and KG. 2-3 hours of reading and you can follow every other path on this site.',
+    description:
+      'Start with the core concepts of Agent and KG. 2-3 hours of reading and you can follow every other path on this site.',
     target: 'Developers new to the Agent × KG intersection',
     color: 'indigo',
     articles: [
@@ -52,10 +53,16 @@ const paths: LearningPath[] = [
     target: 'Backend / application engineers adopting GraphRAG in production',
     color: 'sky',
     articles: [
-      { slug: 'resource-microsoft-graphrag', note: 'Industrial-grade de facto standard, with Local/Global/DRIFT/Lazy retrieval modes.' },
+      {
+        slug: 'resource-microsoft-graphrag',
+        note: 'Industrial-grade de facto standard, with Local/Global/DRIFT/Lazy retrieval modes.',
+      },
       { slug: 'resource-lightrag', note: 'Lightweight open-source option, ~10x lower indexing cost, 40k+ stars.' },
       { slug: 'resource-llm-graph-builder', note: 'No-code tool: push a PDF into Neo4j in 5 minutes.' },
-      { slug: 'resource-graphrag-survey-peng', note: '2024 survey systematizing the G-Indexing / G-Retrieval / G-Generation pipeline.' },
+      {
+        slug: 'resource-graphrag-survey-peng',
+        note: '2024 survey systematizing the G-Indexing / G-Retrieval / G-Generation pipeline.',
+      },
     ],
   },
   {
@@ -63,7 +70,8 @@ const paths: LearningPath[] = [
     icon: 'tabler:brain',
     name: 'Building Capable Agents',
     badge: 'App developer',
-    description: 'From memory mechanisms to engineering, give your Agent long-term memory, state machines, and evaluation.',
+    description:
+      'From memory mechanisms to engineering, give your Agent long-term memory, state machines, and evaluation.',
     target: 'Application developers making Agents actually useful',
     color: 'violet',
     articles: [
@@ -79,12 +87,19 @@ const paths: LearningPath[] = [
     icon: 'tabler:route',
     name: 'KG-Augmented LLMs In Depth',
     badge: 'Research direction',
-    description: 'From the academic coordinate to concrete methods, understand "graph" as a unified abstraction for Agent systems.',
+    description:
+      'From the academic coordinate to concrete methods, understand "graph" as a unified abstraction for Agent systems.',
     target: 'Researchers and engineers going deep',
     color: 'emerald',
     articles: [
-      { slug: 'concept-graph-augmented-agents', note: 'GLA (Graph-Augmented LLM Agents) survey — the three fusion paradigms.' },
-      { slug: 'concept-kg-reasoning', note: 'KG-enhanced reasoning — RL / CoT for LLMs to actively query KG (KG-R1, ToG).' },
+      {
+        slug: 'concept-graph-augmented-agents',
+        note: 'GLA (Graph-Augmented LLM Agents) survey — the three fusion paradigms.',
+      },
+      {
+        slug: 'concept-kg-reasoning',
+        note: 'KG-enhanced reasoning — RL / CoT for LLMs to actively query KG (KG-R1, ToG).',
+      },
       { slug: 'resource-qa-gnn', note: 'Classic work feeding KG reasoning paths to LLMs (ACL 2021).' },
       { slug: 'concept-kg-quality', note: 'KG quality assessment — completeness, accuracy, consistency.' },
       { slug: 'resource-graphrag-survey', note: 'IEEE survey — the academic coordinate for graph agents.' },
@@ -114,7 +129,10 @@ for (const path of paths) {
 }
 
 // Static color map to avoid Tailwind dynamic-class purging
-const COLORS: Record<string, { iconBg: string; iconText: string; ring: string; badge: string; step: string; link: string }> = {
+const COLORS: Record<
+  string,
+  { iconBg: string; iconText: string; ring: string; badge: string; step: string; link: string }
+> = {
   indigo: {
     iconBg: 'bg-indigo-100 dark:bg-indigo-900/40',
     iconText: 'text-indigo-600 dark:text-indigo-300',
@@ -153,7 +171,8 @@ const totalArticles = paths.reduce((sum, p) => sum + p.articles.length, 0);
 
 const metadata = {
   title: 'Learning Paths',
-  description: 'Zero-to-one learning routes: 4 paths linking 17 articles. Pick one for your goal and go from zero to hands-on in 2-6 hours.',
+  description:
+    'Zero-to-one learning routes: 4 paths linking 17 articles. Pick one for your goal and go from zero to hands-on in 2-6 hours.',
   ignoreTitleTemplate: true,
 };
 ---
@@ -164,7 +183,8 @@ const metadata = {
       0 → 1 <span class="text-accent dark:text-white">Agent × KG</span> learning routes
     </Fragment>
     <Fragment slot="subtitle">
-      Four curated reading paths linking {totalArticles} articles. Pick the one that matches your goal — go from zero to hands-on in 2-6 hours.
+      Four curated reading paths linking {totalArticles} articles. Pick the one that matches your goal — go from zero to hands-on
+      in 2-6 hours.
     </Fragment>
   </Hero>
 
@@ -187,21 +207,27 @@ const metadata = {
             >
               <div class="flex items-start justify-between mb-4 gap-3">
                 <div class="flex items-center min-w-0">
-                  <div class:list={['flex items-center justify-center h-12 w-12 rounded-lg flex-shrink-0', c.iconBg, c.iconText]}>
+                  <div
+                    class:list={[
+                      'flex items-center justify-center h-12 w-12 rounded-lg flex-shrink-0',
+                      c.iconBg,
+                      c.iconText,
+                    ]}
+                  >
                     <Icon name={path.icon} class="w-6 h-6" />
                   </div>
                   <h2 class="ml-3 text-xl lg:text-2xl font-bold font-heading dark:text-white text-slate-900 truncate">
                     {path.name}
                   </h2>
                 </div>
-                <span class:list={['text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0', c.badge]}>
+                <span
+                  class:list={['text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0', c.badge]}
+                >
                   {path.badge}
                 </span>
               </div>
 
-              <p class="text-base text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
-                {path.description}
-              </p>
+              <p class="text-base text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">{path.description}</p>
 
               <div class="text-sm text-slate-500 dark:text-slate-400 mb-5">
                 <span class="font-semibold text-slate-700 dark:text-slate-300">For:</span>
@@ -215,7 +241,12 @@ const metadata = {
                 <ol class="space-y-3">
                   {path.articles.map((article, i) => (
                     <li class="flex">
-                      <div class:list={['flex-shrink-0 w-7 h-7 rounded-full text-white font-bold text-sm flex items-center justify-center mr-3 mt-0.5', c.step]}>
+                      <div
+                        class:list={[
+                          'flex-shrink-0 w-7 h-7 rounded-full text-white font-bold text-sm flex items-center justify-center mr-3 mt-0.5',
+                          c.step,
+                        ]}
+                      >
                         {i + 1}
                       </div>
                       <div class="flex-1 min-w-0">
@@ -225,9 +256,7 @@ const metadata = {
                         >
                           {article.title}
                         </a>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-                          {article.note}
-                        </p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{article.note}</p>
                         <div class="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-slate-400 dark:text-slate-500">
                           <span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700/60 rounded">
                             {article.category}
@@ -247,9 +276,7 @@ const metadata = {
                   Start this path
                   <Icon name="tabler:arrow-right" class="w-4 h-4 ml-1" />
                 </a>
-                <span class="text-xs text-slate-400 dark:text-slate-500">
-                  ~{path.articles.length * 8} min
-                </span>
+                <span class="text-xs text-slate-400 dark:text-slate-500">~{path.articles.length * 8} min</span>
               </div>
             </article>
           );

@@ -13,13 +13,11 @@ import '@fontsource-variable/inter';
   :root {
     /* 字体栈:Inter (拉丁) + Noto Sans SC (中文) + JetBrains Mono (代码) */
     --aw-font-sans:
-      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'PingFang SC',
-      'Hiragino Sans GB', 'Microsoft YaHei', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-    --aw-font-serif:
-      'Inter', 'Noto Sans SC', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+      'Microsoft YaHei', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --aw-font-serif: 'Inter', 'Noto Sans SC', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --aw-font-heading:
-      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'PingFang SC',
-      'Microsoft YaHei', sans-serif;
+      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     --aw-font-mono:
       'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, Consolas, monospace;
 
@@ -47,13 +45,11 @@ import '@fontsource-variable/inter';
 
   .dark {
     --aw-font-sans:
-      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'PingFang SC',
-      'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-    --aw-font-serif:
-      'Inter', 'Noto Sans SC', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-    --aw-font-heading:
-      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'PingFang SC',
+      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
       'Microsoft YaHei', sans-serif;
+    --aw-font-serif: 'Inter', 'Noto Sans SC', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --aw-font-heading:
+      'Inter', 'Noto Sans SC', ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     --aw-font-mono:
       'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, Consolas, monospace;
 
@@ -73,9 +69,16 @@ import '@fontsource-variable/inter';
   }
 
   /* 标题字重与字距优化 */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--aw-font-heading);
-    font-feature-settings: 'kern' 1, 'liga' 1;
+    font-feature-settings:
+      'kern' 1,
+      'liga' 1;
   }
 
   /* 中英文混排优化 */

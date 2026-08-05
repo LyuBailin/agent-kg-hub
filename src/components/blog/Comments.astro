@@ -48,7 +48,12 @@ const isConfigured =
   </h2>
   <p class="text-sm text-muted dark:text-slate-400 mb-4">
     {title ? `关于「${title}」的讨论` : '欢迎在下方留言讨论、提建议或报告问题。'}
-    评论系统基于 <a class="text-primary underline" href="https://github.com/LyuBailin/agent-kg-hub/discussions" target="_blank" rel="noopener">GitHub Discussions</a>,需要 GitHub 账号。
+    评论系统基于 <a
+      class="text-primary underline"
+      href="https://github.com/LyuBailin/agent-kg-hub/discussions"
+      target="_blank"
+      rel="noopener">GitHub Discussions</a
+    >,需要 GitHub 账号。
   </p>
   {
     isConfigured ? (
@@ -79,9 +84,22 @@ const isConfigured =
           评论系统暂未启用
         </p>
         <p>
-          启用方法:在 <a class="text-primary underline" href="https://giscus.app/zh-CN" target="_blank" rel="noopener">giscus.app</a> 配置 repo <code>LyuBailin/agent-kg-hub</code> 的 Discussions,
-          把拿到的 <code>data-repo-id</code> / <code>data-category-id</code> 填到 <code>src/components/blog/Comments.astro</code> 顶部的 <code>giscusConfig</code> 即可。
-          也可以直接 <a class="text-primary underline" href="https://github.com/LyuBailin/agent-kg-hub/discussions" target="_blank" rel="noopener">在 GitHub Discussions 讨论</a>。
+          启用方法:在{' '}
+          <a class="text-primary underline" href="https://giscus.app/zh-CN" target="_blank" rel="noopener">
+            giscus.app
+          </a>{' '}
+          配置 repo <code>LyuBailin/agent-kg-hub</code> 的 Discussions, 把拿到的 <code>data-repo-id</code> /{' '}
+          <code>data-category-id</code> 填到 <code>src/components/blog/Comments.astro</code> 顶部的{' '}
+          <code>giscusConfig</code> 即可。 也可以直接{' '}
+          <a
+            class="text-primary underline"
+            href="https://github.com/LyuBailin/agent-kg-hub/discussions"
+            target="_blank"
+            rel="noopener"
+          >
+            在 GitHub Discussions 讨论
+          </a>
+          。
         </p>
       </div>
     )
@@ -89,7 +107,12 @@ const isConfigured =
   <noscript>
     <p class="text-sm text-muted dark:text-slate-400 py-4">
       评论功能需要 JavaScript 支持。也可以前往
-      <a class="text-primary underline" href="https://github.com/LyuBailin/agent-kg-hub/discussions" target="_blank" rel="noopener">GitHub Discussions</a>
+      <a
+        class="text-primary underline"
+        href="https://github.com/LyuBailin/agent-kg-hub/discussions"
+        target="_blank"
+        rel="noopener">GitHub Discussions</a
+      >
       直接参与讨论。
     </p>
   </noscript>

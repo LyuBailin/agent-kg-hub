@@ -123,9 +123,7 @@ async function main() {
     fs.mkdirSync(dir, { recursive: true });
   }
 
-  await sharp(Buffer.from(svg))
-    .png()
-    .toFile(OUTPUT);
+  await sharp(Buffer.from(svg)).png().toFile(OUTPUT);
 
   const stats = fs.statSync(OUTPUT);
   console.log(`✅ OG image generated: ${OUTPUT} (${(stats.size / 1024).toFixed(1)} KB, ${WIDTH}x${HEIGHT})`);

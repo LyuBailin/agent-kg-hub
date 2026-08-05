@@ -57,7 +57,10 @@ const paths: LearningPath[] = [
       { slug: 'resource-microsoft-graphrag', note: '工业级事实标准,Local/Global/DRIFT/Lazy 四种检索模式。' },
       { slug: 'resource-lightrag', note: '轻量级开源方案,索引成本低一个数量级,4 万+ stars。' },
       { slug: 'resource-llm-graph-builder', note: '无代码工具,5 分钟把 PDF 灌进 Neo4j。' },
-      { slug: 'resource-graphrag-survey-peng', note: '2024 年综述,系统梳理 G-Indexing / G-Retrieval / G-Generation 三阶段。' },
+      {
+        slug: 'resource-graphrag-survey-peng',
+        note: '2024 年综述,系统梳理 G-Indexing / G-Retrieval / G-Generation 三阶段。',
+      },
     ],
   },
   {
@@ -117,7 +120,10 @@ for (const path of paths) {
 }
 
 // 颜色样式集中维护(避免 Tailwind 动态 class 被 purge 掉)
-const COLORS: Record<string, { iconBg: string; iconText: string; ring: string; badge: string; step: string; link: string }> = {
+const COLORS: Record<
+  string,
+  { iconBg: string; iconText: string; ring: string; badge: string; step: string; link: string }
+> = {
   indigo: {
     iconBg: 'bg-indigo-100 dark:bg-indigo-900/40',
     iconText: 'text-indigo-600 dark:text-indigo-300',
@@ -165,7 +171,8 @@ const metadata = {
       0 → 1 <span class="text-accent dark:text-white">Agent × KG</span> 学习路线
     </Fragment>
     <Fragment slot="subtitle">
-      4 条精心策划的阅读路径,串联现有 {paths.reduce((sum, p) => sum + p.articles.length, 0)} 篇文章。按你的目标选一条,2-6 小时就能上手。
+      4 条精心策划的阅读路径,串联现有 {paths.reduce((sum, p) => sum + p.articles.length, 0)} 篇文章。按你的目标选一条,2-6
+      小时就能上手。
     </Fragment>
   </Hero>
 
@@ -188,21 +195,27 @@ const metadata = {
             >
               <div class="flex items-start justify-between mb-4 gap-3">
                 <div class="flex items-center min-w-0">
-                  <div class:list={['flex items-center justify-center h-12 w-12 rounded-lg flex-shrink-0', c.iconBg, c.iconText]}>
+                  <div
+                    class:list={[
+                      'flex items-center justify-center h-12 w-12 rounded-lg flex-shrink-0',
+                      c.iconBg,
+                      c.iconText,
+                    ]}
+                  >
                     <Icon name={path.icon} class="w-6 h-6" />
                   </div>
                   <h2 class="ml-3 text-xl lg:text-2xl font-bold font-heading dark:text-white text-slate-900 truncate">
                     {path.name}
                   </h2>
                 </div>
-                <span class:list={['text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0', c.badge]}>
+                <span
+                  class:list={['text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0', c.badge]}
+                >
                   {path.badge}
                 </span>
               </div>
 
-              <p class="text-base text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
-                {path.description}
-              </p>
+              <p class="text-base text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">{path.description}</p>
 
               <div class="text-sm text-slate-500 dark:text-slate-400 mb-5">
                 <span class="font-semibold text-slate-700 dark:text-slate-300">适合:</span>
@@ -216,7 +229,12 @@ const metadata = {
                 <ol class="space-y-3">
                   {path.articles.map((article, i) => (
                     <li class="flex">
-                      <div class:list={['flex-shrink-0 w-7 h-7 rounded-full text-white font-bold text-sm flex items-center justify-center mr-3 mt-0.5', c.step]}>
+                      <div
+                        class:list={[
+                          'flex-shrink-0 w-7 h-7 rounded-full text-white font-bold text-sm flex items-center justify-center mr-3 mt-0.5',
+                          c.step,
+                        ]}
+                      >
                         {i + 1}
                       </div>
                       <div class="flex-1 min-w-0">
@@ -226,16 +244,12 @@ const metadata = {
                         >
                           {article.title}
                         </a>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-                          {article.note}
-                        </p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{article.note}</p>
                         <div class="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-slate-400 dark:text-slate-500">
                           <span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700/60 rounded">
                             {article.category}
                           </span>
-                          {article.readingTime && (
-                            <span>· {Math.ceil(article.readingTime)} 分钟阅读</span>
-                          )}
+                          {article.readingTime && <span>· {Math.ceil(article.readingTime)} 分钟阅读</span>}
                         </div>
                       </div>
                     </li>
@@ -251,9 +265,7 @@ const metadata = {
                   开始这条路径
                   <Icon name="tabler:arrow-right" class="w-4 h-4 ml-1" />
                 </a>
-                <span class="text-xs text-slate-400 dark:text-slate-500">
-                  预计 {path.articles.length * 8} 分钟
-                </span>
+                <span class="text-xs text-slate-400 dark:text-slate-500">预计 {path.articles.length * 8} 分钟</span>
               </div>
             </article>
           );

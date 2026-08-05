@@ -24,7 +24,11 @@ export const headerDataZh = {
       text: '关于',
       links: [
         { text: '为什么做这个仓库', href: getPermalink('/about') },
-        { text: '参与贡献', href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md', target: '_blank' },
+        {
+          text: '参与贡献',
+          href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md',
+          target: '_blank',
+        },
         { text: '使用条款', href: getPermalink('/terms') },
         { text: '隐私政策', href: getPermalink('/privacy') },
       ],
@@ -33,7 +37,12 @@ export const headerDataZh = {
   actions: [
     { text: '搜索', href: getPermalink('/search'), icon: 'tabler:search' },
     { text: 'EN', href: '/agent-kg-hub/en/', icon: 'tabler:language' },
-    { text: 'GitHub', href: 'https://github.com/LyuBailin/agent-kg-hub', target: '_blank', icon: 'tabler:brand-github' },
+    {
+      text: 'GitHub',
+      href: 'https://github.com/LyuBailin/agent-kg-hub',
+      target: '_blank',
+      icon: 'tabler:brand-github',
+    },
   ],
 };
 
@@ -62,7 +71,11 @@ export const footerDataZh = {
       links: [
         { text: 'GitHub 仓库', href: 'https://github.com/LyuBailin/agent-kg-hub', target: '_blank' },
         { text: '提交 Issue', href: 'https://github.com/LyuBailin/agent-kg-hub/issues', target: '_blank' },
-        { text: '贡献指南', href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md', target: '_blank' },
+        {
+          text: '贡献指南',
+          href: 'https://github.com/LyuBailin/agent-kg-hub/blob/main/CONTRIBUTING.md',
+          target: '_blank',
+        },
         { text: 'RSS 订阅', href: getAsset('/rss.xml') },
       ],
     },

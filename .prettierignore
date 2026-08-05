@@ -2,3 +2,31 @@ dist
 node_modules
 .github
 .changeset
+
+# Auto-generated / hand-curated content that prettier shouldn't touch
+package-lock.json
+.prettierrc.mjs
+.prettierignore
+CHANGELOG.md
+README.md
+CONTRIBUTING.md
+CITATION.cff
+
+# Config files with hand-tuned formatting
+package.json
+tsconfig.json
+astro.config.ts
+eslint.config.js
+sandbox.config.json
+vscode.tailwind.json
+
+# CMS / public assets
+public/decapcms/
+
+# Article markdowns — hand-curated Chinese content with intentional
+# line breaks in code blocks, callouts, and prose. Auto-formatting
+# subtly re-flows them in ways that hurt readability.
+src/data/
+
+# Third-party / vendor code (kept for reference; not under our prettier config)
+vendor/
