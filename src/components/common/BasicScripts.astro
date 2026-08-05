@@ -89,6 +89,22 @@ import { UI } from 'astrowind:config';
       document.querySelector('#header > div > div:last-child')?.classList.add('hidden');
     });
 
+    // Sync header dropdown aria-expanded with the CSS-driven hover/focus
+    // visibility (`.dropdown:hover .dropdown-menu`, `:focus-within`). Mirrors
+    // what's visually rendered so screen-reader users get the same state.
+    document.querySelectorAll('.dropdown').forEach(function (dd) {
+      const btn = dd.querySelector('button[aria-haspopup="menu"]');
+      if (!btn) return;
+      const update = function () {
+        const open = dd.matches(':hover, :focus-within');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      dd.addEventListener('mouseenter', update);
+      dd.addEventListener('mouseleave', update);
+      dd.addEventListener('focusin', update);
+      dd.addEventListener('focusout', update);
+    });
+
     attachEvent('[data-aw-toggle-menu]', 'click', function (_, elem) {
       elem.classList.toggle('expanded');
       document.body.classList.toggle('overflow-hidden');
