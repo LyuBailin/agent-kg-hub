@@ -353,8 +353,9 @@ const { section, detailLabels, paradigms } = i18nData[locale];
 
 <script>
   // 节点 hover / click 显示详情(仅桌面 SVG 节点交互,移动端卡片直接展示)
-  const container = document.getElementById('paradigms');
-  if (container) {
+  const root = document.getElementById('paradigms');
+  if (root) {
+    const container: HTMLElement = root; // narrowed to HTMLElement for inner closure use
     const nodes = container.querySelectorAll('.node-group');
     const details = container.querySelectorAll('.paradigm-detail');
 

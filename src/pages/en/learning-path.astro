@@ -9,7 +9,26 @@ import { fetchEnPosts } from '~/utils/posts-en';
 export const prerender = true;
 
 // 4 learning paths · 3-5 articles each · covering all 17 English articles, no duplicates
-const paths = [
+type PathArticle = {
+  slug: string;
+  note: string;
+  // below are populated from postMap at build time
+  title?: string;
+  category?: string;
+  permalink?: string;
+  readingTime?: number;
+};
+type LearningPath = {
+  id: string;
+  icon: string;
+  name: string;
+  badge: string;
+  description: string;
+  target: string;
+  color: string;
+  articles: PathArticle[];
+};
+const paths: LearningPath[] = [
   {
     id: 'getting-started',
     icon: 'tabler:rocket',

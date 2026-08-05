@@ -1,7 +1,7 @@
 ---
 import { UI } from 'astrowind:config';
-
-// TODO: This code is temporary
+// Inline color-mode bootstrap: runs before any CSS to avoid FOUC.
+// Re-evaluated on every page transition (Astro view-transitions).
 ---
 
 <script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>

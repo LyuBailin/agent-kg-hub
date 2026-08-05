@@ -11,7 +11,26 @@ export const prerender = true;
 
 // 4 条学习路径,每条 3-5 篇文章
 // 设计原则:覆盖全部 17 篇文章且无重复;每条路径有明确的目标读者
-const paths = [
+type PathArticle = {
+  slug: string;
+  note: string;
+  // 下面这些字段在 build 时由 postMap 动态填充(下面 merge 循环)
+  title?: string;
+  category?: string;
+  permalink?: string;
+  readingTime?: number;
+};
+type LearningPath = {
+  id: string;
+  icon: string;
+  name: string;
+  badge: string;
+  description: string;
+  target: string;
+  color: string;
+  articles: PathArticle[];
+};
+const paths: LearningPath[] = [
   {
     id: 'getting-started',
     icon: 'tabler:rocket',

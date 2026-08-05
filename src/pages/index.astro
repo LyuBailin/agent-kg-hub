@@ -1,12 +1,13 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import GoalGrid from '~/components/widgets/GoalGrid.astro';
+import type { Goal } from '~/components/widgets/GoalGrid.astro';
 
 import Hero from '~/components/widgets/Hero.astro';
 import Content from '~/components/widgets/Content.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ParadigmMap from '~/components/widgets/ParadigmMap.astro';
-import GoalGrid from '~/components/widgets/GoalGrid.astro';
 
 const metadata = {
   title: 'Agent × 知识图谱技术资源导航',
@@ -15,7 +16,7 @@ const metadata = {
 
 // 首页"问题驱动"目标卡片 (W10 改版 + W16 加学习路径)
 // 每张卡片对应一个用户场景 → 直接链到现有 6 篇核心概念文章 + 1 张学习路径入口
-const goals = [
+const goals: Goal[] = [
   {
     icon: 'tabler:walk',
     title: '我想按学习路径 0→1 系统学',

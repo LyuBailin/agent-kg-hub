@@ -23,7 +23,6 @@ export async function getStaticPaths() {
   });
 }
 
-type Props = { slug: string };
 const { slug } = Astro.props;
 
 // 再次获取(因为 props 里的 slug 是关键,modules 在 Astro 渲染时需要)
@@ -42,6 +41,10 @@ const permalink = `/en/articles/${slug}/`;
 const url = getCanonical(getPermalink(permalink));
 const image = (await findImage(frontmatter.image)) as ImageMetadata | string | undefined;
 
+// Only string URLs (external/public) can flow into MetaDataOpenGraph.images.url.
+// Local ImageMetadata goes through the adaptOpenGraphImages helper at Metadata.astro time.
+const imageUrl = typeof image === 'string' ? image : '';
+
 const metadata: MetaData = merge(
   {
     title: frontmatter.title,
@@ -49,10 +52,14 @@ const metadata: MetaData = merge(
     robots: { index: true, follow: true },
     openGraph: {
       type: 'article',
-      ...(image
+      ...(imageUrl
         ? {
             images: [
-              { url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height },
+              {
+                url: imageUrl,
+                width: (image as ImageMetadata)?.width ?? 1200,
+                height: (image as ImageMetadata)?.height ?? 626,
+              },
             ],
           }
         : {}),

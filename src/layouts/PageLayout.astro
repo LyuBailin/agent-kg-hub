@@ -6,7 +6,6 @@ import Announcement from '~/components/widgets/Announcement.astro';
 import Comments from '~/components/blog/Comments.astro';
 
 import { getHeaderData, getFooterData, getAnnouncement } from '~/navigation';
-import { detectLocale } from '~/utils/locale';
 
 import type { MetaData } from '~/types';
 
@@ -54,7 +53,6 @@ const isArticleEn =
   !pathname.endsWith('/articles');
 
 const showComments = isArticleZh || isArticleEn;
-const commentsLang = isArticleEn ? 'en' : 'zh';
 ---
 
 <Layout metadata={metadata}>

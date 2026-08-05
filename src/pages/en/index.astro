@@ -1,12 +1,13 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import GoalGrid from '~/components/widgets/GoalGrid.astro';
+import type { Goal } from '~/components/widgets/GoalGrid.astro';
 
 import Hero from '~/components/widgets/Hero.astro';
 import Content from '~/components/widgets/Content.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ParadigmMap from '~/components/widgets/ParadigmMap.astro';
-import GoalGrid from '~/components/widgets/GoalGrid.astro';
 
 const metadata = {
   title: 'Agent × Knowledge Graph Resource Hub',
@@ -16,7 +17,7 @@ const metadata = {
 
 // Homepage "problem-driven" goal cards (W10 redesign + W16 add learning path)
 // Each card maps to a concrete concept article that already exists, or to the learning paths index.
-const goals = [
+const goals: Goal[] = [
   {
     icon: 'tabler:walk',
     title: 'I want a 0→1 learning path',
