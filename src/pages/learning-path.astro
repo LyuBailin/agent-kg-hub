@@ -217,13 +217,13 @@ const metadata = {
 
               <p class="text-base text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">{path.description}</p>
 
-              <div class="text-sm text-slate-500 dark:text-slate-400 mb-5">
-                <span class="font-semibold text-slate-700 dark:text-slate-300">适合:</span>
+              <div class="text-sm text-slate-700 dark:text-slate-300 mb-5">
+                <span class="font-semibold text-slate-800 dark:text-slate-200">适合:</span>
                 {path.target}
               </div>
 
               <div class="mb-5">
-                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3">
                   阅读路径 · {path.articles.length} 步
                 </h3>
                 <ol class="space-y-3">
@@ -244,9 +244,9 @@ const metadata = {
                         >
                           {article.title}
                         </a>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{article.note}</p>
-                        <div class="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-slate-400 dark:text-slate-500">
-                          <span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700/60 rounded">
+                        <p class="text-sm text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">{article.note}</p>
+                        <div class="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-slate-600 dark:text-slate-400">
+                          <span class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-slate-800 dark:text-slate-200">
                             {article.category}
                           </span>
                           {article.readingTime && <span>· {Math.ceil(article.readingTime)} 分钟阅读</span>}
@@ -265,7 +265,7 @@ const metadata = {
                   开始这条路径
                   <Icon name="tabler:arrow-right" class="w-4 h-4 ml-1" />
                 </a>
-                <span class="text-xs text-slate-400 dark:text-slate-500">预计 {path.articles.length * 8} 分钟</span>
+                <span class="text-xs text-slate-600 dark:text-slate-400">预计 {path.articles.length * 8} 分钟</span>
               </div>
             </article>
           );
