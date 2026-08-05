@@ -9,6 +9,41 @@ import { UI } from 'astrowind:config';
 
   window.basic_script = true;
 
+  // Global ⌘K / Ctrl+K shortcut — focus the search input if already on the
+  // search page, otherwise navigate to /search. Mirrors the convention used by
+  // GitHub, Linear, Algolia DocSearch, and most modern docs sites.
+  document.addEventListener('keydown', function (e) {
+    const isShortcut = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+    if (!isShortcut) return;
+    // Don't hijack the shortcut when the user is typing in another input/textarea
+    // (e.g. a comment box) — only block obvious typing targets.
+    const target = e.target;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+      // If the focused field is the search input itself, let the browser's
+      // default behavior stand; otherwise still intercept to focus our search.
+      if (target.id === 'search-input') return;
+    }
+    e.preventDefault();
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.select();
+    } else {
+      // Detect the current base path so the link works on both `/` and
+      // `/agent-kg-hub/` (and on the `/en/` subtree).
+      const path = window.location.pathname;
+      let base = '/agent-kg-hub';
+      const m = path.match(/^(\/agent-kg-hub)(\/|$)/);
+      if (!m) {
+        const segs = path.split('/').filter(Boolean);
+        if (segs.length > 0) base = '/' + segs[0];
+      }
+      // Preserve locale: if the user is on /en/... stay on /en/search.
+      const onEn = /(^|\/)en(\/|$)/.test(path);
+      window.location.href = onEn ? base + '/en/search/' : base + '/search/';
+    }
+  });
+
   function applyTheme(theme) {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');

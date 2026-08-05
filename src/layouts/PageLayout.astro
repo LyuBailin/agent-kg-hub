@@ -62,7 +62,7 @@ const showComments = isArticleZh || isArticleEn;
   <slot name="header">
     <Header {...headerData} isSticky showRssFeed showToggleTheme />
   </slot>
-  <main>
+  <main id="main-content">
     <slot />
     {showComments && <Comments title={metadata?.title} />}
   </main>

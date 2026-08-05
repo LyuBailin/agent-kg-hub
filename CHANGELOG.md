@@ -110,6 +110,33 @@
 
 ## [Unreleased]
 
+## [W18] - 2026-08-05
+
+### 改进
+- **⌘K / Ctrl+K 全局搜索快捷键**(`src/components/common/BasicScripts.astro`):
+  - 在任何页面按 `Cmd+K`(Mac)或 `Ctrl+K`(Win/Linux)直接打开站内搜索
+  - 在搜索页:直接 focus 并 select 搜索输入框
+  - 不在搜索页:跳转到 `/agent-kg-hub/search/`(en 路径下会跳 `/en/search/`)
+  - 不劫持其他 input/textarea/contenteditable 里的快捷键(只在用户没在打字时触发)
+  - 同样监听 `astro:after-swap`,View Transitions 切换页面后还能用
+- **搜索页加 ⌘K 提示**(`src/pages/search.astro` + `src/pages/en/search.astro`):
+  - 标题下面显示 "按 ⌘K / Ctrl K 直接唤起",带 kbd 样式元素,新用户一眼能看到快捷键
+- **Skip-to-content 链接(A11Y)**(`src/layouts/Layout.astro` + `src/layouts/PageLayout.astro`):
+  - `<body>` 开头加一个 `sr-only focus:not-sr-only` 的 "跳到主要内容" 链接
+  - 键盘用户按 Tab 第一个就能看到,可以跳到 `<main id="main-content">`
+  - 中英双语标签 ("跳到主要内容 / Skip to main content")
+
+### 清理
+- **删除 partytown 死代码**(`astro.config.ts` + `package.json`):
+  - 之前 `hasExternalScripts = false` 一直为 false,`partytown()` 集成从来没真正被加载
+  - 删:`import partytown from '@astrojs/partytown'`、`whenExternalScripts` helper、`hasExternalScripts` 常量、未用的 `AstroIntegration` 类型 import
+  - 删:`@astrojs/partytown` 从 devDependencies
+  - `npm install` 清掉 lockfile 里的 partytown
+- **Analytics 脚本条件渲染**(`src/components/common/Analytics.astro`):
+  - 之前即使没配 GA id,也会渲染一个空 `<script>` 块(虽然里面有 `if (id)` 守卫,但脚本还是加载了)
+  - 现在用 `{id && <Fragment>...</Fragment>}` 包裹,完全没 id 时不渲染任何标签
+  - 移除 `partytown` 相关的 `scriptType` 逻辑(已删 partytown 集成)
+
 ## [W17] - 2026-08-05
 
 ### 改进

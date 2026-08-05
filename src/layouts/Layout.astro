@@ -48,6 +48,13 @@ const textDirection = isEnPath ? 'ltr' : I18N.textDirection;
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+    >
+      跳到主要内容 / Skip to main content
+    </a>
+
     <slot />
 
     <BasicScripts />
