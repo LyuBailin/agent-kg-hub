@@ -4,7 +4,7 @@ excerpt: 'The effectiveness of an Agent × KG system is 80% determined by KG qua
 publishDate: 2026-07-27
 category: 'Core Concepts'
 tags: ['KG Quality', 'KG Evaluation', 'Completeness', 'Accuracy', 'Consistency', 'Knowledge Graph']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-kg-quality.png
 author: 'LyuBailin'
 ---
 

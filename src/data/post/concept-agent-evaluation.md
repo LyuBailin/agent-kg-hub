@@ -4,7 +4,7 @@ excerpt: '2024-2026 年 Agent 评估成为独立研究方向。本文讲清 Agen
 publishDate: 2026-07-27
 category: '核心概念'
 tags: ['Agent Evaluation', 'AgentBench', 'SWE-bench', 'GAIA', 'WebArena', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-agent-evaluation.png
 author: 'LyuBailin'
 ---
 

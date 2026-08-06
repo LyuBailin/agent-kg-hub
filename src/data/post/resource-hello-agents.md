@@ -4,7 +4,7 @@ excerpt: 'Datawhale 开源的中文 Agent 教程,21k+ stars,从原理到实战�
 publishDate: 2026-07-27
 category: '教程博客'
 tags: ['Datawhale', 'Hello-Agents', '中文教程', 'Agent 入门', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-hello-agents.png
 author: 'LyuBailin'
 ---
 

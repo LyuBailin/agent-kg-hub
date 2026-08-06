@@ -4,7 +4,7 @@ excerpt: 'The arXiv survey by Peng et al. (August 2024, 2408.08921) that for the
 publishDate: 2026-07-30
 category: 'Papers & Surveys'
 tags: ['GraphRAG', 'Survey', 'Knowledge Graph', 'RAG', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-graphrag-survey-peng.png
 author: 'LyuBailin'
 ---
 

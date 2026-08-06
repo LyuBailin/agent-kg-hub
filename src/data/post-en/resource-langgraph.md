@@ -4,7 +4,7 @@ excerpt: 'LangChain''s Agent orchestration framework, modeling Agent state, loop
 publishDate: 2026-07-27
 category: 'Core Projects'
 tags: ['LangGraph', 'Agent', 'State Machine', 'Orchestration', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-langgraph.png
 author: 'LyuBailin'
 ---
 

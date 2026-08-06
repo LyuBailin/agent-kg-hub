@@ -4,7 +4,7 @@ excerpt: 'Agent 的核心能力之一是"记忆"。本文系统梳理短期记�
 publishDate: 2026-07-27
 category: '核心概念'
 tags: ['Agent Memory', '短期记忆', '长期记忆', 'MemGPT', 'Mem0', 'KG Memory']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-agent-memory.png
 author: 'LyuBailin'
 ---
 

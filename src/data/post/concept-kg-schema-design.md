@@ -4,7 +4,7 @@ excerpt: '从工程师视角讲 KG schema 设计的全流程:常见错误、3 �
 publishDate: 2026-07-30
 category: '核心概念'
 tags: ['知识图谱', 'Schema', '本体设计', 'GraphRAG', '工程实践']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-kg-schema-design.png
 author: 'LyuBailin'
 ---
 

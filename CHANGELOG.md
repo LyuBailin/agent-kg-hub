@@ -155,6 +155,61 @@ python -m http.server 4321 --directory dist
 npx @axe-core/cli http://localhost:4321/ http://localhost:4321/concept-react-intro/ ...
 ```
 
+## [W20] - 2026-08-06
+
+### 新增 — 19 张唯一文章封面
+
+之前所有 19 篇文章共用一张 `default.png` 抽象渐变图,`og:image` 缺乏辨识度。这波给每篇文章生成 16:9 抽象技术插画(1K,indigo-sky-violet 渐变 + 网格/光晕/几何元素),**zh + en 共用同一张**(文章本体是同一份,翻译不动图)。
+
+**封面列表**(按 frontmatter 命名 `cover-{category}-{slug}.png`):
+
+| # | Concept 类(9) | Resource 类(10) |
+|---|---|---|
+| 1 | `cover-concept-react-intro` | `cover-resource-microsoft-graphrag` |
+| 2 | `cover-concept-graphrag-intro` | `cover-resource-lightrag` |
+| 3 | `cover-concept-rag-vs-graphrag-selection` | `cover-resource-cognee` |
+| 4 | `cover-concept-kg-schema-design` | `cover-resource-langgraph` |
+| 5 | `cover-concept-kg-quality` | `cover-resource-smolagents` |
+| 6 | `cover-concept-kg-reasoning` | `cover-resource-hello-agents` |
+| 7 | `cover-concept-graph-augmented-agents` | `cover-resource-llm-graph-builder` |
+| 8 | `cover-concept-agent-memory` | `cover-resource-qa-gnn` |
+| 9 | `cover-concept-agent-evaluation` | `cover-resource-graphrag-survey` |
+|   |   | `cover-resource-graphrag-survey-peng` |
+
+**改动文件**:
+- 新增:`src/assets/images/cover-*.png` × 19(每张约 700KB,总 13MB)
+- 修改:`src/data/post/*.md` + `src/data/post-en/*.md` × 38(frontmatter `image: ~/assets/images/cover-{category}-{slug}.png`)
+- 修改:`src/utils/images.ts`(`import.meta.glob` 改用相对路径 + key 转换修正)
+- 修改:`src/pages/en/articles/[...post].astro`(传 ImageMetadata 而非 raw string)
+- 修改:`src/types.d.ts`(`MetaDataImage.url` 拓宽为 `string | ImageMetadata`)
+
+### 修复 — `import.meta.glob` 缓存陷阱
+
+**问题**:build 完 article HTML 里的 hero `<img>` 和 og:image 还是默认 `default.3bEXcqA9_*.jpg`,新 cover 全部没被引用。
+
+**根因**:
+- `src/utils/images.ts` 的 `findImage()` 用 `import.meta.glob('~/assets/images/...')` 解析 `~/assets/images/cover-*.png`
+- Vite 的静态 glob 在 build 时确定模块图,**新加的图片没出现在 glob 结果里**(Vite 缓存了 glob 求值)
+- 即使文件已在 `dist/_astro/cover-*.png` 出现(被 Vite 静态资源管线处理了),glob map 里没有对应 key,`findImage` 返回 `null`
+
+**修复**:
+- glob 改用相对路径:`'../assets/images/**/*.{...}'`(从 `src/utils/` 出发)
+- key 转换改为 `imagePath.replace(/^~\//, '../')`,与相对 glob key 对齐
+- 老 `~/` 别名形式已被观察多次不可靠(本次又踩坑),相对路径是 canonical
+
+### 修复 — en 端 og:image 走 default fallback + JSON-LD 路径错误
+
+**问题**:`/en/articles/{slug}/` 的 og:image 走 `src/config.yaml` 的 `default.png` 而非文章自己的封面;JSON-LD `image` 字段是 raw `~/assets/images/...` 路径,不是优化后的 URL。
+
+**根因**:`src/pages/en/articles/[...post].astro` 的 metadata 构造用了 `imageUrl = typeof image === 'string' ? image : ''` —— 对 ImageMetadata 走 `''` 分支,导致 `openGraph.images = {}`,fallback 到 config.yaml;同时 `shapedPost.image` 传的是 `frontmatter.image`(raw string),JSON-LD 拿到的就是 `~/assets/...`。
+
+**修复**:跟 zh 端 `[...blog]/index.astro` 对齐 —— 直接把 `findImage()` 返回的 `ImageMetadata` 传进 `openGraph.images[0].url` 和 `shapedPost.image`,由 `adaptOpenGraphImages()` 在 `Metadata.astro` 渲染阶段统一调 Astro image service 出优化图。
+
+**结果**:
+- zh + en 双端 og:image 都用每篇文章自己的 cover 1200×626 jpg 优化版
+- JSON-LD `image` 也用优化后的 URL(对象形态,含 src/width/height/format)
+- `src/types.d.ts` 把 `MetaDataImage.url` 从 `string` 拓宽为 `string | ImageMetadata`,消除 TS 报错
+
 ## [W19] - 2026-08-05
 
 ## [W19] - 2026-08-05

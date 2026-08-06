@@ -4,7 +4,7 @@ excerpt: 'The ReAct paradigm proposed by Google Research in 2022 unifies "reason
 publishDate: 2026-07-27
 category: 'Core Concepts'
 tags: ['ReAct', 'Agent', 'Reasoning', 'Acting', 'LLM', 'Prompt Engineering']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-react-intro.png
 author: 'LyuBailin'
 ---
 

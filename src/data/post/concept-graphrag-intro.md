@@ -4,7 +4,7 @@ excerpt: '从传统 RAG 的痛点出发,系统讲解 GraphRAG 的核心思想:�
 publishDate: 2026-07-27
 category: '核心概念'
 tags: ['GraphRAG', 'RAG', '知识图谱', '概念解读', '微软']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-graphrag-intro.png
 author: 'LyuBailin'
 ---
 

@@ -4,7 +4,7 @@ excerpt: 'HuggingFace 开源的极简 Agent 框架,核心代码约 1000 行,让 
 publishDate: 2026-07-27
 category: '核心项目'
 tags: ['smolagents', 'Code Agent', 'HuggingFace', '极简', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-smolagents.png
 author: 'LyuBailin'
 ---
 

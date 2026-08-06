@@ -4,7 +4,7 @@ excerpt: "An engineer's complete guide to KG schema design: common mistakes, thr
 publishDate: 2026-07-30
 category: 'Core Concepts'
 tags: ['Knowledge Graph', 'Schema', 'Ontology Design', 'GraphRAG', 'Engineering Practice']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-kg-schema-design.png
 author: 'LyuBailin'
 ---
 

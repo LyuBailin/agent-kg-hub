@@ -4,7 +4,7 @@ excerpt: 'ACL 2021 best paper candidate, proposing to use KG reasoning paths (su
 publishDate: 2026-07-27
 category: 'Core Projects'
 tags: ['QA-GNN', 'Knowledge Graph', 'Question Answering', 'Explainability', 'GNN']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-qa-gnn.png
 author: 'LyuBailin'
 ---
 

@@ -4,7 +4,7 @@ excerpt: 'From 2024 to 2026, Agent evaluation has become an independent research
 publishDate: 2026-07-27
 category: 'Core Concepts'
 tags: ['Agent Evaluation', 'AgentBench', 'SWE-bench', 'GAIA', 'WebArena', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-agent-evaluation.png
 author: 'LyuBailin'
 ---
 

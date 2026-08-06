@@ -4,7 +4,7 @@ excerpt: 'Cognee (appeared 2024, ~7k+ stars) is an open-source AI memory engine 
 publishDate: 2026-07-30
 category: 'Core Projects'
 tags: ['Cognee', 'Agent Memory', 'Knowledge Graph', 'AI Memory', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-cognee.png
 author: 'LyuBailin'
 ---
 

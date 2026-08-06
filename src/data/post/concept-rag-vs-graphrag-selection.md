@@ -4,7 +4,7 @@ excerpt: '一个工程师视角的选型决策框架。围绕 4 个评分维度(
 publishDate: 2026-07-30
 category: '核心概念'
 tags: ['RAG', 'GraphRAG', '知识图谱', '选型', '决策框架']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-rag-vs-graphrag-selection.png
 author: 'LyuBailin'
 ---
 

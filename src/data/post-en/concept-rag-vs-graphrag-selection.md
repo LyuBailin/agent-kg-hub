@@ -4,7 +4,7 @@ excerpt: "An engineer's decision framework for RAG vs GraphRAG selection. Four s
 publishDate: 2026-07-30
 category: 'Core Concepts'
 tags: ['RAG', 'GraphRAG', 'Knowledge Graph', 'Selection', 'Decision Framework']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-rag-vs-graphrag-selection.png
 author: 'LyuBailin'
 ---
 

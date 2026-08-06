@@ -4,7 +4,7 @@ excerpt: 'One of the core capabilities of an Agent is "memory". This article sys
 publishDate: 2026-07-27
 category: 'Core Concepts'
 tags: ['Agent Memory', 'Short-term Memory', 'Long-term Memory', 'MemGPT', 'Mem0', 'KG Memory']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-agent-memory.png
 author: 'LyuBailin'
 ---
 

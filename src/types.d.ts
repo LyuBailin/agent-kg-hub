@@ -64,7 +64,13 @@ export interface MetaDataRobots {
 }
 
 export interface MetaDataImage {
-  url: string;
+  /**
+   * The image source. Accepts either a resolved `ImageMetadata` (preferred —
+   * downstream code in `adaptOpenGraphImages` will run it through Astro's
+   * image service to produce an optimized variant) or a string URL (used
+   * directly for remote / public paths).
+   */
+  url: string | ImageMetadata;
   width?: number;
   height?: number;
 }

@@ -4,7 +4,7 @@ excerpt: 'Peng 等人 2024 年 8 月发布的 arXiv 综述(2408.08921),首次形
 publishDate: 2026-07-30
 category: '论文综述'
 tags: ['GraphRAG', '综述', 'Survey', '知识图谱', 'RAG']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-graphrag-survey-peng.png
 author: 'LyuBailin'
 ---
 

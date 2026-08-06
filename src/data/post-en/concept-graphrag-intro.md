@@ -4,7 +4,7 @@ excerpt: 'Starting from the pain points of traditional RAG, this article systema
 publishDate: 2026-07-27
 category: 'Core Concepts'
 tags: ['GraphRAG', 'RAG', 'Knowledge Graph', 'Concept Deep-Dive', 'Microsoft']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-graphrag-intro.png
 author: 'LyuBailin'
 ---
 

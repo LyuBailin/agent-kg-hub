@@ -4,7 +4,7 @@ excerpt: '微软 2024 年 7 月开源的图增强 RAG 方案,提供 Local/Global
 publishDate: 2026-07-27
 category: '核心项目'
 tags: ['GraphRAG', 'RAG', '知识图谱', '微软', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-microsoft-graphrag.png
 author: 'LyuBailin'
 ---
 

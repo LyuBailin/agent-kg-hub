@@ -56,32 +56,20 @@ const permalink = `/en/articles/${slug}/`;
 const url = getCanonical(getPermalink(permalink));
 const image = (await findImage(frontmatter.image)) as ImageMetadata | string | undefined;
 
-// Only string URLs (external/public) can flow into MetaDataOpenGraph.images.url.
-// Local ImageMetadata goes through the adaptOpenGraphImages helper at Metadata.astro time.
-const imageUrl = typeof image === 'string' ? image : '';
-
-const metadata: MetaData = merge(
+const metadata = merge(
   {
     title: frontmatter.title,
     description: frontmatter.excerpt,
     robots: { index: true, follow: true },
     openGraph: {
       type: 'article',
-      ...(imageUrl
-        ? {
-            images: [
-              {
-                url: imageUrl,
-                width: (image as ImageMetadata)?.width ?? 1200,
-                height: (image as ImageMetadata)?.height ?? 626,
-              },
-            ],
-          }
+      ...(image
+        ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }
         : {}),
     },
   },
   {}
-);
+) as MetaData;
 
 const shapedPost: Post = {
   id: slug,
@@ -91,7 +79,7 @@ const shapedPost: Post = {
   excerpt: frontmatter.excerpt || '',
   publishDate: new Date(frontmatter.publishDate ?? 0),
   updateDate: frontmatter.updateDate ? new Date(frontmatter.updateDate) : undefined,
-  image: frontmatter.image,
+  image,
   category: frontmatter.category ? { slug: frontmatter.category, title: frontmatter.category } : undefined,
   tags: (frontmatter.tags || []).map((t) => ({ slug: t, title: t })),
   author: frontmatter.author || 'LyuBailin',

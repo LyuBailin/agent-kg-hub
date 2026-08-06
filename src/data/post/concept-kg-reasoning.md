@@ -4,7 +4,7 @@ excerpt: '2024-2026 年新兴的"知识图谱增强推理"方向,把 KG 作为 L
 publishDate: 2026-07-27
 category: '核心概念'
 tags: ['KG 增强推理', 'KG-R1', 'Graph-R1', 'ToG', 'CoT', 'RL', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-kg-reasoning.png
 author: 'LyuBailin'
 ---
 

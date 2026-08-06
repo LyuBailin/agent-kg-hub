@@ -4,7 +4,7 @@ excerpt: 'LightRAG (October 2024, HKUDS) rebuilds GraphRAG with "dual-layer retr
 publishDate: 2026-07-30
 category: 'Core Projects'
 tags: ['LightRAG', 'GraphRAG', 'RAG', 'Knowledge Graph', 'HKU']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-lightrag.png
 author: 'LyuBailin'
 ---
 

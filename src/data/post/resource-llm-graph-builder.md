@@ -4,7 +4,7 @@ excerpt: 'Neo4j Labs 2024 年开源的图谱构建 Web 应用,把 PDF/网页/You
 publishDate: 2026-07-30
 category: '教程博客'
 tags: ['Neo4j', 'llm-graph-builder', '知识图谱', 'GraphRAG', 'Neo4j Labs']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-llm-graph-builder.png
 author: 'LyuBailin'
 ---
 

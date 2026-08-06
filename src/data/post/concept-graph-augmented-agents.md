@@ -4,7 +4,7 @@ excerpt: '2025 年 IEEE 综述正式定义的图智能体(Graph-Augmented LLM Ag
 publishDate: 2026-07-27
 category: '核心概念'
 tags: ['图智能体', 'GLA', 'Graph-Augmented Agent', 'Agent', 'LLM', '综述']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-graph-augmented-agents.png
 author: 'LyuBailin'
 ---
 

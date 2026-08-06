@@ -4,7 +4,7 @@ excerpt: 'LangChain 团队出品的 Agent 编排框架,用有向图建模 Agent 
 publishDate: 2026-07-27
 category: '核心项目'
 tags: ['LangGraph', 'Agent', '状态机', '编排', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-langgraph.png
 author: 'LyuBailin'
 ---
 

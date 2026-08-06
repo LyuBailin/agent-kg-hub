@@ -4,7 +4,7 @@ excerpt: 'A web application open-sourced by Neo4j Labs in 2024 that turns unstru
 publishDate: 2026-07-30
 category: 'Tutorials & Blogs'
 tags: ['Neo4j', 'llm-graph-builder', 'Knowledge Graph', 'GraphRAG', 'Neo4j Labs']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-llm-graph-builder.png
 author: 'LyuBailin'
 ---
 

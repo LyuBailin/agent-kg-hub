@@ -4,7 +4,7 @@ excerpt: 'Agent × KG 系统的效果,80% 取决于 KG 质量。本文系统讲 
 publishDate: 2026-07-27
 category: '核心概念'
 tags: ['KG 质量', 'KG 评估', '完整性', '准确性', '一致性', '知识图谱']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-kg-quality.png
 author: 'LyuBailin'
 ---
 

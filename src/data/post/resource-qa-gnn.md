@@ -4,7 +4,7 @@ excerpt: 'ACL 2021 最佳论文候选,提出把 KG 推理路径(子图)作为 LL
 publishDate: 2026-07-27
 category: '核心项目'
 tags: ['QA-GNN', '知识图谱', '问答', '可解释性', 'GNN']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-qa-gnn.png
 author: 'LyuBailin'
 ---
 

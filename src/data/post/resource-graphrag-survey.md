@@ -4,7 +4,7 @@ excerpt: '2025 年 7 月发表于 IEEE Intelligent Systems 的综述论文,系�
 publishDate: 2026-07-27
 category: '论文综述'
 tags: ['综述', '图智能体', 'GLA', 'LLM Agent', 'IEEE']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-graphrag-survey.png
 author: 'LyuBailin'
 ---
 

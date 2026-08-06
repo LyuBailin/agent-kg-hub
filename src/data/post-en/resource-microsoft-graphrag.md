@@ -4,7 +4,7 @@ excerpt: 'Microsoft''s open-sourced graph-enhanced RAG (July 2024), providing Lo
 publishDate: 2026-07-27
 category: 'Core Projects'
 tags: ['GraphRAG', 'RAG', 'Knowledge Graph', 'Microsoft', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-microsoft-graphrag.png
 author: 'LyuBailin'
 ---
 

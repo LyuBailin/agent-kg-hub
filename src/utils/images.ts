@@ -3,13 +3,17 @@ import type { ImageMetadata } from 'astro';
 import type { MetaDataOpenGraph } from '~/types';
 
 // Lazy-loaded glob of local images. The glob runs once and is cached.
+// Path is relative to this file (`src/utils/`) so we go up one level to
+// `src/assets/images/`. The `~/` alias form has been observed to be unreliable
+// in Vite's static glob resolver (newly added images weren't picked up), so the
+// relative form is the canonical one.
 let _localImages: Record<string, () => Promise<unknown>> | undefined;
 
 const loadLocalImages = () => {
   if (_localImages) return _localImages;
   try {
     _localImages = import.meta.glob(
-      '~/assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}'
+      '../assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}'
     );
   } catch {
     _localImages = {};
@@ -34,7 +38,9 @@ export const findImage = async (
   if (!imagePath.startsWith('~/assets/images')) return imagePath;
 
   const images = loadLocalImages();
-  const key = imagePath.replace('~/', '/src/');
+  // Glob keys come back as `../assets/images/<file>` (relative to `src/utils/`).
+  // Convert the `~/assets/images/<file>` input by replacing the leading `~` with `..`.
+  const key = imagePath.replace(/^~\//, '../');
   const loader = images[key];
 
   if (typeof loader !== 'function') return null;

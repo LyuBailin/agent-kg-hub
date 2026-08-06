@@ -4,7 +4,7 @@ excerpt: 'Cognee(2024 出现,~7k+ stars)是面向 AI Agent 的开源 AI 记忆�
 publishDate: 2026-07-30
 category: '核心项目'
 tags: ['Cognee', 'Agent Memory', '知识图谱', 'AI 记忆', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-cognee.png
 author: 'LyuBailin'
 ---
 

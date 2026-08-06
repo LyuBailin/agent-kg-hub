@@ -4,7 +4,7 @@ excerpt: 'Published in IEEE Intelligent Systems (July 2025), this survey systema
 publishDate: 2026-07-27
 category: 'Papers & Surveys'
 tags: ['Survey', 'Graph Agent', 'GLA', 'LLM Agent', 'IEEE']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-graphrag-survey.png
 author: 'LyuBailin'
 ---
 

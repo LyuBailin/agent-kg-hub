@@ -4,7 +4,7 @@ excerpt: 'The Graph-Augmented LLM Agent (GLA) direction formally defined in the 
 publishDate: 2026-07-27
 category: 'Core Concepts'
 tags: ['Graph Agent', 'GLA', 'Graph-Augmented Agent', 'Agent', 'LLM', 'Survey']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-graph-augmented-agents.png
 author: 'LyuBailin'
 ---
 

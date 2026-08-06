@@ -4,7 +4,7 @@ excerpt: 'HuggingFace''s minimalist Agent framework, ~1000 lines of core code, l
 publishDate: 2026-07-27
 category: 'Core Projects'
 tags: ['smolagents', 'Code Agent', 'HuggingFace', 'Minimalist', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-smolagents.png
 author: 'LyuBailin'
 ---
 

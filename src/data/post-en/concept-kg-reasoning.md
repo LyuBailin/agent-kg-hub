@@ -4,7 +4,7 @@ excerpt: 'The emerging "knowledge graph-enhanced reasoning" direction in 2024-20
 publishDate: 2026-07-27
 category: 'Core Concepts'
 tags: ['KG-Enhanced Reasoning', 'KG-R1', 'Graph-R1', 'ToG', 'CoT', 'RL', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-kg-reasoning.png
 author: 'LyuBailin'
 ---
 

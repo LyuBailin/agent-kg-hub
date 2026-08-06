@@ -4,7 +4,7 @@ excerpt: 'LightRAG(2024 年 10 月,港大 HKUDS)以"双层检索 + 图索引"重
 publishDate: 2026-07-30
 category: '核心项目'
 tags: ['LightRAG', 'GraphRAG', 'RAG', '知识图谱', 'HKU']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-lightrag.png
 author: 'LyuBailin'
 ---
 

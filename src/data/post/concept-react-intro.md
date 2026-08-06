@@ -4,7 +4,7 @@ excerpt: '2022 年 Google Research 提出的 ReAct 范式,把"推理"和"行动"
 publishDate: 2026-07-27
 category: '核心概念'
 tags: ['ReAct', 'Agent', 'Reasoning', 'Acting', 'LLM', 'Prompt Engineering']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-concept-react-intro.png
 author: 'LyuBailin'
 ---
 

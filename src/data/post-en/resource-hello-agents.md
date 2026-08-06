@@ -4,7 +4,7 @@ excerpt: 'Datawhale''s open-source Chinese Agent tutorial, 21k+ stars, systemati
 publishDate: 2026-07-27
 category: 'Tutorials & Blogs'
 tags: ['Datawhale', 'Hello-Agents', 'Chinese Tutorial', 'Agent Onboarding', 'LLM']
-image: ~/assets/images/default.png
+image: ~/assets/images/cover-resource-hello-agents.png
 author: 'LyuBailin'
 ---
 
