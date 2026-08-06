@@ -2,6 +2,37 @@
 
 所有对本项目的显著变更都记录在此文件。格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [W21] - 2026-08-06
+
+### 新增 — Agent 操作手册
+
+建立 `AGENTS.md` + `references/` 模块文档,给后续 agent turn 用的**稳定规则**索引(不写进度,所有 volatile 内容走 CHANGELOG/ROADMAP):
+
+- **`AGENTS.md`**(项目入口):技术栈、命令、文件 map、命名约定、i18n 路由、commit 规范、subagent 并行规则、a11y baseline、坑的快速索引
+- **`references/powershell.md`**:PS 5.1 坑(`mavis-trash` / `Select-String` / CRLF / git commit 单行) + mavis tool 用法
+- **`references/images-pipeline.md`**:`findImage()` 流程 + **Vite glob 缓存陷阱**(W20 教训,新加图 build 不出现)
+- **`references/i18n.md`**:locale 检测 `/(^|\/)en(\/|$)/` + zh/en 文件映射 + en 端 metadata 必传 ImageMetadata(W20 教训)
+- **`references/astro-patterns.md`**:inline `<script>` 不能顶层 return(W18 教训) + GoalGrid 导入 + Shiki 自定义主题
+- **`references/deploy-pages.md`**:GH Pages workflow + Pagefind dev-disabled + deploy check cron 模板
+- **`references/a11y.md`**:axe-core baseline + skip-link / dropdown ARIA / 颜色对比度 / Shiki 4.5:1 模式
+
+### 设计原则(按用户反馈)
+
+**AGENTS.md 只放跨 wave 适用的规则**,不放:
+- 当前进度 / commit hash / "上周干了啥" — 走 [CHANGELOG.md](CHANGELOG.md) (本文件)
+- 长期计划 — 走 [ROADMAP.md](ROADMAP.md)
+- 项目介绍 — 走 [README.md](README.md)
+- 贡献方式 — 走 [CONTRIBUTING.md](CONTRIBUTING.md)
+
+这样 AGENTS.md 几乎不需要随 wave 更新,`references/` 里的规则也按需增量。
+
+### Agent memory 跨项目沉淀(写到 `memory` tool,不入 git)
+
+- **Vite `import.meta.glob('~/...')` 不可靠** → 用相对路径
+- **Astro inline `<script>` 顶层不能 `return`** → 用 `if (x) { ... }` 块
+- **多 subagent 并行 = strict disjoint file scopes + per-task commit**
+- **User meta-corrections 是 hard constraint** → 立即 re-plan,不坚持原方案
+
 ## [W11.1] - 2026-07-30
 
 ### 修复
