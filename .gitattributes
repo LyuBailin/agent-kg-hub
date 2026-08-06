@@ -1,0 +1,34 @@
+# Line ending normalization
+# Without this, *.sh files might be committed as CRLF on Windows and break
+# when executed on Linux/Mac (or even Git Bash on some configs).
+
+# Shell scripts: always LF
+*.sh text eol=lf
+
+# Markdown / docs: LF
+*.md text eol=lf
+
+# TypeScript / JavaScript / Astro source: LF
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.astro text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# CSS / SVG: LF
+*.css text eol=lf
+*.svg text eol=lf
+
+# Binary: do not touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff2 binary
+
+# Gitattributes itself
+.gitattributes text eol=lf

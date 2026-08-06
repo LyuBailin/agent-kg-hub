@@ -2,6 +2,36 @@
 
 所有对本项目的显著变更都记录在此文件。格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [W22] - 2026-08-06
+
+### 新增 — Pre-commit 强制层
+
+给项目加 **git pre-commit hook** 作为「知识层 + 强制层」中的强制层,把 W6-W21 反复撞过的坑用机器自动拦截:
+
+- **`.githooks/pre-commit`**(dispatcher) — 跑所有 `check-*.sh`,不 fail-fast(全部跑完一次性报告)
+- **`.githooks/check-frontmatter-image.sh`** (BLOCK) — frontmatter `image: ~/assets/images/...` 路径必须存在(W20 教训,19 张 cover 命名不匹配)
+- **`.githooks/check-astro-inline-script.sh`** (BLOCK) — Astro inline `<script>` 不能有顶层 `return;` (W18 教训,撞 Rollup parse error)
+- **`.githooks/check-agents-md-scope.sh`** (WARN) — AGENTS.md 不应塞 commit SHA / 日期 / 状态词(W21 设计原则)
+- **`.githooks/README.md`** — 每个 hook 的 why / 怎么用 / 怎么 bypass
+- **`scripts/setup-hooks.sh`** — 一次性 setup,`git config core.hooksPath .githooks`
+- **`.gitattributes`** — `*.sh / *.md / *.ts` 等强制 LF 行尾,避免 Windows CRLF 在 Git Bash 跑挂
+
+### 配套更新
+
+- `AGENTS.md` 加「Pre-commit enforcement」章节,link 到 `.githooks/README.md`
+- `AGENTS.md` Pitfalls 表加 2 行(pre-commit 拦截 + 新 clone 没装 hook)
+- `references/powershell.md` 加「Git pre-commit hooks 联动」段(PowerShell 跟 hook stderr 的互动)
+- 每个 hook 的报错文案都 link 到对应 `references/*.md` 章节
+
+### 测试验证
+
+3 个 hook 都用故意写错的 fixture 文件本地验证过:
+- 写 `image: ~/assets/images/this-file-does-not-exist.png` → 路径解析正确 + 报错 + 阻止 commit
+- 写 `<script>return;` → 触发 inline-script 警告 + 阻止 commit
+- 给 AGENTS.md 加日期 + SHA → WARN 但**允许** commit (D 是 WARN 不是 BLOCK)
+
+3 个 hook 对 hook 脚本**自身**不误报(已自检)。
+
 ## [W21] - 2026-08-06
 
 ### 新增 — Agent 操作手册

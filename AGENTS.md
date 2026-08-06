@@ -119,6 +119,20 @@ agent-kg-hub/
 - **Verify between commits** — `git status --short` + `git diff --stat` before `git add -A`
 - **Subagent API 500 errors are tolerable** — verify via `git status`/`git diff`,接受 work
 
+### Pre-commit enforcement (第二层防御)
+
+项目用 **git pre-commit hooks** 自动拦截高频踩坑模式。`.githooks/` 目录在仓库里、跨 clone 共享。
+
+| Hook | 严重度 | 用途 |
+|---|---|---|
+| `check-frontmatter-image.sh` | **BLOCK** | frontmatter `image: ~/assets/images/...` 路径必须存在(W20 教训) |
+| `check-astro-inline-script.sh` | **BLOCK** | Astro inline `<script>` 不能有顶层 `return;` (W18 教训) |
+| `check-agents-md-scope.sh` | WARN | AGENTS.md 不应塞 commit SHA / 日期 / 状态词(W21 设计原则) |
+
+- **Setup** (每个 clone 跑一次): `scripts/setup-hooks.sh` (或手动 `git config core.hooksPath .githooks`)
+- **绕过**: `git commit --no-verify` (谨慎,确认违规是误报)
+- 详细设计:[.githooks/README.md](.githooks/README.md)
+
 ### a11y
 
 - **Target**: WCAG 2 AA, axe-core 0 violations across all pages
@@ -136,6 +150,8 @@ agent-kg-hub/
 | en 文章 og:image 走 config.yaml default fallback | [references/i18n.md §metadata 必传 ImageMetadata](references/i18n.md) |
 | `mavis` 在 shell 里直接调不工作 | 用 `mavis` tool,**不是** shell command |
 | 部署后看不到变更 | 等 GH Pages 1-2 分钟,用 [references/deploy-pages.md](references/deploy-pages.md) 的 deploy check 流程验证 |
+| pre-commit hook 拦了我 | 看错误信息里的 references 链接;真误报用 `git commit --no-verify`;详情 [.githooks/README.md](.githooks/README.md) |
+| 新 clone 没装 hook | `scripts/setup-hooks.sh` (或 `git config core.hooksPath .githooks`) |
 
 ## References (按模块详细规则)
 
@@ -146,6 +162,7 @@ agent-kg-hub/
 - [references/astro-patterns.md](references/astro-patterns.md) — inline script / GoalGrid / SinglePost JSON-LD 等
 - [references/deploy-pages.md](references/deploy-pages.md) — GitHub Pages + pagefind + 部署验证
 - [references/a11y.md](references/a11y.md) — axe-core + ARIA + 颜色对比度模式
+- [.githooks/README.md](.githooks/README.md) — pre-commit 强制层 (3 hook 设计 + setup + bypass)
 
 ## Related Docs (本文件**不**复制其内容)
 

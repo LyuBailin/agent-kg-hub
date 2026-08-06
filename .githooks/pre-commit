@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Pre-commit dispatcher for agent-kg-hub.
+# Runs all checks defined in .githooks/check-*.sh.
+#
+# To bypass a specific check (e.g. mid-refactor), use:
+#   git commit --no-verify
+# Or comment out the relevant call below temporarily.
+#
+# Setup (one time per clone):
+#   scripts/setup-hooks.sh
+# Or manually:
+#   git config core.hooksPath .githooks
+#
+# See references/ for the WHY behind each check.
+
+set -e
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+# Run all checks; collect exit codes; show all errors at once (don't fail-fast).
+# Order: cheap → expensive, WARN first.
+EXIT=0
+for check in check-agents-md-scope.sh check-astro-inline-script.sh check-frontmatter-image.sh; do
+  bash "$DIR/$check" "$STAGED" || EXIT=1
+done
+
+exit $EXIT

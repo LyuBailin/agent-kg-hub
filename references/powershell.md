@@ -84,3 +84,13 @@ git add -A && git commit -m "msg"  # bash 语法
     2. web_fetch live URL — verify content
     3. if pass: delete this cron
   ```
+
+## Git pre-commit hooks 联动
+
+`.githooks/pre-commit` (W22 设立) 在 commit 时跑 3 个 check,失败时打印 `references/` 链接。**PowerShell 跟 hook 交互的注意点**:
+
+- Hook 输出是 stderr,PowerShell 会把 stderr 渲染成长字符串(`...CategoryInfo : ...RemoteException`)。用 `Select-String -Pattern "❌|⚠️"` 过滤关键行。
+- Hook 拦截了 commit 时,git 返回非零 → PowerShell `git commit` 报 `Command exited with code 1` (与 push 一样是误报级噪音)
+- 确认是 hook 拦截:看 stderr 里有 `❌` 或 `⚠️` 字样,而不是 PowerShell 自己的 `CategoryInfo`
+- 紧急绕过:**单条** commit 用 `git commit --no-verify -m "..."` (在 hook 误报或需要 force commit 时)
+- 长期绕过:在 `.githooks/pre-commit` 临时注释掉对应 check 的那一行(commit 后恢复)
