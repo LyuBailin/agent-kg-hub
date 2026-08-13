@@ -2,6 +2,51 @@
 
 所有对本项目的显著变更都记录在此文件。格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)。
 
+## [W23] - 2026-08-13
+
+### 修复 — Header 在 1440×900 不再挤
+
+首页(三大范式图周围)Header 在 1440×900 屏幕上,导航 3 个 dropdown 跟 logo / 5 个 actions 挤在一起,视觉重心不平衡。原因是 AstroWind 默认的 `md:grid-cols-3` 三等分 + actions 文字按钮把中间列挤扁。
+
+**修改 4 个核心文件**(`src/` 内 5 个改动,加 1 个新工具字段):
+
+- **`Header.astro`** — grid 模板从「三等分」改成「内容自适应」
+  - `md:grid-cols-3` → `md:grid-cols-[auto_minmax(0,1fr)_auto]`
+  - logo / actions 各自按内容宽度,nav 撑满 1fr 剩余空间
+  - 加 `md:gap-x-2 xl:gap-x-4` 给 3 列加呼吸
+  - nav 容器加 `min-w-0`(grid item 收缩塌陷防御)+ `md:justify-self-stretch`
+  - 去掉 `md:mx-5`,换 `md:mx-0 xl:mx-2` 给 grid gap 接管间距
+
+- **Header actions 全部 icon-only** — 文字转 `sr-only`,视觉只显示 icon
+  - 之前:「搜索」「EN」「GitHub」3 个文字按钮 ≈ 368px
+  - 现在:3 个 icon button ≈ 236px, 释放 ~130px 中间空间
+  - 屏幕阅读器仍能读文字(`<span class="sr-only">`),配 `aria-label` 双重保障
+
+- **`Button.astro`** — 加 `textClass` prop, 把 text 渲染从 `<Fragment>` 升级为 `<span class={textClassName}>`
+  - 兼容:不传 `textClass` 时跟之前一模一样
+  - 后续 wave 想"按钮文字淡入/淡出/变体"都可以走这个 prop
+
+- **`types.d.ts`** — `CallToAction` 接口加 `textClass?: string` 字段
+
+- **`navigation/zh.ts` + `en.ts`** — 给 3 个 actions 加 `aria-label`
+  - 中文:`搜索` / `切换到英文` / `GitHub 仓库(新窗口)`
+  - English:`Search` / `Switch to Chinese` / `GitHub repository (opens in new tab)`
+
+### 顺手 — Prettier 重新格式化
+
+7 个 md 文件(AGENTS.md + 6 个 references/*.md)被 W22 `.gitattributes` 行尾规范化触发 prettier 重排,200+ 行 markdown table / bullet 重新对齐。一并 `npx prettier --write` 修了,无内容改动。
+
+### 验证
+
+- `npm run check` 全绿(astro + eslint + prettier,0 errors / 0 warnings)
+- `npm run build` 206 页全过
+- **3 个断点 headless 截图**确认无溢出:
+  - 1440×900:logo | 3 dropdowns 居中(中间留 200+px) | 5 icon actions 贴右
+  - 1024×768:同布局,nav items 居中靠左一点
+  - 768×1024(平板竖屏):一样 fit
+- 中文 / 英文首页都验过 grid class 出现
+- 屏幕阅读器友好:actions 文字转 sr-only 后仍可被读,`aria-label` 兜底
+
 ## [W22] - 2026-08-06
 
 ### 新增 — Pre-commit 强制层
