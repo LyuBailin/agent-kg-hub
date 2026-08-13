@@ -23,16 +23,16 @@ Agent × Knowledge Graph 技术资源导航 + 关键概念深度解读。Astro v
 
 ## Commands
 
-| 命令 | 用途 |
-|---|---|
-| `npm run dev` | 本地 dev server (HMR) |
-| `npm run build` | 静态构建 → `dist/` |
-| `npm run check` | astro check + eslint + prettier (CI gate) |
-| `npm run check:astro` | 仅 TypeScript 类型检查 |
-| `npm run check:eslint` | 仅 ESLint |
-| `npm run check:prettier` | 仅 Prettier |
-| `npm run fix` | eslint --fix + prettier -w |
-| `npm run preview` | 本地预览 `dist/` |
+| 命令                     | 用途                                      |
+| ------------------------ | ----------------------------------------- |
+| `npm run dev`            | 本地 dev server (HMR)                     |
+| `npm run build`          | 静态构建 → `dist/`                        |
+| `npm run check`          | astro check + eslint + prettier (CI gate) |
+| `npm run check:astro`    | 仅 TypeScript 类型检查                    |
+| `npm run check:eslint`   | 仅 ESLint                                 |
+| `npm run check:prettier` | 仅 Prettier                               |
+| `npm run fix`            | eslint --fix + prettier -w                |
+| `npm run preview`        | 本地预览 `dist/`                          |
 
 **CI gate**: `npm run check` 必须 0 errors / 0 warnings 才能 commit。
 
@@ -82,15 +82,15 @@ agent-kg-hub/
 
 ### Naming
 
-| 类型 | 规则 | 示例 |
-|---|---|---|
-| Article slugs (zh) | 拼音 + 数字声调 | `concept-react-intro`, `he2-xin1-gai4-nian4` (category) |
-| Article slugs (en) | kebab-case English | `concept-react-intro`, `core-concepts` (category) |
-| Cover images | `cover-{category}-{slug}.png` | `cover-concept-react-intro.png`, `cover-resource-langgraph.png` |
-| Branches | `feat/...` `fix/...` `docs/...` `chore/...` | (按需,不强制) |
-| Commit subjects | Conventional Commits, 一行 | `feat(images): W20 - 19 unique article cover images` |
-| Cron names | kebab-case alphanumeric only (no dots, no spaces) | `W20-cover-images-deploy-check` |
-| File names (refs) | kebab-case `.md` | `images-pipeline.md`, `astro-patterns.md` |
+| 类型               | 规则                                              | 示例                                                            |
+| ------------------ | ------------------------------------------------- | --------------------------------------------------------------- |
+| Article slugs (zh) | 拼音 + 数字声调                                   | `concept-react-intro`, `he2-xin1-gai4-nian4` (category)         |
+| Article slugs (en) | kebab-case English                                | `concept-react-intro`, `core-concepts` (category)               |
+| Cover images       | `cover-{category}-{slug}.png`                     | `cover-concept-react-intro.png`, `cover-resource-langgraph.png` |
+| Branches           | `feat/...` `fix/...` `docs/...` `chore/...`       | (按需,不强制)                                                   |
+| Commit subjects    | Conventional Commits, 一行                        | `feat(images): W20 - 19 unique article cover images`            |
+| Cron names         | kebab-case alphanumeric only (no dots, no spaces) | `W20-cover-images-deploy-check`                                 |
+| File names (refs)  | kebab-case `.md`                                  | `images-pipeline.md`, `astro-patterns.md`                       |
 
 ### i18n routing
 
@@ -123,11 +123,11 @@ agent-kg-hub/
 
 项目用 **git pre-commit hooks** 自动拦截高频踩坑模式。`.githooks/` 目录在仓库里、跨 clone 共享。
 
-| Hook | 严重度 | 用途 |
-|---|---|---|
-| `check-frontmatter-image.sh` | **BLOCK** | frontmatter `image: ~/assets/images/...` 路径必须存在(W20 教训) |
-| `check-astro-inline-script.sh` | **BLOCK** | Astro inline `<script>` 不能有顶层 `return;` (W18 教训) |
-| `check-agents-md-scope.sh` | WARN | AGENTS.md 不应塞 commit SHA / 日期 / 状态词(W21 设计原则) |
+| Hook                           | 严重度    | 用途                                                            |
+| ------------------------------ | --------- | --------------------------------------------------------------- |
+| `check-frontmatter-image.sh`   | **BLOCK** | frontmatter `image: ~/assets/images/...` 路径必须存在(W20 教训) |
+| `check-astro-inline-script.sh` | **BLOCK** | Astro inline `<script>` 不能有顶层 `return;` (W18 教训)         |
+| `check-agents-md-scope.sh`     | WARN      | AGENTS.md 不应塞 commit SHA / 日期 / 状态词(W21 设计原则)       |
 
 - **Setup** (每个 clone 跑一次): `scripts/setup-hooks.sh` (或手动 `git config core.hooksPath .githooks`)
 - **绕过**: `git commit --no-verify` (谨慎,确认违规是误报)
@@ -141,17 +141,17 @@ agent-kg-hub/
 
 ## Pitfalls (brief, 详情见 references/)
 
-| 现象 | 快速指引 |
-|---|---|
-| 新加的 cover image build 后不出现,hero 还是 `default.png` | [references/images-pipeline.md §Vite glob 缓存陷阱](references/images-pipeline.md) |
-| PowerShell `[wildcard]` / `Remove-Item` / `Select-Object -Pattern` 报错 | [references/powershell.md](references/powershell.md) |
-| `.astro` 文件里 inline `<script>` 顶层 `return` Rollup parse error | [references/astro-patterns.md §inline script](references/astro-patterns.md) |
-| `import.meta.glob('~/...')` 找不到新加的资源 | [references/images-pipeline.md](references/images-pipeline.md) |
-| en 文章 og:image 走 config.yaml default fallback | [references/i18n.md §metadata 必传 ImageMetadata](references/i18n.md) |
-| `mavis` 在 shell 里直接调不工作 | 用 `mavis` tool,**不是** shell command |
-| 部署后看不到变更 | 等 GH Pages 1-2 分钟,用 [references/deploy-pages.md](references/deploy-pages.md) 的 deploy check 流程验证 |
-| pre-commit hook 拦了我 | 看错误信息里的 references 链接;真误报用 `git commit --no-verify`;详情 [.githooks/README.md](.githooks/README.md) |
-| 新 clone 没装 hook | `scripts/setup-hooks.sh` (或 `git config core.hooksPath .githooks`) |
+| 现象                                                                    | 快速指引                                                                                                         |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 新加的 cover image build 后不出现,hero 还是 `default.png`               | [references/images-pipeline.md §Vite glob 缓存陷阱](references/images-pipeline.md)                               |
+| PowerShell `[wildcard]` / `Remove-Item` / `Select-Object -Pattern` 报错 | [references/powershell.md](references/powershell.md)                                                             |
+| `.astro` 文件里 inline `<script>` 顶层 `return` Rollup parse error      | [references/astro-patterns.md §inline script](references/astro-patterns.md)                                      |
+| `import.meta.glob('~/...')` 找不到新加的资源                            | [references/images-pipeline.md](references/images-pipeline.md)                                                   |
+| en 文章 og:image 走 config.yaml default fallback                        | [references/i18n.md §metadata 必传 ImageMetadata](references/i18n.md)                                            |
+| `mavis` 在 shell 里直接调不工作                                         | 用 `mavis` tool,**不是** shell command                                                                           |
+| 部署后看不到变更                                                        | 等 GH Pages 1-2 分钟,用 [references/deploy-pages.md](references/deploy-pages.md) 的 deploy check 流程验证        |
+| pre-commit hook 拦了我                                                  | 看错误信息里的 references 链接;真误报用 `git commit --no-verify`;详情 [.githooks/README.md](.githooks/README.md) |
+| 新 clone 没装 hook                                                      | `scripts/setup-hooks.sh` (或 `git config core.hooksPath .githooks`)                                              |
 
 ## References (按模块详细规则)
 

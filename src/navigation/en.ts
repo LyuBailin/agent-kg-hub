@@ -35,13 +35,14 @@ export const headerDataEn = {
     },
   ],
   actions: [
-    { text: 'Search', href: '/en/search/', icon: 'tabler:search' },
-    { text: '中文', href: '/agent-kg-hub/', icon: 'tabler:language' },
+    { text: 'Search', href: '/en/search/', icon: 'tabler:search', 'aria-label': 'Search' },
+    { text: '中文', href: '/agent-kg-hub/', icon: 'tabler:language', 'aria-label': 'Switch to Chinese' },
     {
       text: 'GitHub',
       href: 'https://github.com/LyuBailin/agent-kg-hub',
       target: '_blank',
       icon: 'tabler:brand-github',
+      'aria-label': 'GitHub repository (opens in new tab)',
     },
   ],
 };

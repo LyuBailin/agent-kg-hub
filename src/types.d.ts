@@ -183,6 +183,8 @@ export interface CallToAction extends Omit<HTMLAttributes<'a'>, 'slot'> {
   icon?: string;
   classes?: Record<string, string>;
   type?: 'button' | 'submit' | 'reset';
+  /** Tailwind class applied to the text span (W23 - hide action labels in header) */
+  textClass?: string;
 }
 
 export interface Collapse {

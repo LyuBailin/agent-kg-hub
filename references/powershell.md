@@ -4,16 +4,16 @@
 
 ## 关键规则
 
-| 想要 | ❌ 不要 | ✅ 用 |
-|---|---|---|
-| 删除文件 | `Remove-Item foo.txt` | `mavis-trash foo.txt` (回收站,可恢复) |
-| grep 文件内容 | `Select-Object -Pattern` (匹配属性名,不是内容) | `Select-String -Path X -Pattern Y` |
-| 多文件类型匹配 | `Get-ChildItem -Filter "*.{ts,tsx}"` (不支持多 pattern) | 多次 `-Filter` 或 `Where-Object { $_.Extension -in @('.ts','.tsx') }` |
-| 链式命令 | `cmd1 && cmd2` (bash 语法) | `cmd1; cmd2` (分号) |
-| `if` 在表达式中 | `if (cond) { ... } else { ... }` 当值用 | 用语句形式 `if (...) { ... } else { ... }`,不要套在赋值里 |
-| git commit 多行 | `git commit -m "line1\nline2"` (PowerShell 会保留字面 `\n`) | 用 PowerShell 变量:`$msg = @'...'@; git commit -m $msg` |
-| bash 工具 | `ls` / `head` / `tail` / `wc` / `find` | `Get-ChildItem` / `Select-Object -First` / `Select-Object -Last` / `Measure-Object` / `Get-ChildItem -Recurse` |
-| Wildcard 字符串字面量 | `[wildcard]::new('*')` 直接用 | 字符串字面量不会触发 wildcard 匹配,报错"无效的通配符模式"时改用 `Select-String` |
+| 想要                  | ❌ 不要                                                     | ✅ 用                                                                                                          |
+| --------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 删除文件              | `Remove-Item foo.txt`                                       | `mavis-trash foo.txt` (回收站,可恢复)                                                                          |
+| grep 文件内容         | `Select-Object -Pattern` (匹配属性名,不是内容)              | `Select-String -Path X -Pattern Y`                                                                             |
+| 多文件类型匹配        | `Get-ChildItem -Filter "*.{ts,tsx}"` (不支持多 pattern)     | 多次 `-Filter` 或 `Where-Object { $_.Extension -in @('.ts','.tsx') }`                                          |
+| 链式命令              | `cmd1 && cmd2` (bash 语法)                                  | `cmd1; cmd2` (分号)                                                                                            |
+| `if` 在表达式中       | `if (cond) { ... } else { ... }` 当值用                     | 用语句形式 `if (...) { ... } else { ... }`,不要套在赋值里                                                      |
+| git commit 多行       | `git commit -m "line1\nline2"` (PowerShell 会保留字面 `\n`) | 用 PowerShell 变量:`$msg = @'...'@; git commit -m $msg`                                                        |
+| bash 工具             | `ls` / `head` / `tail` / `wc` / `find`                      | `Get-ChildItem` / `Select-Object -First` / `Select-Object -Last` / `Measure-Object` / `Get-ChildItem -Recurse` |
+| Wildcard 字符串字面量 | `[wildcard]::new('*')` 直接用                               | 字符串字面量不会触发 wildcard 匹配,报错"无效的通配符模式"时改用 `Select-String`                                |
 
 ## 已知会出现的"噪音"(不是真错)
 
@@ -60,7 +60,7 @@ git commit -m "feat: W20
 - line 1
 - line 2"
 
-# ❌ 错误:bash 风格 && 
+# ❌ 错误:bash 风格 &&
 git add -A && git commit -m "msg"  # bash 语法
 ```
 

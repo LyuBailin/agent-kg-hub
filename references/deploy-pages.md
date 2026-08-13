@@ -28,6 +28,7 @@
 - `dist/pagefind/pagefind.js` + 索引文件
 
 **重要**:
+
 - **Astro hash 化资源名**:不要 hard-code 资源 URL,永远走 `<Image />` 或 `getImage()`
 - **不要 `git add dist/`** — `.gitignore` 排除,deploy 由 Actions 处理
 
@@ -70,26 +71,26 @@ prompt: |
 
 ## Live URL 验证清单
 
-| 检查项 | 工具 | 期望 |
-|---|---|---|
-| Deploy 状态 | `gh api .../actions/runs?per_page=1` | `conclusion=success` |
-| 文章页 200 | `web_fetch URL` | HTML 包含 `<h1>` + hero `<img>` |
-| og:image 正确 | `web_fetch URL` 后 `grep og:image` | URL 含 `cover-{slug}` 而非 `default` |
-| Hero img 正确 | `web_fetch URL` 后 `grep src=` | URL 含 `cover-{slug}` |
+| 检查项        | 工具                                          | 期望                                 |
+| ------------- | --------------------------------------------- | ------------------------------------ |
+| Deploy 状态   | `gh api .../actions/runs?per_page=1`          | `conclusion=success`                 |
+| 文章页 200    | `web_fetch URL`                               | HTML 包含 `<h1>` + hero `<img>`      |
+| og:image 正确 | `web_fetch URL` 后 `grep og:image`            | URL 含 `cover-{slug}` 而非 `default` |
+| Hero img 正确 | `web_fetch URL` 后 `grep src=`                | URL 含 `cover-{slug}`                |
 | JSON-LD image | `web_fetch URL` 后 grep `application/ld+json` | 对象形式含 `src/width/height/format` |
-| RSS feed | `web_fetch /rss.xml` | 200 + 含最新文章 |
-| Sitemap | `web_fetch /sitemap-index.xml` | 200 + 列出所有页面 |
+| RSS feed      | `web_fetch /rss.xml`                          | 200 + 含最新文章                     |
+| Sitemap       | `web_fetch /sitemap-index.xml`                | 200 + 列出所有页面                   |
 
 ## 常见问题
 
-| 现象 | 原因 + 解决 |
-|---|---|
-| Deploy 失败 "Build error" | 看 Actions log,通常是 `npm run check` 不通过 |
-| 部署后页面还是旧版本 | GitHub Pages CDN 缓存,~5min 内会更新 |
-| 部署后 cover 还是 default | 见 [references/images-pipeline.md §Vite glob 缓存陷阱](images-pipeline.md) |
-| `/search` 404 | dev 模式无 Pagefind,生产部署后才有 |
-| og:image 是 `default.png` | en 端 metadata bug,见 [references/i18n.md](i18n.md) |
-| 部署成功但访问 404 | `Astro.url.pathname` 处理 base path,看 [references/astro-patterns.md §路由 base path](astro-patterns.md) |
+| 现象                      | 原因 + 解决                                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Deploy 失败 "Build error" | 看 Actions log,通常是 `npm run check` 不通过                                                             |
+| 部署后页面还是旧版本      | GitHub Pages CDN 缓存,~5min 内会更新                                                                     |
+| 部署后 cover 还是 default | 见 [references/images-pipeline.md §Vite glob 缓存陷阱](images-pipeline.md)                               |
+| `/search` 404             | dev 模式无 Pagefind,生产部署后才有                                                                       |
+| og:image 是 `default.png` | en 端 metadata bug,见 [references/i18n.md](i18n.md)                                                      |
+| 部署成功但访问 404        | `Astro.url.pathname` 处理 base path,看 [references/astro-patterns.md §路由 base path](astro-patterns.md) |
 
 ## Cron 配置 (kebab-case only!)
 

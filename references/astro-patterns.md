@@ -11,19 +11,22 @@ Build error: Unexpected return statement
 ```
 
 **错误示例**:
+
 ```astro
 <script is:inline>
   const el = document.getElementById('foo');
-  if (!el) return;  // ❌ 顶层 return
+  if (!el) return; // ❌ 顶层 return
   el.focus();
 </script>
 ```
 
 **正确写法**:
+
 ```astro
 <script is:inline>
   const el = document.getElementById('foo');
-  if (el) {  // 用 if 包块,局部 const 自动窄化
+  if (el) {
+    // 用 if 包块,局部 const 自动窄化
     el.focus();
   }
 </script>
@@ -47,21 +50,23 @@ import { GoalGrid } from '~/components/widgets/GoalGrid.astro';
 
 // ✅ 正确
 import GoalGrid from '~/components/widgets/GoalGrid.astro';
-import type { Goal } from '~/types';  // type 单独 import
+import type { Goal } from '~/types'; // type 单独 import
 ```
 
 ## 4. ImageMetadata vs string
 
 `post.image` 可以是 `ImageMetadata` 或 `string` (URL 路径):
+
 - 来自 `import { ImageMetadata }` 的本地图 → `ImageMetadata` 对象
 - 来自 `frontmatter.image: '~/assets/...'` → string (需 findImage 解析)
 - 来自 `~/public/...` 或 `https://...` → string (直接用)
 
 **消费端 (SinglePost JSON-LD)**:
+
 ```typescript
 const jsonLD = {
   // ...
-  image: post.image || '',  // 直接 JSON.stringify 进去
+  image: post.image || '', // 直接 JSON.stringify 进去
   // ...
 };
 ```
@@ -74,9 +79,10 @@ const jsonLD = {
 ## 5. MetaDataImage 类型
 
 `src/types.d.ts`:
+
 ```typescript
 export interface MetaDataImage {
-  url: string | ImageMetadata;  // W20 拓宽,支持本地图
+  url: string | ImageMetadata; // W20 拓宽,支持本地图
   width?: number;
   height?: number;
 }
@@ -87,6 +93,7 @@ export interface MetaDataImage {
 ## 6. Shiki 自定义主题 (AA 对比度)
 
 `astro.config.ts`:
+
 ```typescript
 markdown: {
   shikiConfig: {
@@ -110,10 +117,10 @@ markdown: {
 
 ```typescript
 // ✅ segment-boundary
-/(^|\/)en(\/|$)/.test(pathname)
+/(^|\/)en(\/|$)/.test(pathname);
 
 // ❌ 简单子串(会误匹配)
-pathname.includes('/en/')
+pathname.includes('/en/');
 ```
 
 ## 8. 静态构建 + 动态内容
@@ -127,6 +134,7 @@ pathname.includes('/en/')
 ## 9. Content collections
 
 `src/content.config.ts`:
+
 ```typescript
 import { defineCollection, z } from 'astro:content';
 
@@ -137,7 +145,7 @@ const post = defineCollection({
     excerpt: z.string().optional(),
     publishDate: z.coerce.date(),
     // ...
-    image: z.string().optional(),  // path string
+    image: z.string().optional(), // path string
     // ...
   }),
 });
@@ -162,21 +170,21 @@ npm run fix     # autofix eslint + prettier
 
 ## 11. 常用 import 路径
 
-| 目标 | 写法 |
-|---|---|
-| 内部 alias | `~/components/...`, `~/utils/...`, `~/types` |
-| 相对路径 | `../components/...` (从 src/utils 出发的 import 常用) |
-| `astro:assets` | `import { Image } from 'astro:assets'` |
+| 目标            | 写法                                                      |
+| --------------- | --------------------------------------------------------- |
+| 内部 alias      | `~/components/...`, `~/utils/...`, `~/types`              |
+| 相对路径        | `../components/...` (从 src/utils 出发的 import 常用)     |
+| `astro:assets`  | `import { Image } from 'astro:assets'`                    |
 | `astro:content` | `import { getCollection, getEntry } from 'astro:content'` |
-| `astro-seo` | `import { SEO } from 'astro-seo'` |
-| `astro-icon` | `import { Icon } from 'astro-icon/components'` |
+| `astro-seo`     | `import { SEO } from 'astro-seo'`                         |
+| `astro-icon`    | `import { Icon } from 'astro-icon/components'`            |
 
 ## 12. 调试清单
 
-| 现象 | 检查 |
-|---|---|
-| Build error: Unexpected return | inline `<script>` 顶层有 `return`?改 `if` 块 |
-| 新加图片 build 后不出现 | `findImage()` 用的 glob 是相对路径? |
-| `Cannot find module` | alias `~` 路径对吗?Vite config `resolve.alias['~']` 指向 `./src` |
+| 现象                                          | 检查                                                                                   |
+| --------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Build error: Unexpected return                | inline `<script>` 顶层有 `return`?改 `if` 块                                           |
+| 新加图片 build 后不出现                       | `findImage()` 用的 glob 是相对路径?                                                    |
+| `Cannot find module`                          | alias `~` 路径对吗?Vite config `resolve.alias['~']` 指向 `./src`                       |
 | TypeScript: 'X' is not assignable to type 'Y' | `src/types.d.ts` 的 `MetaDataImage.url` 还是 `string`?应改为 `string \| ImageMetadata` |
-| Prettier 一直报警 | `.prettierignore` 是否覆盖手写内容?`npm run fix:prettier` |
+| Prettier 一直报警                             | `.prettierignore` 是否覆盖手写内容?`npm run fix:prettier`                              |

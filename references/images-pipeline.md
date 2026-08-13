@@ -34,12 +34,12 @@ SinglePost.astro (JSON-LD)        ← 接收 ImageMetadata (object form)
 
 ## 命名规范
 
-| 用途 | 模式 | 示例 |
-|---|---|---|
-| 概念类文章封面 | `cover-concept-{slug}.png` | `cover-concept-react-intro.png` |
-| 资源类文章封面 | `cover-resource-{slug}.png` | `cover-resource-langgraph.png` |
-| 默认 / 兜底 | `default.png` (1200×628) | config.yaml `openGraph.images[0].url` |
-| Favicon | `app-store.png`, `google-play.png`, `hero-image.png` | (历史遗留) |
+| 用途           | 模式                                                 | 示例                                  |
+| -------------- | ---------------------------------------------------- | ------------------------------------- |
+| 概念类文章封面 | `cover-concept-{slug}.png`                           | `cover-concept-react-intro.png`       |
+| 资源类文章封面 | `cover-resource-{slug}.png`                          | `cover-resource-langgraph.png`        |
+| 默认 / 兜底    | `default.png` (1200×628)                             | config.yaml `openGraph.images[0].url` |
+| Favicon        | `app-store.png`, `google-play.png`, `hero-image.png` | (历史遗留)                            |
 
 **zh + en 共用同一张 cover**(文章本体是同一份,翻译不动图)。
 
@@ -50,6 +50,7 @@ SinglePost.astro (JSON-LD)        ← 接收 ImageMetadata (object form)
 **原因**:Vite `~/` 别名形式在静态 glob 求值时机不可靠。
 
 **解决**:
+
 - `src/utils/images.ts` 的 glob 改用**相对路径**:`'../assets/images/**/*.{...}'` (从 `src/utils/` 出发)
 - key 转换:`imagePath.replace(/^~\//, '../')` (与相对 glob key 对齐)
 - 老 `~/` 别名形式已多次踩坑,**相对路径是 canonical**
@@ -69,9 +70,10 @@ const key = imagePath.replace(/^~\//, '../');
 **问题**:`/en/articles/{slug}/` 的 og:image 走 `src/config.yaml` 的 `default.png`;JSON-LD `image` 是 raw `~/assets/images/...` 路径。
 
 **原因**:`src/pages/en/articles/[...post].astro` 旧版用了:
+
 ```typescript
-const imageUrl = typeof image === 'string' ? image : '';  // 对 ImageMetadata 永远给空串
-shapedPost.image = frontmatter.image;                     // raw string
+const imageUrl = typeof image === 'string' ? image : ''; // 对 ImageMetadata 永远给空串
+shapedPost.image = frontmatter.image; // raw string
 ```
 
 **修复**(W20):直接传 `image` (ImageMetadata) 给 `openGraph.images[0].url` 和 `shapedPost.image`,让 `adaptOpenGraphImages()` 统一优化:
@@ -79,19 +81,22 @@ shapedPost.image = frontmatter.image;                     // raw string
 ```typescript
 const image = (await findImage(frontmatter.image)) as ImageMetadata | string | undefined;
 
-const metadata = merge({
-  // ...
-  openGraph: {
-    type: 'article',
-    ...(image
-      ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }
-      : {}),
+const metadata = merge(
+  {
+    // ...
+    openGraph: {
+      type: 'article',
+      ...(image
+        ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }
+        : {}),
+    },
   },
-}, {}) as MetaData;
+  {}
+) as MetaData;
 
 const shapedPost: Post = {
   // ...
-  image,  // 不是 frontmatter.image
+  image, // 不是 frontmatter.image
   // ...
 };
 ```
@@ -101,11 +106,13 @@ const shapedPost: Post = {
 ## Image 组件选择
 
 `src/components/common/Image.astro` 自动分流:
+
 - **CDN URL** (Unsplash/Cloudinary/Imgix/Pixabay) → 走 `unpic` 加 query params,**不下载**到本地
 - **本地 ImageMetadata** → 走 `astro:assets` 的 `<Image />` 经 Sharp 优化
 - **本地 `~/assets/...` 字符串** → 内部 `findImage()` 解析成 ImageMetadata 后同上
 
 `alt` 是**必传** prop,装饰性图片显式 `alt=""`:
+
 ```astro
 <Image src={post.image} alt="" width={900} height={506} format="webp" />
 ```

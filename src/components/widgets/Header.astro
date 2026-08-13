@@ -63,7 +63,10 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
         'md:flex md:justify-between': position !== 'center',
       },
       {
-        'md:grid md:grid-cols-3 md:items-center': position === 'center',
+        'md:grid md:items-center md:gap-x-2 xl:gap-x-4': position === 'center',
+      },
+      {
+        'md:grid-cols-[auto_minmax(0,1fr)_auto]': position === 'center',
       },
       {
         'max-w-7xl': !isFullWidth,
@@ -79,7 +82,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
       </div>
     </div>
     <nav
-      class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-visible md:justify-self-center"
+      class="items-center w-full md:w-auto hidden md:flex md:mx-0 xl:mx-2 text-default overflow-y-auto overflow-x-hidden md:overflow-visible md:justify-self-stretch min-w-0"
       aria-label="Main navigation"
     >
       <ul
@@ -164,7 +167,11 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
           actions?.length ? (
             <span class="ml-4 rtl:ml-0 rtl:mr-4">
               {actions.map((btnProps) => (
-                <Button {...btnProps} class="ml-2 py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto" />
+                <Button
+                  {...btnProps}
+                  class="ml-2 p-2.5 md:p-2 font-semibold shadow-none text-sm w-auto"
+                  textClass="sr-only"
+                />
               ))}
             </span>
           ) : (

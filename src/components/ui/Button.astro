@@ -9,6 +9,7 @@ const {
   text = Astro.slots.render('default'),
   icon = '',
   class: className = '',
+  textClass: textClassName = '',
   type,
   ...rest
 } = Astro.props;
@@ -24,7 +25,7 @@ const variants = {
 {
   type === 'button' || type === 'submit' || type === 'reset' ? (
     <button type={type} class={twMerge(variants[variant] || '', className)} {...rest}>
-      <Fragment set:html={text} />
+      <span class={textClassName} set:html={text} />
       {icon && <Icon name={icon} class="w-5 h-5 ml-1 -mr-1.5 rtl:mr-1 rtl:-ml-1.5 inline-block" />}
     </button>
   ) : (
@@ -33,7 +34,7 @@ const variants = {
       {...(target ? { target: target, rel: 'noopener noreferrer' } : {})}
       {...rest}
     >
-      <Fragment set:html={text} />
+      <span class={textClassName} set:html={text} />
       {icon && <Icon name={icon} class="w-5 h-5 ml-1 -mr-1.5 rtl:mr-1 rtl:-ml-1.5 inline-block" />}
     </a>
   )

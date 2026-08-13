@@ -35,13 +35,14 @@ export const headerDataZh = {
     },
   ],
   actions: [
-    { text: '搜索', href: getPermalink('/search'), icon: 'tabler:search' },
-    { text: 'EN', href: '/agent-kg-hub/en/', icon: 'tabler:language' },
+    { text: '搜索', href: getPermalink('/search'), icon: 'tabler:search', 'aria-label': '搜索' },
+    { text: 'EN', href: '/agent-kg-hub/en/', icon: 'tabler:language', 'aria-label': '切换到英文' },
     {
       text: 'GitHub',
       href: 'https://github.com/LyuBailin/agent-kg-hub',
       target: '_blank',
       icon: 'tabler:brand-github',
+      'aria-label': 'GitHub 仓库(新窗口)',
     },
   ],
 };
