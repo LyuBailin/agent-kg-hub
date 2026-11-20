@@ -17,6 +17,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  issues: write          # 创建/更新每周快照 issue 需要
 
 jobs:
   check-deps:
@@ -40,6 +41,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          $ErrorActionPreference = 'Stop'
           $projects = @(
             'microsoft/graphrag',
             'langchain-ai/langgraph',
@@ -52,6 +54,7 @@ jobs:
           foreach ($p in $projects) {
             try {
               $r = gh api "repos/$p" --jq '{stars: .stargazers_count, pushed: .pushed_at, name: .full_name}'
+              if ($LASTEXITCODE -ne 0) { throw "gh api 返回 $LASTEXITCODE" }
               $summary += "[$($r.name)] ★$($r.stars)  last push: $($r.pushed)"
             } catch {
               $summary += "[$p] FETCH FAILED: $_"
@@ -65,15 +68,31 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          $ErrorActionPreference = 'Stop'
           $today = Get-Date -Format "yyyy-MM-dd"
-          $body = "## Weekly Ecosystem Snapshot - $today`n`n$((Get-Content weekly-stars.txt) -join "`n")`n`n---> 自动生成于每周一 UTC 00:00。维护者请 review 这些项目的活跃度,如发现重大变化请补充资源导航。"
-          $existing = gh issue list --label "weekly-snapshot" --state open --json number --jq '.[0].number'
+          $lines = (Get-Content weekly-stars.txt) -join "`n"
+          $body = "## Weekly Ecosystem Snapshot - $today`n`n$lines`n`n---> 自动生成于每周一 UTC 00:00。维护者请 review 这些项目的活跃度,如发现重大变化请补充资源导航。"
+
+          # 按标题前缀找已存在的快照 issue，避免每周新建；标签只作兜底
+          $issues = gh issue list --state open --limit 100 --json number,title | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw "gh issue list failed (exit $LASTEXITCODE)" }
+          $existing = ($issues | Where-Object { $_.title.StartsWith('[Weekly Snapshot]') } |
+            Sort-Object number | Select-Object -First 1).number
+
           if ($existing) {
             gh issue edit $existing --body $body
+            if ($LASTEXITCODE -ne 0) { throw "gh issue edit failed (exit $LASTEXITCODE)" }
             Write-Output "Updated issue #$existing"
           } else {
-            gh issue create --title "[Weekly Snapshot] $today" --body $body --label "weekly-snapshot"
-            Write-Output "Created new snapshot issue"
+            gh issue create --title "[Weekly Snapshot] $today" --body $body --label weekly-snapshot
+            if ($LASTEXITCODE -ne 0) {
+              # 标签被误删时降级：不带标签再建一次，不让整周因为一个标签失败
+              gh issue create --title "[Weekly Snapshot] $today" --body $body
+              if ($LASTEXITCODE -ne 0) { throw "gh issue create failed (exit $LASTEXITCODE)" }
+              Write-Output "Created snapshot issue WITHOUT label (weekly-snapshot 标签缺失)"
+            } else {
+              Write-Output "Created new snapshot issue"
+            }
           }
 
   auto-rebuild:
