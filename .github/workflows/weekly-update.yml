@@ -18,6 +18,8 @@ permissions:
   contents: read
   pull-requests: write
   issues: write          # 创建/更新每周快照 issue 需要
+  pages: write           # 部署到 GitHub Pages
+  id-token: write        # actions/deploy-pages 走 OIDC 需要
 
 jobs:
   check-deps:
@@ -101,6 +103,9 @@ jobs:
     # 依赖 Deps 检查通过后跑
     needs: check-deps
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    concurrency:
+      group: 'pages'          # 与 pages.yml 共用，避免两次部署撞车
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
